@@ -1,0 +1,9 @@
+PARKING = 5             # Represents the parking mode or state
+REVERSE = 3             # Indicates that the vehicle is in reverse mode
+OBSTACLE = 2            # Signifies the detection of an obstacle in the path
+WALL = 1                # Represents the detection of a wall (possible collision risk)
+NULL = 0                # Indicates no significant state or event (possibly idle or neutral)
+LINE = 4                # Represents the detection of a line (perhaps for line following)
+WIDE_CURVE = 6          # Indicates a wide curve or turn in the path
+DIRECTION_SWITCH = 7     # Signifies a switch in driving direction (e.g., forward to reverse)
+STUCK = 8               # Represents that the vehicle is stuck or unable to move
