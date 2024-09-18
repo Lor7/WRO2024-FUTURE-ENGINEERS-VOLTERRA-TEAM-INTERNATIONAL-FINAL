@@ -47,3 +47,38 @@ def setSteeringAngle(angle, importance=0):
 # 'Per andare a sinistra l'angolo deve essere positivo'
 # (To turn left, the angle must be positive)
 
+def reverse(steeringAngle, sleepTime1=0.8, sleepTime2=0.4):
+    '''
+    Reverses the motor with a given steering angle.
+    
+    Parameters:
+    - steeringAngle: The angle at which the vehicle reverses.
+    - sleepTime1: Duration of the first phase of reversing (not yet implemented).
+    - sleepTime2: Duration of the second phase of reversing (not yet implemented).
+    
+    Note: This function is currently disabled (returns early).
+    '''
+    
+    return  # Function disabled, no operations are executed
+    
+    # The code below would reverse the steering angle if enabled
+    steeringAngle = steeringAngle - 4 if steeringAngle < 0 else steeringAngle + 4
+    # First movement: reverse
+    setSteeringAngle(steeringAngle)
+    motor.backward(0.18)
+    sleep(sleepTime1)
+    motor.stop()
+    # Second movement: spacing
+    setSteeringAngle(2)
+    motor.backward(motorValue)
+    sleep(sleepTime2 / 1.2)
+    motor.stop()
+    # Third movement: reverse
+    setSteeringAngle(-steeringAngle / 2)
+    motor.forward(0.18)
+    sleep(sleepTime2 / 1.2)
+    motor.stop()
+    #Fourth movement: moving front
+    setSteeringAngle(steeringAngle)
+    motor.forward(0.18)
+    sleep(sleepTime2 / 1.5)

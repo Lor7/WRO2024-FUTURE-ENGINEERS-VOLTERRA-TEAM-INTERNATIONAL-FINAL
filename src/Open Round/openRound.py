@@ -57,14 +57,52 @@ def sideCounter():
 
     colorSensor.stop = True  # Stop the color sensor when done
 
+def defineColor():
+    global direction, steeringAngleForAfterSteering, side, updatedSide, lap, imageProcessing, state, timeLastLine
+    clockwiseCount, anticlockwiseCount = 0, 0
+    while direction == 0:
+        try:
+            while direction == 0:
+                colorDict = colorSensor.datas  # Get color sensor data
+                if (95 <= colorDict['red'] and colorDict['green'] <= 85 and colorDict['blue'] <= 85) and (colorDict['green'] != 76.5 or colorDict['blue'] != 76.5):
+                    # Check for clockwise direction
+                    clockwiseCount += 1
+                    anticlockwiseCount = 0
+                    if clockwiseCount == 2:
+                        direction = CLOCKWISE
+                        state.add(LINE)  # Update state to line detected
+                        setDirection()  # Set the direction
+                        print(f"Direction defined clockwise, values: {colorDict}")
+                elif ((colorDict['red'] <= 82 and colorDict['green'] <= 105 and 103 <= colorDict['blue'])):
+                    # Check for anticlockwise direction
+                    clockwiseCount = 0
+                    anticlockwiseCount += 1
+                    if anticlockwiseCount == 2:
+                        direction = ANTICLOCKWISE
+                        steeringAngleForAfterSteering = 3
+                        state.add(LINE)  # Update state to line detected
+                        setDirection()  # Set the direction
+                        print(f"Direction defined anticlockwise, values: {colorDict}")
+                sleep(0.0025)  # Short sleep to reduce CPU usage
+        except Exception as e:
+            #print(e)  # Suppress exceptions for now
+            pass
+    updatedSide += 1
+    timeLastLine[0] = time()  # Update the time after defining color
+    sideCounterThread = Thread(target=sideCounter)  # Start side counter thread
+    sleep(pauseTimeColorSensor)  # Pause before starting side counter
+    side = updatedSide
+    sideCounterThread.start()  # Start the side counter thread
+
 
 def loop():
     global lap, side, updatedSide, state, parkingTime
     global direction, STOP, imageProcessing, imageProcessing_process
-    global colorThread
+    global colorThread, defineColorThread
     
     # Initialize threads for color sensor
     colorThread = Thread(target=colorSensor.readDataContinuously)
+    defineColorThread = Thread(target=defineColor)
     
     # Initialize image processing with shared values and lock for thread-safe operations
     lock = Lock()
@@ -78,6 +116,7 @@ def loop():
     print("Setup completed!")
     setSteeringAngle(0)  # Set initial steering angle
     sleep(0.5)  # Delay before starting
+    defineColorThread.start()  # Start the color definition thread
     motorValue = 0.23  # Set initial motor value
 
     chronograph = time()  # Start a timer
