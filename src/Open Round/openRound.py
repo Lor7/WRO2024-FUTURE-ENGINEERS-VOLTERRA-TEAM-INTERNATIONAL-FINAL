@@ -107,7 +107,7 @@ def loop():
     # Initialize image processing with shared values and lock for thread-safe operations
     lock = Lock()
     shared_values, shared_values_copy = [i for i in range(31)], []
-    imageProcessing = ImageProcessing(shared_values, lock, True, True)
+    imageProcessing = ImageProcessing(shared_values, lock, True, False)
     imageProcessing.run()  # Start the image processing
 
     colorThread.start()  # Start the color sensor thread

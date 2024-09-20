@@ -7,7 +7,7 @@ from wallRecognitionConstants import *
 
 class ImageProcessing():
 
-    def __init__(self, shared_values, lock, showFrameFlag = False, drawDebug = False):
+    def __init__(self, shared_values, lock, showFrameFlag = False, saveFrameFlag = False, drawDebug = False):
         self.lock = lock
         self.shared_values = shared_values if shared_values != None else [i for i in range(0)]
         self.INTERRUPT = False
@@ -18,6 +18,8 @@ class ImageProcessing():
         self.frame2 = None
         self.NEWFRAME = False
         self.PROCESSED = False
+        self.saveFrameFlag = saveFrameFlag
+        self.TOBESAVED = False
         self.direction = 0
         self.drawDebug = drawDebug
     def setDirection(self, direction):
@@ -203,6 +205,19 @@ class ImageProcessing():
             #leftRect, rightRect, leftLine, rightLine,
             #coloredAreaLowerLeft, coloredAreaLowerRight, coloredAreaFront2)
 
+            
+    def saveFrame(self):
+        from datetime import datetime
+        imagesCounter = 0
+        while not(self.INTERRUPT):
+            if self.TOBESAVED:
+                uniqueTimeName =   "__" + str(datetime.now()).replace(" ", ";").replace(".", ";").replace(":", "-") + "__" + str(imagesCounter)
+                cv2.imwrite("images/" + uniqueTimeName + ".jpg", self.frame)
+                cv2.imwrite("rawImages/" + uniqueTimeName + ".jpg", self.image)
+                imagesCounter += 1
+                self.TOBESAVED = False
+        sleep(0.075)
+
 
     def run(self):
         getFrameThread = Thread(target = self.getFrame)        
@@ -212,6 +227,9 @@ class ImageProcessing():
         if self.showFrameFlag:
             showFrameThread = Thread(target = self.showFrame)
             showFrameThread.start()
+        if self.saveFrameFlag:
+            saveFrameThread = Thread(target = self.saveFrame)
+            saveFrameThread.start()
     def stop(self):
         try:
             self.INTERRUPT = True
