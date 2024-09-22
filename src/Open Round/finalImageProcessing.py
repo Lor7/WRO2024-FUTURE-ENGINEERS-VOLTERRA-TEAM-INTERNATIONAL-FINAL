@@ -1,6 +1,6 @@
 from multiprocessing import Process, Array, Lock
 from threading import Thread
-from time import sleep
+from time import sleep, time
 import cv2
 from wallRecognitionConstants import *
 #from brain import makeDecision
@@ -20,6 +20,7 @@ class ImageProcessing():
         self.PROCESSED = False
         self.saveFrameFlag = saveFrameFlag
         self.TOBESAVED = False
+        self.processingTimeList = []
         self.direction = 0
         self.drawDebug = drawDebug
     def setDirection(self, direction):
@@ -79,6 +80,7 @@ class ImageProcessing():
                     self.capture.release()
     
     def processFrame(self):
+        from time import perf_counter
         from colorama import Fore, Back, Style
         from os import system
         
@@ -135,6 +137,7 @@ class ImageProcessing():
             while not(self.NEWFRAME):
                 sleep(0.0001)
             self.NEWFRAME = False
+            start = perf_counter()
             walls = []
 
             #frame = cv2.resize(self.image.copy(), (640, 480), interpolation = cv2.INTER_NEAREST)
@@ -205,6 +208,9 @@ class ImageProcessing():
             #leftRect, rightRect, leftLine, rightLine,
             #coloredAreaLowerLeft, coloredAreaLowerRight, coloredAreaFront2)
 
+            processingTime = perf_counter() - start
+            self.processingTimeList.append(processingTime)
+            ##print(f"{Style.BRIGHT}{Fore.BLUE}Processing time: {processingTime * 1000}ms{Style.RESET_ALL}")
             
     def saveFrame(self):
         from datetime import datetime
@@ -233,6 +239,10 @@ class ImageProcessing():
     def stop(self):
         try:
             self.INTERRUPT = True
+            average = sum(self.processingTimeList)/len(self.processingTimeList)
+            with open("processingTimeAverage.txt", "a") as f:
+                f.write(f"\n{average}")
+            #print(f"Average processing time: {average}")
             self.capture.release()
             cv2.destroyAllWindows()
         except:

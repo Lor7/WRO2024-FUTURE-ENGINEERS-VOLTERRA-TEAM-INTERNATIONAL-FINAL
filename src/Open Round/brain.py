@@ -117,6 +117,21 @@ def makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn,
     elif direction == ANTICLOCKWISE and (frontFlag) and (time() - timeLastLine[0] < 4) and 0 < centralSlope < 0.25 and 0 < leftSlope < 0.25 and (rightFlagMid or leftFlagMid) and (rightFlagIn or leftFlagIn) and (rightFlagOut or leftFlagOut) and leftRect[0] < 20:
         setSteeringAngle(18, importance = 1)
         print("Steering forced anticlockwise")
+    elif (direction == 0 or direction == ANTICLOCKWISE) and (frontFlag2) and (time() - timeLastLine[0] > 5) and (rightSlope > 0.6 and leftSlope > 0.6) and lowerRightFlag and lowerLeftFlag and leftFlagMid and leftFlagOut and rightFlagMid and rightFlagOut and not(leftFlagIn):
+        print("Direction refinement: -2")
+        setSteeringAngle(-2)
+    elif (direction == 0 or direction == ANTICLOCKWISE) and (frontFlag2) and (time() - timeLastLine[0] > 5) and (rightSlope > 0.6 and leftSlope > 0.6) and lowerLeftFlag and not(rightFlagIn) and rightFlagMid and leftFlagMid and leftFlagOut and leftFlagIn:
+        print("Direction correction: -10")
+        setSteeringAngle(-10)
+    elif (direction == ANTICLOCKWISE) and (time() - timeLastLine[0] < 5) and not(leftFlagIn or leftFlagOut or leftFlagMid) and leftSlope > 2 and rightSlope < 0.3 and rightFlagMid and rightFlagIn and rightFlagOut:
+        print("Direction improvement: -9")
+        setSteeringAngle(-9)
+    elif direction == CLOCKWISE and time() - timeLastLine[0] < 5 and rightSlope > 2 and leftSlope < 0.3 and not(rightFlagIn or rightFlagOut or rightFlagMid) and leftFlagMid and leftFlagIn and leftFlagOut:
+        print("Direction improvement: 9")
+        setSteeringAngle(9)
+    elif direction == ANTICLOCKWISE and time() - timeLastLine[0] < 2.5 and leftSlope > 2:
+        print("Corner avoidance: -9")
+        setSteeringAngle(-9)
     elif (frontFlag or frontFlag2) and leftFlagMid and leftFlagOut and lowerLeftFlag and not(rightFlagMid or rightFlagOut or lowerRightFlag):
         print("Too close to the left wall")
         setSteeringAngle(-14)
@@ -137,6 +152,15 @@ def makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn,
         print(Fore.RED + "Go right because too close to the left corner" + Style.RESET_ALL)
     elif leftFlagMid and rightFlagMid:
         if leftFlagIn and rightFlagIn and frontFlag:
+            if 0 < leftSlope < 0.25 and direction == ANTICLOCKWISE:# and rightSlope > 0:
+                # Go as ANTICLOCKWISE possible, because facing the wall
+                print(Fore.RED + "Go as ANTICLOCKWISE possible, because facing the wall" + Style.RESET_ALL)
+                setSteeringAngle(18, importance = 1)
+            elif 0 < rightSlope < 0.25 and direction == CLOCKWISE:# and leftSlope > 0:
+                # Go as CLOCKWISE possible, because facing the wall
+                print(Fore.RED + "Go as CLOCKWISE possible, because facing the wall" + Style.RESET_ALL)
+                setSteeringAngle(-18, importance = 1)
+            else:
                 # Go as CLOCKWISE or ANTICLOCKWISE possible, because facing the wall
                 print(Fore.RED + "Go as CLOCKWISE or ANTICLOCKWISE possible, because facing the wall" + Style.RESET_ALL)
                 setSteeringAngle(-18 * direction, importance = 1)
