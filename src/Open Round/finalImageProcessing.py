@@ -208,6 +208,23 @@ class ImageProcessing():
             #leftRect, rightRect, leftLine, rightLine,
             #coloredAreaLowerLeft, coloredAreaLowerRight, coloredAreaFront2)
 
+            self.lock.acquire()
+            self.shared_values[0], self.shared_values[1], self.shared_values[2], self.shared_values[3], self.shared_values[4], self.shared_values[5] = coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn, coloredAreaRightOut, coloredAreaRightMid, coloredAreaRightIn
+            self.shared_values[6] = coloredAreaFront
+            self.shared_values[7], self.shared_values[8], self.shared_values[9], self.shared_values[10] = leftRect
+            self.shared_values[11], self.shared_values[12], self.shared_values[13], self.shared_values[14] = rightRect
+            self.shared_values[15], self.shared_values[16], self.shared_values[17], self.shared_values[18] = leftLine
+            self.shared_values[19], self.shared_values[20], self.shared_values[21], self.shared_values[22] = rightLine
+            self.shared_values[23], self.shared_values[24], self.shared_values[25] = coloredAreaLowerLeft, coloredAreaLowerRight, coloredAreaFront2
+            self.shared_values[26], self.shared_values[27], self.shared_values[28], self.shared_values[29] = centralLine
+            self.shared_values[30] =  1
+            self.lock.release()
+
+            #End of the logic
+            self.frame = frame
+            self.PROCESSED = True
+            self.TOBESAVED = True
+            #print(Style.RESET_ALL, sep = "", end = "")
             processingTime = perf_counter() - start
             self.processingTimeList.append(processingTime)
             ##print(f"{Style.BRIGHT}{Fore.BLUE}Processing time: {processingTime * 1000}ms{Style.RESET_ALL}")
