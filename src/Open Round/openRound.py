@@ -21,11 +21,17 @@ parkingTime = 5.0  # Time allocated for parking
 
 
 def setDirection():
+    """
+    Update the direction in the brain and image processing modules.
+    """
     global direction
     brainSetDirection(direction)  # Update the direction in the brain
     imageProcessing.setDirection(direction)  # Pass the direction to image processing
 
 def sideCounter():
+    """
+    Monitor and update the side counter based on the color sensor data.
+    """
     global STOP, direction, side, updatedSide, CLOCKWISE, ANTICLOCKWISE, lap, REVERSE, state, WIDE_CURVE, timeLastLine, STUCK
     while not STOP:
         try:
@@ -58,6 +64,9 @@ def sideCounter():
     colorSensor.stop = True  # Stop the color sensor when done
 
 def defineColor():
+    """
+    Define the direction based on the color sensor data and set the corresponding state.
+    """
     global direction, steeringAngleForAfterSteering, side, updatedSide, lap, imageProcessing, state, timeLastLine
     clockwiseCount, anticlockwiseCount = 0, 0
     while direction == 0:
@@ -96,6 +105,9 @@ def defineColor():
 
 
 def loop():
+    """
+    Main loop to manage the robot's operation, including sensor readings, state updates, and control actions.
+    """
     global lap, side, updatedSide, state, parkingTime
     global direction, STOP, imageProcessing, imageProcessing_process
     global colorThread, defineColorThread
