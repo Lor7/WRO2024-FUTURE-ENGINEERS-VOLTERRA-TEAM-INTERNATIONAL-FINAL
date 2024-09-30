@@ -116,6 +116,8 @@ def loop():
     colorThread = Thread(target=colorSensor.readDataContinuously)
     defineColorThread = Thread(target=defineColor)
     
+    farFromLateralWall, lastTimeFarFromLateralWall = True, 0
+    
     # Initialize image processing with shared values and lock for thread-safe operations
     lock = Lock()
     shared_values, shared_values_copy = [i for i in range(31)], []
@@ -136,7 +138,32 @@ def loop():
     motor.forward(motorValue)  # Start moving forward
     
     while True:
-        pass
+        try: 
+            motor.forward(motorValue)  # Continue moving forward
+            
+            lock.acquire()  # Acquire lock for shared values
+            shared_values_copy = deepcopy(shared_values)  # Copy shared values for processing
+            shared_values[30] = 0  # Reset a specific shared value
+            lock.release()  # Release lock
+
+            if shared_values_copy[30] == WALL_WAS_SEEN:
+                state.add(WALL)  # Add wall state
+                farFromLateralWall = makeDecision(shared_values_copy[0], shared_values_copy[1], shared_values_copy[2], shared_values_copy[3],
+                             shared_values_copy[4], shared_values_copy[5], shared_values_copy[6],
+                             (shared_values_copy[7], shared_values_copy[8], shared_values_copy[9], shared_values_copy[10]),
+                             (shared_values_copy[11], shared_values_copy[12], shared_values_copy[13], shared_values_copy[14]),
+                             (shared_values_copy[15], shared_values_copy[16], shared_values_copy[17], shared_values_copy[18]),
+                             (shared_values_copy[19], shared_values_copy[20], shared_values_copy[21], shared_values_copy[22]),
+                             shared_values_copy[23], shared_values_copy[24], shared_values_copy[25],
+                             (shared_values_copy[26], shared_values_copy[27], shared_values_copy[28], shared_values_copy[29])
+                             )
+                if farFromLateralWall:
+                    lastTimeFarFromLateralWall = time()  # Update last time far from lateral wall
+
+            
+            sleep(sleepTimeForMainCycle)  # Delay for main cycle
+        except Exception as exc:
+            print(f"Main cycle error: {exc}")  # Print any errors encountered
 
 if __name__ == '__main__':
     loop()  # Start the main loop
