@@ -366,7 +366,105 @@ class ImageProcessing():
         colors = {GREENBLOCKID : tuple((0, 220, 105)), REDBLOCKID : tuple((25, 78, 255)), MAGENTAID : tuple((255, 0, 255))}
         estimatedDistanceThreshold = 60
         while not(self.INTERRUPT):
-            pass
+            start = perf_counter()
+            while not(self.NEWFRAME):
+                sleep(0.0001)
+            #print(f"Waited for {(perf_counter() - start)*1000}ms")
+            self.NEWFRAME = False
+            #start = perf_counter()
+            leftWalls, rightWalls = [], []
+            
+            #frame = cv2.resize(self.image.copy(), (640, 480), interpolation = cv2.INTER_NEAREST)
+            frame = self.image.copy()
+            
+            image_resized = cv2.resize(frame, (width, height))
+            image_resized = cv2.cvtColor(image_resized, cv2.COLOR_BGR2RGB)
+            input_data = np.expand_dims(image_resized, axis = 0)
+            #input_data = (np.float32(input_data) - input_mean) / input_std
+            interpreter.set_tensor(input_details[0]['index'], input_data)
+            interpreter.invoke()
+            boxes = interpreter.get_tensor(output_details[boxes_idx]['index'])[0] 
+            classes = interpreter.get_tensor(output_details[classes_idx]['index'])[0]
+            scores = interpreter.get_tensor(output_details[scores_idx]['index'])[0]
+            blocks = []
+            for i in range(len(scores)):
+                if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
+                    ymin = int(max(1,(boxes[i][0] * imH)))
+                    xmin = int(max(1,(boxes[i][1] * imW)))
+                    ymax = int(min(imH,(boxes[i][2] * imH)))
+                    xmax = int(min(imW,(boxes[i][3] * imW)))
+                    w = (xmax - xmin)
+                    h = (ymax - ymin)
+                    object_name = labels[int(classes[i])]
+                    if  (h / w > 2.5 and scores[i] < 38) or (object_name == "red" and ( (180 < xmin < 440 and ymin > 250 and ymax > 310 and w < 95) or (
+                        xmin > 320 and ymin > 240 and ymax > 310 and w < 100) or (ymin > 220 and ymax < 300 and h/w < 0.75 and w < 30) or (w > 320)) or (
+                            xmin < 30 and xmax < 100 and w < 65 and ymin > 300 and ymax > 440) or (260 < xmin < 500 and h / w > 1.75 and h > 150 and ymin < 210 and ymax > 325) ) or (
+                            object_name == "green" and ( (ymax > 400 and ymin > 370 and w < 60 and xmin < 65) or (w > 320) or (ymin > 220 and ymax < 300 and h/w < 0.75 and w < 30) or (xmax < 230 and h/w < 1 and w < 50 and ymin > 200 and ymax < 300) )):
+                        print(f"{object_name} LINE FILTERED")
+                        continue
+                    if object_name == "red":
+                        _id = REDBLOCKID
+                    elif object_name == "green":
+                        _id = GREENBLOCKID
+                    elif object_name == "magenta":
+                        _id = MAGENTAID
+                    blocks.append([xmin, ymin, w, h, _id, int(scores[i] * 100)])
+            
+            ind, i = len(blocks) - 1, 0
+            while i < ind:
+                if calculateOverlap(blocks[0], blocks[1]):
+                    x = min(blocks[i][0], blocks[i + 1][0])
+                    y = min(blocks[i][1], blocks[i + 1][1])
+                    x2 = max(blocks[i][0] + blocks[i][2], blocks[i + 1][0] + blocks[i + 1][2])
+                    y2 = max(blocks[i][1] + blocks[i][3], blocks[i + 1][1] + blocks[i + 1][3])
+                    blocks[i][0], blocks[i][1], blocks[i][2], blocks[i][3] = x, y, x2 - x, y2 - y
+                    blocks.pop(i + 1)
+                    #print("Two BLOCKS got merged!")
+                    ind -= 1
+                else:
+                    i += 1
+            
+            #print(f"{Style.BRIGHT}{Fore.RED}Processing time: {(perf_counter() - start) * 1000}ms{Style.RESET_ALL}")
+            #blur = cv2.GaussianBlur(hsv.copy(), (5, 5), 0, cv2.BORDER_REFLECT_101) #(15, 15)
+            #mask1r = cv2.inRange(blur.copy(), lowerRed1, upperRed1)
+            #maskr = cv2.inRange(blur.copy(), lowerRed2, upperRed2)
+            #maskr = cv2.erode(maskr, kernelErode, iterations = 2)
+            #maskr = cv2.dilate(maskr, kernelDilate, iterations = 2)
+            #maskr = mask2r#cv2.bitwise_or(mask1r, mask2r)
+            #blocks = detectObstacle(maskr, REDBLOCKID)
+            #Green pillar
+            #maskg = cv2.inRange(blur.copy(), lowerGreen, upperGreen)
+            #maskg = cv2.erode(maskg, kernelErode, iterations = 1)
+            #blocks.extend(detectObstacle(maskg, GREENBLOCKID))
+            
+            lastM = magenta
+            lenLastM = len(lastM)
+            magenta = []
+            toPop = []
+            for i, block in enumerate(blocks):
+                if  block[4] == MAGENTAID or (
+                    (block[2] / block[3] > 1.6  and block[4] == REDBLOCKID) or (self.direction == ANTICLOCKWISE and lenLastM > 0 and block[0]+block[2] > 550) or (self.direction == CLOCKWISE and lenLastM > 0 and block[0]+block[2]<120)):
+                    # and not(block[2] > 350)
+                    toPop.append(i)
+                    cv2.rectangle(frame, (block[0], block[1]), (block[0] + block[2], block[1] + block[3]), (0, 0, 0), -1)
+                    cv2.putText(frame, f"Magenta: {block[5]}", (block[0], block[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, colors[block[4]], 2, cv2.LINE_AA)
+            for i in toPop[::-1]:
+                magenta.append(blocks.pop(i))
+            
+            hsv = cv2.cvtColor(frame.copy(), cv2.COLOR_BGR2HSV)
+            
+            
+            for block in blocks:
+                if block[4] == GREENBLOCKID:
+                    text = f"Green: {block[5]}"
+                elif block[4] == REDBLOCKID:
+                    text = f"Red: {block[5]}"
+                else:
+                    text = f"Magenta: {block[5]}"
+                cv2.rectangle(frame, (block[0], block[1]), (block[0] + block[2], block[1] + block[3]), colors[block[4]], 1)
+                cv2.putText(frame, text, (block[0], block[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, colors[block[4]], 1, cv2.LINE_AA)
+            blocks.sort(reverse = True, key = closerBlockFilter) 
+            magenta.sort(reverse = True, key = closerBlockFilter)
             
     def run(self):
         # Create and start threads for frame capturing, processing, and optionally displaying and saving frames
