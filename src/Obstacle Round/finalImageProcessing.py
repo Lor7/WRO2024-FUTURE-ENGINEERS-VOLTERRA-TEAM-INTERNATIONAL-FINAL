@@ -591,7 +591,84 @@ class ImageProcessing():
                     self.shared_values[31] =  2
                     self.lock.release()
                 else:
-                    pass
+                    if self.drawDebug:
+                        frame = cv2.rectangle(frame, (cccL[0], cccL[2]), (cccL[0] + cccL[1], cccL[2] + cccL[3]), (30, 210, 80), 3)
+                        frame = cv2.rectangle(frame, (cccR[0], cccR[2]), (cccR[0] + cccR[1], cccR[2] + cccR[3]), (30, 210, 80), 3)                
+                        frame = cv2.rectangle(frame, (cccL2[0], cccL2[2]), (cccL2[0] + cccL2[1], cccL2[2] + cccL2[3]), (30, 210, 80), 3)
+                        frame = cv2.rectangle(frame, (cccR2[0], cccR2[2]), (cccR2[0] + cccR2[1], cccR2[2] + cccR2[3]), (30, 210, 80), 3)
+                        frame = cv2.rectangle(frame, (cccL3[0], cccL3[2]), (cccL3[0] + cccL3[1], cccL3[2] + cccL3[3]), (30, 210, 80), 3)
+                        frame = cv2.rectangle(frame, (cccR3[0], cccR3[2]), (cccR3[0] + cccR3[1], cccR3[2] + cccR3[3]), (30, 210, 80), 3)
+                        frame = cv2.rectangle(frame, (mpcL[0], mpcL[2]), (mpcL[0] + mpcL[1], mpcL[2] + mpcL[3]), (120, 190, 25), 1)
+                        frame = cv2.rectangle(frame, (mpcR[0], mpcR[2]), (mpcR[0] + mpcR[1], mpcR[2] + mpcR[3]), (120, 190, 25), 1)
+                        frame = cv2.rectangle(frame, (wlcL[0], wlcL[2]), (wlcL[0] + wlcL[1], wlcL[2] + wlcL[3]), (150, 30, 190), 1)
+                        frame = cv2.rectangle(frame, (wlcR[0], wlcR[2]), (wlcR[0] + wlcR[1], wlcR[2] + wlcR[3]), (150, 30, 190), 1)
+                        frame = cv2.rectangle(frame, (wlcC[0], wlcC[2]), (wlcC[0] + wlcC[1], wlcC[2] + wlcC[3]), (150, 30, 190), 1)
+                        frame = cv2.rectangle(frame, (cccf[0], cccf[2]), (cccf[0] + cccf[1], cccf[2] + cccf[3]), (25, 130, 190), 1)
+                        frame = cv2.rectangle(frame, (cccf2[0], cccf2[2]), (cccf2[0] + cccf2[1], cccf2[2] + cccf2[3]), (100, 130, 190), 3)
+                        frame = cv2.rectangle(frame, (lwL[0], lwL[2]), (lwL[0] + lwL[1], lwL[2] + lwL[3]), (15, 100, 215), 3)
+                        frame = cv2.rectangle(frame, (lwR[0], lwR[2]), (lwR[0] + lwR[1], lwR[2] + lwR[3]), (15, 100, 215), 3)
+                    
+                    centralLine = detectWallLines(hsv, wlcC)
+                    
+                    # Getting wall areas
+                    coloredAreaLeftMid = int(wallInfo(hsv, cccL))
+                    coloredAreaRightMid = int(wallInfo(hsv, cccR))
+                    coloredAreaLeftIn = int(wallInfo(hsv, cccL2))
+                    coloredAreaRightIn = int(wallInfo(hsv, cccR2))
+                    coloredAreaLeftOut = int(wallInfo(hsv, cccL3))
+                    coloredAreaRightOut = int(wallInfo(hsv, cccR3))
+                    coloredAreaFront = int(wallInfo(hsv, cccf))
+                    coloredAreaFront2 = int(wallInfo(hsv, cccf2))
+                    coloredAreaLowerLeft = int(wallInfo(hsv, lwL))
+                    coloredAreaLowerRight = int(wallInfo(hsv, lwR))
+                    #print(f"Colored area:\nleftMid: {coloredAreaLeftMid}, rightMid: {coloredAreaRightMid},\nleftIn: {coloredAreaLeftIn}, rightIn: {coloredAreaRightIn},\nleftOut: {coloredAreaLeftOut}, rightOut: {coloredAreaRightOut},\nfront: {coloredAreaFront},front2: {coloredAreaFront2}")
+                    #print(f"lower left: {coloredAreaLowerLeft}, lower right: {coloredAreaLowerRight}")
+                    # Getting wall rects
+                    leftRect = detectWallRect(hsv, mpcL)
+                    rightRect = detectWallRect(hsv, mpcR)
+                    if len(leftRect) > 0:
+                        leftRect = (leftRect[0], leftRect[1], leftRect[2] + mpcL[2], leftRect[3])
+                        frame = cv2.rectangle(frame, (leftRect[0], leftRect[2]), (leftRect[0] + leftRect[1], leftRect[2] + leftRect[3]), (150, 120, 25), 3)
+                    if len(rightRect) > 0:
+                        rightRect = (rightRect[0] + mpcL[1], rightRect[1], rightRect[2] + mpcR[2], rightRect[3])
+                        frame = cv2.rectangle(frame, (rightRect[0], rightRect[2]), (rightRect[0] + rightRect[1], rightRect[2] + rightRect[3]), (150, 120, 25), 3)
+                    #print(f"Left rect: {leftRect}, right rect: {rightRect}")
+                    # Getting wall lines
+                    leftLine = detectWallLines(hsv, wlcL)
+                    rightLine = detectWallLines(hsv, wlcR)
+                    if len(leftLine) > 0:
+                        leftLine = (leftLine[0], leftLine[1] + wlcL[2], leftLine[2], leftLine[3] + wlcL[2])
+                        frame = cv2.line(frame, (leftLine[0], leftLine[1]), (leftLine[2], leftLine[3]), (180, 10, 180), 3)
+                    if len(rightLine) > 0:
+                        rightLine = (rightLine[0] + wlcR[0], rightLine[1] + wlcR[2], rightLine[2] + wlcR[0], rightLine[3] + wlcR[2])
+                        frame = cv2.line(frame, (rightLine[0], rightLine[1]), (rightLine[2], rightLine[3]), (180, 10, 180), 3)
+                    if len(centralLine) > 0:
+                        centralLine = (centralLine[0] + wlcC[0], centralLine[1] + wlcC[2], centralLine[2] + wlcC[0], centralLine[3] + wlcC[2])
+                        frame = cv2.line(frame, (centralLine[0], centralLine[1]), (centralLine[2], centralLine[3]), (180, 10, 180), 3)
+                    #print(f"Left line: {leftLine}, right line: {rightLine}")                
+                    if leftRect == []:
+                        leftRect = [0, 0, 0, 0]
+                    if rightRect == []:
+                        rightRect = [0, 0, 0, 0]
+                    #makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn, 
+                    #coloredAreaRightOut, coloredAreaRightMid, coloredAreaRightIn, coloredAreaFront,
+                    #leftRect, rightRect, leftLine, rightLine,
+                    #coloredAreaLowerLeft, coloredAreaLowerRight, coloredAreaFront2)
+                    self.lock.acquire()
+                    self.shared_values[0], self.shared_values[1], self.shared_values[2], self.shared_values[3], self.shared_values[4], self.shared_values[5] = coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn, coloredAreaRightOut, coloredAreaRightMid, coloredAreaRightIn
+                    self.shared_values[6] = coloredAreaFront
+                    self.shared_values[7], self.shared_values[8], self.shared_values[9], self.shared_values[10] = leftRect
+                    self.shared_values[11], self.shared_values[12], self.shared_values[13], self.shared_values[14] = rightRect
+                    self.shared_values[15], self.shared_values[16], self.shared_values[17], self.shared_values[18] = leftLine
+                    self.shared_values[19], self.shared_values[20], self.shared_values[21], self.shared_values[22] = rightLine
+                    self.shared_values[23], self.shared_values[24], self.shared_values[25] = coloredAreaLowerLeft, coloredAreaLowerRight, coloredAreaFront2
+                    self.shared_values[26], self.shared_values[27], self.shared_values[28], self.shared_values[29] = centralLine
+                    if len(magenta) > 0:
+                        self.shared_values[30] = magenta
+                    else:
+                        self.shared_values[30] = []
+                    self.shared_values[31] =  1
+                    self.lock.release()
                 #End of the logic
                 self.frame = frame
                 self.PROCESSED = True
