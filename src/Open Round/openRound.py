@@ -4,6 +4,7 @@ from copy import deepcopy
 from time import time, sleep
 from openVariables import *
 from wallRecognitionConstants import *
+from IMU import Imu
 from finalImageProcessing import ImageProcessing
 from brain import makeDecision, setDirection as brainSetDirection, setState as brainSetState
 from actuators import setSteeringAngle, reverse
@@ -19,6 +20,8 @@ timeLastLine = [0]  # List to store the last time a line was detected
 brainSetState(state, timeLastLine)  # Initialize the brain state with the current state
 parkingTime = 5.0  # Time allocated for parking
 
+# Initialize the IMU (Inertial Measurement Unit) sensor
+imu = Imu()
 
 def setDirection():
     """
@@ -112,11 +115,13 @@ def loop():
     global direction, STOP, imageProcessing, imageProcessing_process
     global colorThread, defineColorThread
     
-    # Initialize threads for color sensor
+    # Initialize threads for color sensor and IMU readings
     colorThread = Thread(target=colorSensor.readDataContinuously)
+    imuThread = Thread(target=imu.continuouslyReadData)
     defineColorThread = Thread(target=defineColor)
     
     farFromLateralWall, lastTimeFarFromLateralWall = True, 0
+    flagStuckParking = False
     
     # Initialize image processing with shared values and lock for thread-safe operations
     lock = Lock()
@@ -125,6 +130,7 @@ def loop():
     imageProcessing.run()  # Start the image processing
 
     colorThread.start()  # Start the color sensor thread
+    imuThread.start()  # Start the IMU thread
     sleep(5)  # Delay for sensor initialization
 
     print("Setup completed!")
@@ -160,6 +166,20 @@ def loop():
                 if farFromLateralWall:
                     lastTimeFarFromLateralWall = time()  # Update last time far from lateral wall
 
+                # Check if the IMU has not detected angular velocities for a while
+                if imu.noAngularVelocitiesCount > 10:
+                    if time() - chronograph > 4.25:
+                        state.add(STUCK)  # Add stuck state
+                        motor.stop()  # Stop the motor
+                        print("Prototype stuck!")
+                        sleep(0.5)
+                        motor.backward(motorValue)  # Reverse the motor
+                        sleep(0.25)
+                        for i in range(6):
+                            setSteeringAngle(2)  # Adjust steering angle
+                            sleep(0.25)
+                        motor.stop()  # Stop the motor
+                        sleep(0.5)
             
             sleep(sleepTimeForMainCycle)  # Delay for main cycle
         except Exception as exc:
