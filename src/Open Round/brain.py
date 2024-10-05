@@ -227,7 +227,37 @@ def makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn,
                 else:
                     print("Now go left, before you would've gone straight")
                     setSteeringAngle(12)
-    
+    else:
+        if rightSlope != 0 and (leftSlope < rightSlope * 1.1) and (leftFlagOut and not(rightFlagOut)):
+            # Go a bit right
+            print(Fore.RED + "Translate a bit right" + Style.RESET_ALL)
+            setSteeringAngle(-7.5)      
+        elif leftSlope != 0 and (rightSlope < leftSlope * 1.1) and (rightFlagOut and not(leftFlagOut)):
+            if not(direction == 0 and frontFlag2 and not(lowerRightFlag or leftFlagIn or leftFlagMid or frontFlag)):
+                # Go a bit left
+                print(Fore.RED + "Translate a bit left" + Style.RESET_ALL)
+                setSteeringAngle(8.5)#7.5
+            else:
+                print(Fore.CYAN + "Alter to right" + Style.RESET_ALL)
+                setSteeringAngle(-11)
+        elif rightSlope != 0 and leftSlope != 0 and rightSlope > leftSlope and rightFlagIn and rightFlagOut and lowerRightFlag and not(leftFlagOut and leftFlagMid):
+            print(Fore.MAGENTA + "Advance left" + Style.RESET_ALL)
+            setSteeringAngle(8.5) 
+        elif rightSlope != 0 and leftSlope != 0 and rightSlope < leftSlope and leftFlagIn and leftFlagOut and lowerLeftFlag and not(rightFlagOut and rightFlagMid):
+            print(Fore.MAGENTA + "Advance right" + Style.RESET_ALL)
+            setSteeringAngle(-7.5) 
+        else: 
+            if not((direction == 0 or (direction == CLOCKWISE and time() - timeLastLine[0] < 3.5)) and rightSlope < 0.25 and frontFlag2 and (leftSlope == 0 or leftSlope > 0.35) and not(lowerRightFlag or leftFlagIn or leftFlagMid or frontFlag)):
+                print(Style.BRIGHT + Fore.GREEN + "Everything fine! Going straight!" + Style.RESET_ALL)
+                if direction == 0:
+                    setSteeringAngle(2)#0
+                elif direction == CLOCKWISE:
+                    setSteeringAngle(1)
+                elif direction == ANTICLOCKWISE:
+                    setSteeringAngle(4)
+            else:
+                print(Fore.CYAN + "Adjusting right" + Style.RESET_ALL) 
+                setSteeringAngle(-11)
     
     
     # Return value says whether the prototype is far (= True) or close (= False) respect to the wall
