@@ -70,7 +70,7 @@ min_conf_threshold = 0.3
 
 
 class ImageProcessing():
-    def __init__(self, shared_values, lock, showFrameFlag=False, drawDebug=False):
+    def __init__(self, shared_values, lock, showFrameFlag=False, saveFrameFlag=False, drawDebug=False):
         # Initialize class variables
         self.lock = lock
         self.shared_values = shared_values if shared_values is not None else [i for i in range(0)]
@@ -82,6 +82,8 @@ class ImageProcessing():
         self.frame2 = None  # Temporary frame for processing
         self.NEWFRAME = False  # Flag to indicate if a new frame is available
         self.PROCESSED = False  # Flag to indicate if the frame has been processed
+        self.saveFrameFlag = saveFrameFlag  # Flag to save frames
+        self.TOBESAVED = False  # Flag to mark if frame should be saved
         self.processingTimeList = []  # List to track processing times
         self.direction = 0  # Direction for image processing
         self.drawDebug = drawDebug  # Flag to draw debug information
@@ -672,6 +674,7 @@ class ImageProcessing():
                 #End of the logic
                 self.frame = frame
                 self.PROCESSED = True
+                self.TOBESAVED = True
                 print(Style.RESET_ALL, sep = "", end = "")
                 processingTime = perf_counter() - start
                 self.processingTimeList.append(processingTime)
@@ -680,7 +683,31 @@ class ImageProcessing():
             #    print("Unbound local error finalImageProcessing")
             except KeyboardInterrupt:
                 pass
+    def saveFrame(self):
+        from datetime import datetime
+        imagesCounter = 0
+        
+        # Continuously save frames while not interrupted
+        while not(self.INTERRUPT):
+            if self.TOBESAVED:
+                # Create a unique filename based on the current datetime and a counter
+                uniqueTimeName = "__" + str(datetime.now()).replace(" ", ";").replace(".", ";").replace(":", "-") + "__" + str(imagesCounter)
+                
+                # Save the current frame to the 'images' directory with high quality
+                cv2.imwrite("images/" + uniqueTimeName + ".jpg", self.frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+                
+                # Save the raw image to the 'rawImages' directory with high quality
+                cv2.imwrite("rawImages/" + uniqueTimeName + ".jpg", self.image, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+                
+                # Increment the image counter
+                imagesCounter += 1
+                
+                # Reset the flag to indicate that the frame has been saved
+                self.TOBESAVED = False
             
+            # Sleep briefly to avoid high CPU usage
+            sleep(0.1)
+
     def run(self):
         # Create and start threads for frame capturing, processing, and optionally displaying and saving frames
         getFrameThread = Thread(target=self.getFrame)        
@@ -694,7 +721,11 @@ class ImageProcessing():
             showFrameThread = Thread(target=self.showFrame)
             showFrameThread.start()
         
-        
+        if self.saveFrameFlag:
+            # If the flag is set, start a thread to save frames
+            saveFrameThread = Thread(target=self.saveFrame)
+            saveFrameThread.start()
+
     def stop(self):
         try:
             # Set the interrupt flag to stop the frame processing loop
@@ -714,3 +745,30 @@ class ImageProcessing():
         except:
             # If there is an error closing windows, just pass
             pass
+
+if __name__ == '__main__':
+    lock = Lock()
+    shared_values = [i for i in range(40)]
+    
+    # Initialize the ImageProcessing class with shared values and a lock
+    imageProcessing = ImageProcessing(shared_values, lock, True, False)
+    
+    # Start the image processing threads
+    imageProcessing.run()
+    
+    sleep(1)  # Allow some time for initialization
+    
+    while True:
+        try:
+            # Main loop to keep the program running
+            # Uncomment the following lines if needed for debugging
+            # print(f"Shared values: {list(shared_values)}")
+            # print(imageProcessing.frame)
+            sleep(1)
+        except KeyboardInterrupt:
+            # Exit the loop if a keyboard interrupt (Ctrl+C) is detected
+            break
+    
+    # Stop the image processing
+    imageProcessing.stop()
+    exit()
