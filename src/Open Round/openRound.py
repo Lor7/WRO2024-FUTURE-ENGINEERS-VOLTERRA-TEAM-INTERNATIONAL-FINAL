@@ -8,6 +8,7 @@ from IMU import Imu
 from finalImageProcessing import ImageProcessing
 from brain import makeDecision, setDirection as brainSetDirection, setState as brainSetState
 from actuators import setSteeringAngle, reverse
+import sys
 
 # Pause time for the color sensor to stabilize between readings
 pauseTimeColorSensor = 7
@@ -106,6 +107,22 @@ def defineColor():
     side = updatedSide
     sideCounterThread.start()  # Start the side counter thread
 
+def handleLed_waitForButton():
+    """
+    Handle LED blinking and wait for button press to start the system.
+    """
+    from gpiozero import Button, LED
+    button = Button(26)  # Initialize button on GPIO pin 26
+    led = LED(12)  # Initialize LED on GPIO pin 12
+    del Button, LED  # Clean up imports to avoid conflicts
+    led.blink()  # Blink the LED
+    print("Waiting for the button!")
+    if button.is_pressed:
+        button.wait_for_release()  # Wait for button release
+    else:
+        button.wait_for_press()  # Wait for button press
+    sleep(2.5)  # Pause after button press
+    led.off()  # Turn off the LED
 
 def loop():
     """
@@ -122,11 +139,20 @@ def loop():
     
     farFromLateralWall, lastTimeFarFromLateralWall = True, 0
     flagStuckParking = False
+    showFrameFlag = True
+    
+    # Check for command-line arguments to determine if frame display should be shown
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--dontShowFrameFlag":
+            showFrameFlag = False
+            print("dontShowFrameFlag")
+    else:
+        print("No command arguments were specified")
     
     # Initialize image processing with shared values and lock for thread-safe operations
     lock = Lock()
     shared_values, shared_values_copy = [i for i in range(31)], []
-    imageProcessing = ImageProcessing(shared_values, lock, True, False)
+    imageProcessing = ImageProcessing(shared_values, lock, showFrameFlag, False)
     imageProcessing.run()  # Start the image processing
 
     colorThread.start()  # Start the color sensor thread
@@ -136,12 +162,16 @@ def loop():
     print("Setup completed!")
     setSteeringAngle(0)  # Set initial steering angle
     sleep(0.5)  # Delay before starting
+
+    handleLed_waitForButton()  # Handle LED blinking and wait for button press
     defineColorThread.start()  # Start the color definition thread
     motorValue = 0.23  # Set initial motor value
 
     chronograph = time()  # Start a timer
     print("Loop started!")
     motor.forward(motorValue)  # Start moving forward
+
+    startParkingTime = -1  # Initialize parking time tracker
     
     while True:
         try: 
@@ -180,6 +210,33 @@ def loop():
                             sleep(0.25)
                         motor.stop()  # Stop the motor
                         sleep(0.5)
+                    if STUCK in state and startParkingTime != -1 and flagStuckParking:
+                        startParkingTime += 5  # Update parking time if stuck
+
+            # Handle line detection and movement (commented out for now)
+            if False and LINE in state and direction == CLOCKWISE:
+                if time() - lastTimeFarFromLateralWall > 0.6:
+                    print("LINE MOVEMENT")
+                    setSteeringAngle(predefinedSteeringValueBend * direction)
+                    sleep(0.55)
+                    setSteeringAngle(steeringAngleForAfterSteering)
+                state.discard(LINE)
+
+            # Handle parking logic
+            if lap == 3:        
+                if startParkingTime == -1:
+                    print("I should start parking!")
+                    startParkingTime = time()  # Start parking timer
+                    if direction == CLOCKWISE:
+                        parkingTime += 0.5  # Adjust parking time based on direction
+                elif time() - startParkingTime > parkingTime:
+                    print("Finished parking!")
+                    motor.stop()  # Stop the motor
+                    setSteeringAngle(2)  # Adjust steering angle
+                    imageProcessing.stop()  # Stop image processing
+                    colorSensor.stop = True  # Stop color sensor
+                    motor.stop()  # Stop the motor
+                    break  # Exit the loop
             
             sleep(sleepTimeForMainCycle)  # Delay for main cycle
         except Exception as exc:
@@ -187,3 +244,7 @@ def loop():
 
 if __name__ == '__main__':
     loop()  # Start the main loop
+    for i in range(25):
+        motor.stop()  # Stop the motor
+        sleep(0.1)  # Pause briefly
+    exit()  # Exit the program

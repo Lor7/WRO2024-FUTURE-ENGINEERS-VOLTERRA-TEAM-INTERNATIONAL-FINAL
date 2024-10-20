@@ -294,6 +294,12 @@ def makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn,
                     setSteeringAngle(4)
             else:
                 print(Fore.CYAN + "Rearrange right" + Style.RESET_ALL)
+    elif lowerRightFlag and not(rightFlagIn) and not(leftFlagIn) and frontFlag2:
+        setSteeringAngle(10)#9
+        print(f"{Fore.RED}Moving left beacuse too close to the corner{Style.RESET_ALL}")
+    elif lowerLeftFlag and not(rightFlagIn) and not(leftFlagIn)  and frontFlag2:
+        setSteeringAngle(-9)
+        print(f"{Fore.RED}Moving right beacuse too close to the corner{Style.RESET_ALL}")
     else:
         if rightSlope != 0 and (leftSlope < rightSlope * 1.1) and (leftFlagOut and not(rightFlagOut)):
             # Go a bit right
