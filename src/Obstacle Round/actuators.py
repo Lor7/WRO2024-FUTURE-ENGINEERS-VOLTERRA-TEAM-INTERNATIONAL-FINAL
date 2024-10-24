@@ -71,3 +71,59 @@ def setSteeringAngle(angle, importance=0):
     # Special condition for anticlockwise direction
     if direction == ANTICLOCKWISE and (angle < -12 or angle > 12) and time() - timeLastLine < 3.5:
         motor.forward(0.17)
+
+def simpleReverse(steeringAngle):
+    """
+    Perform a simple reverse maneuver with the specified steering angle.
+    
+    :param steeringAngle: The steering angle to set during the reverse maneuver.
+    """
+    state.add(SIMPLE_REVERSE)  # Add simple reverse state
+    motor.stop()  # Stop the motor
+    sleep(0.3)  # Pause
+    motor.backward(motorValue)  # Move backward
+    sleep(0.3)  # Pause
+    motor.stop()  # Stop the motor
+    setSteeringAngle(steeringAngle)  # Set steering angle
+    motor.backward(motorValue)  # Move backward again
+    sleep(0.8)  # Pause
+    motor.stop()  # Stop the motor
+    setSteeringAngle(2)  # Reset steering angle
+    state.discard(SIMPLE_REVERSE)  # Remove simple reverse state
+
+def reverse(steeringAngle, sleepTime1=0.8, sleepTime2=0.4):
+    """
+    Perform a complex reverse maneuver with the specified steering angle.
+    
+    :param steeringAngle: The steering angle to set during the reverse maneuver.
+    :param sleepTime1: Time to sleep during the initial reverse (default is 0.8 seconds).
+    :param sleepTime2: Time to sleep during the distancing and second reverse (default is 0.4 seconds).
+    """
+    # Adjust steering angle for reverse
+    steeringAngle = steeringAngle - 4 if steeringAngle < 0 else steeringAngle + 4
+    
+    # INITIAL REVERSE
+    setSteeringAngle(steeringAngle)  # Set steering angle for initial reverse
+    motor.backward(0.18)  # Move backward
+    sleep(sleepTime1)  # Pause
+    
+    motor.stop()  # Stop the motor
+    
+    # DISTANCING
+    setSteeringAngle(2)  # Set neutral steering angle
+    motor.backward(motorValue)  # Move backward to distance
+    sleep(sleepTime2 / 1.2)  # Pause
+    
+    motor.stop()  # Stop the motor
+    
+    # SECOND REVERSE
+    setSteeringAngle(-steeringAngle / 2)  # Adjust steering angle for second reverse
+    motor.forward(0.18)  # Move forward
+    sleep(sleepTime2 / 1.2)  # Pause
+    
+    motor.stop()  # Stop the motor
+    
+    # FRONT
+    setSteeringAngle(steeringAngle)  # Set steering angle for forward movement
+    motor.forward(0.18)  # Move forward
+    sleep(sleepTime2 / 1.5)  # Pause

@@ -11,7 +11,7 @@ from obstacleRecognitionConstants import *  # Import obstacle recognition consta
 from finalImageProcessing import ImageProcessing  # Import image processing class
 from brain import makeDecision, setDirection as brainSetDirection, setState as brainSetState  # Import brain functions
 from obstacleAlgorithm import avoidObstacle, setDirection as obstacleSetDirection, setState as obstacleSetState, setRememberObstacle, turnObstacleList  # Import obstacle avoidance functions
-from actuators import setSteeringAngle, setMinSteeringAngle, setDirection as actuatorsSetDirection, setState as actuatorsSetState, U_turn  # Import actuator functions
+from actuators import setSteeringAngle, reverse, setMinSteeringAngle, setDirection as actuatorsSetDirection, setState as actuatorsSetState, U_turn  # Import actuator functions
 import sys
 
 # Optional priority setting for the process (commented out)
@@ -150,7 +150,77 @@ def loop():
     """
     Main loop function that sets up threads, initializes parameters, and starts the robot's operations.
     """
-    pass
+    # Global variables used in the function
+    global lap, side, updatedSide, state, timeLastLine, STUCK, obstacleMemoryStuck
+    global direction, STOP, imageProcessing, imageProcessing_process
+    global colorThread, defineColorThread
+    # Initialize threads for color sensor data reading and defining color
+    colorThread = Thread(target=colorSensor.readDataContinuously)
+    defineColorThread = Thread(target=defineColor)
+    
+    # Variables for managing parking and obstacle handling
+    farFromLateralWall, lastTimeObstacleWasSeen, flagBufferTimeToOvercome = True, (0, 0, 0), True
+    estimatedDistance, = -1
+
+    
+    # Lock and shared values for inter-thread communication
+    lock = Lock()
+    shared_values, shared_values_copy = [i for i in range(32)], []
+    imageProcessing = ImageProcessing(shared_values, lock, True, False, False)
+    imageProcessing.run()
+    
+    # Start the color sensor thread
+    colorThread.start()
+    sleep(5)  # Give some time for threads to start
+    
+    # Setup complete
+    print("Setup completed!")
+    setSteeringAngle(2)  # Set an initial steering angle
+    sleep(0.5)
+    
+    # Record starting time
+    startingTime = time()
+    
+    # Initial motor value for movement
+    motorValue = 0.235
+    
+    # Start the color defining thread
+    defineColorThread.start()
+    
+    # Start the loop
+    print("Loop started!")
+    motor.forward(motorValue)  # Start moving forward
+    
+    # Initialize timing variables for parking and color detection
+    chronograph = time()
+    while True:
+        try:
+            # Move the motor forward at a set value
+            motor.forward(motorValue)
+            
+            # Acquire the lock to access shared values
+            lock.acquire()
+            if shared_values[31] != 0:
+                shared_values_copy = deepcopy(shared_values)  # Make a copy of the shared values
+                shared_values[31] = 0  # Reset the status in shared values
+            lock.release()
+
+            # Main cycle sleep
+            sleep(sleepTimeForMainCycle)
+
+        # Exception handling
+        except KeyboardInterrupt:
+            # Handle keyboard interrupt gracefully
+            imageProcessing.stop()
+            print("Keyboard interrupt!")
+            motor.stop()
+            setSteeringAngle(2)
+            motor.stop()
+            colorSensor.stop = True
+            break
+        except Exception as e:
+            # Handle other exceptions
+            print(f"Main cycle error: {e}, {traceback.format_exc()}")
 
 
 if __name__ == '__main__':
