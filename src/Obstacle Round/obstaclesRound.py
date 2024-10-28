@@ -205,6 +205,44 @@ def loop():
                 shared_values[31] = 0  # Reset the status in shared values
             lock.release()
 
+            
+            # Handle obstacle detection
+            if shared_values_copy[31] == PILLAR_WAS_SEEN:
+                lastTimeObstacleWasSeen = (time(), shared_values_copy[4],
+                                            shared_values_copy[0] if shared_values_copy[4] == GREENBLOCKID else shared_values_copy[0] + shared_values_copy[2],
+                                            shared_values_copy[0], shared_values_copy[2], shared_values_copy[22] + shared_values_copy[24],
+                                            shared_values_copy[1] + shared_values_copy[3], shared_values_copy[3])
+                if shared_values_copy[1] + shared_values_copy[3] > 240:
+                    obstacleMemoryStuck = (time(), shared_values_copy[4])
+                
+                state.add(OBSTACLE)
+                state.discard(WALL)
+                
+                farFromLateralWall = avoidObstacle((shared_values_copy[0], shared_values_copy[1], shared_values_copy[2], shared_values_copy[3], shared_values_copy[4]),
+                                (shared_values_copy[5], shared_values_copy[6], shared_values_copy[7], shared_values_copy[8]),
+                                shared_values_copy[9], (shared_values_copy[10], shared_values_copy[11], shared_values_copy[12], shared_values_copy[13]),
+                                (shared_values_copy[14], shared_values_copy[15], shared_values_copy[16], shared_values_copy[17], shared_values_copy[18]), 
+                                shared_values_copy[19], shared_values_copy[20], shared_values_copy[21],
+                                (shared_values_copy[22], shared_values_copy[23], shared_values_copy[24], shared_values_copy[25]))
+                shared_values_copy[31] = 0
+
+            # Handle wall detection
+            elif shared_values_copy[31] == WALL_WAS_SEEN:
+                state.add(WALL)
+                state.discard(OBSTACLE)
+                
+                farFromLateralWall = makeDecision(shared_values_copy[0], shared_values_copy[1], shared_values_copy[2], shared_values_copy[3],
+                            shared_values_copy[4], shared_values_copy[5], shared_values_copy[6],
+                            (shared_values_copy[7], shared_values_copy[8], shared_values_copy[9], shared_values_copy[10]),
+                            (shared_values_copy[11], shared_values_copy[12], shared_values_copy[13], shared_values_copy[14]),
+                            (shared_values_copy[15], shared_values_copy[16], shared_values_copy[17], shared_values_copy[18]),
+                            (shared_values_copy[19], shared_values_copy[20], shared_values_copy[21], shared_values_copy[22]),
+                            shared_values_copy[23], shared_values_copy[24], shared_values_copy[25],
+                            (shared_values_copy[26], shared_values_copy[27], shared_values_copy[28], shared_values_copy[29]),
+                            (lastTimeObstacleWasSeen[0:2])
+                            )
+                shared_values_copy[31] = 0
+
             # Main cycle sleep
             sleep(sleepTimeForMainCycle)
 
@@ -224,4 +262,12 @@ def loop():
 
 
 if __name__ == '__main__':
-    loop()
+    while True:
+        try:
+            loop()
+            for i in range(0, 25):
+                motor.stop()
+                sleep(0.05)
+            exit()
+        except Exception as e:
+            print("Initial try-catch", e)
