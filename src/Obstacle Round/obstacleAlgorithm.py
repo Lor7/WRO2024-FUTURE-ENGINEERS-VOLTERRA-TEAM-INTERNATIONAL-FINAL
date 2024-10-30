@@ -9,8 +9,43 @@ direction = 0
 HALF_FRAME_WIDTH = FRAME_WIDTH // 2
 HALF_FRAME_HEIGHT = FRAME_HEIGHT // 2
 state = None
+rememberObstacle = False
 timeLastLine = None
+obstaclesFirstSide = None
+carOnTheFirstSide = [False]
+redCount, greenCount = 0, 0
 #print = lambda *x, **y: None
+firstTimeObstacleSeen = 0
+
+def handleRedCount():
+    if roundAbout[0] != REDBLOCKID:
+        print(f"ROUNDABOUT RED")#, redCount: {redCount} - greenCount: {greenCount}")
+    roundAbout[0] = REDBLOCKID
+    roundAbout[1] = time()
+    if carOnTheFirstSide[0]:
+        global obstaclesFirstSide, firstTimeObstacleSeen
+        if obstaclesFirstSide[0] == 0:
+            obstaclesFirstSide[0] = REDBLOCKID
+            firstTimeObstacleSeen = time()
+        elif obstaclesFirstSide[0] == GREENBLOCKID or (time() - firstTimeObstacleSeen > 4.5):
+            if obstaclesFirstSide[1] == 0:
+                obstaclesFirstSide[1] = REDBLOCKID
+        print(f"Obstacle first side: {obstaclesFirstSide}")
+        
+def handleGreenCount():
+    if roundAbout[0] != GREENBLOCKID:
+        print(f"ROUNDABOUT GREEN")#, redCount: {redCount} - greenCount: {greenCount}")
+    roundAbout[0] = GREENBLOCKID
+    roundAbout[1] = -1
+    if carOnTheFirstSide[0]:
+        global obstaclesFirstSide, firstTimeObstacleSeen
+        if obstaclesFirstSide[0] == 0:
+            obstaclesFirstSide[0] = GREENBLOCKID
+            firstTimeObstacleSeen = time()
+        elif obstaclesFirstSide[0] == REDBLOCKID or (time() - firstTimeObstacleSeen > 4.5):
+            if obstaclesFirstSide[1] == 0:
+                obstaclesFirstSide[1] = GREENBLOCKID
+        print(f"Obstacle first side: {obstaclesFirstSide}")
 
 def setState(_state, _timeLastLine):
     global state, timeLastLine
@@ -19,6 +54,9 @@ def setState(_state, _timeLastLine):
 def setDirection(_direction):
     global direction
     direction = _direction
+def setRememberObstacle(_rememberObstacle):
+    global rememberObstacle
+    rememberObstacle = _rememberObstacle
 
 def avoidObstacle(block, rightWall, virtualPoint, line, block2, coloredAreaMid, coloredAreaLower, coloredAreaLower2,leftWall): 
     print = lambda *x, **y: None
@@ -337,6 +375,17 @@ def avoidObstacle(block, rightWall, virtualPoint, line, block2, coloredAreaMid, 
     
     
     print()
-
+    
+    if rememberObstacle:
+        if direction == CLOCKWISE:
+            if REDBLOCKID == block[4]:     
+                handleRedCount()
+            elif GREENBLOCKID == block[4]:
+                handleGreenCount()
+        elif direction == ANTICLOCKWISE:
+            if REDBLOCKID == block[4]:
+                handleRedCount()
+            elif GREENBLOCKID == block[4]:
+                handleGreenCount()
     
     return not(closeToWall)
