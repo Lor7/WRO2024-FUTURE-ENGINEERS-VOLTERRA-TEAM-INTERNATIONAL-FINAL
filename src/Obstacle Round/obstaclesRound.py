@@ -10,7 +10,7 @@ from openVariables import *  # Import open variables
 from obstacleRecognitionConstants import *  # Import obstacle recognition constants
 from finalImageProcessing import ImageProcessing  # Import image processing class
 from brain import makeDecision, setDirection as brainSetDirection, setState as brainSetState  # Import brain functions
-from obstacleAlgorithm import avoidObstacle, setDirection as obstacleSetDirection, setState as obstacleSetState, setRememberObstacle, turnObstacleList  # Import obstacle avoidance functions
+from obstacleAlgorithm import avoidObstacle, setDirection as obstacleSetDirection, setState as obstacleSetState, setRememberObstacle, turnObstacleList, set_firstSideList_onFirstSide  # Import obstacle avoidance functions
 from actuators import setSteeringAngle, reverse, setMinSteeringAngle, setDirection as actuatorsSetDirection, setState as actuatorsSetState, U_turn  # Import actuator functions
 import sys
 
@@ -39,6 +39,14 @@ brainSetState(state, timeLastLine)  # Set the state in the brain module
 obstacleSetState(state, timeLastLine)  # Set the state in the obstacle module
 actuatorsSetState(state, timeLastLine)  # Set the state in the actuators module
 
+# Initialize roundabout-related variables
+roundAbout = [0, 0, -5]  # Initial values for roundabout states
+turnObstacleList(roundAbout)  # Update the obstacle list with roundabout values
+obstacleMemoryStuck = [-1, -1, -1, -1]  # Initialize obstacle memory
+obstaclesFirstSide = [0, 0]  # Initialize first side obstacles
+carOnTheFirstSide = [False]  # Initialize car position on the first side
+set_firstSideList_onFirstSide(obstaclesFirstSide, carOnTheFirstSide)  # Set initial state for first side list
+
 def setDirection():
     """
     Update the direction of the vehicle across various modules.
@@ -55,6 +63,7 @@ def sideCounter():
     Track and update the side of the vehicle based on sensor data.
     """
     global STOP, direction, side, updatedSide, CLOCKWISE, SIMPLE_REVERSE, ANTICLOCKWISE, lap, REVERSE, state, WIDE_CURVE, STUCK, pauseTimeColorSensor, timeLastLine
+    global directionInverted, carOnTheFirstSide, obstaclesFirstSide, imageProcessing
     
     
     while not STOP:
@@ -86,6 +95,17 @@ def sideCounter():
                         imageProcessing.lap = lap
                     else:
                         updatedSide += 1
+                    
+                    # Handle obstacle recording for the first lap
+                    if lap == 1 and updatedSide == 0:
+                        setRememberObstacle(True)
+                        print("Set remember-obstacle TRUE")
+                        print("START recording the list of obstacles of the first side")
+                        carOnTheFirstSide[0] = True
+                    if lap == 1 and updatedSide == 1:
+                        print("STOP recording the list of obstacles of the first side")
+                        carOnTheFirstSide[0] = False
+                        print(f"Obstacles first side: {obstaclesFirstSide}")
                     
                     # Update side and time for the last line
                     print(f"Lap: {lap}, Updated side: {updatedSide}\n")

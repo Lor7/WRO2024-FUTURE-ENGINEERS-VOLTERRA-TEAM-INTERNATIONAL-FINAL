@@ -10,6 +10,7 @@ HALF_FRAME_WIDTH = FRAME_WIDTH // 2
 HALF_FRAME_HEIGHT = FRAME_HEIGHT // 2
 state = None
 rememberObstacle = False
+roundAbout = None
 timeLastLine = None
 obstaclesFirstSide = None
 carOnTheFirstSide = [False]
@@ -47,6 +48,14 @@ def handleGreenCount():
                 obstaclesFirstSide[1] = GREENBLOCKID
         print(f"Obstacle first side: {obstaclesFirstSide}")
 
+def set_firstSideList_onFirstSide(_obstaclesFirstSide, _carOnTheFirstSide):
+    global obstaclesFirstSide, carOnTheFirstSide
+    obstaclesFirstSide = _obstaclesFirstSide
+    carOnTheFirstSide = _carOnTheFirstSide
+
+def turnObstacleList(_roundAbout):
+    global roundAbout
+    roundAbout = _roundAbout
 def setState(_state, _timeLastLine):
     global state, timeLastLine
     state = _state
@@ -367,6 +376,21 @@ def avoidObstacle(block, rightWall, virtualPoint, line, block2, coloredAreaMid, 
             elif block[0]+block[2] < 120 and virtualPoint < 320 and rightWall[2] == 0:
                  steeringAngle = 0
                  print(f"Case #9, 4: {steeringAngle}")
+        
+    
+    
+    
+    # Check if the obstacle is too close, in this case do reverse
+    if block[4] == REDBLOCKID and block[0]+block[2] > 260 and block[1]+block[3] > 345 and block[2] > 150:
+        print("Simple reverse a")
+        if time() - roundAbout[2] < 4:
+            simpleReverse(-12)
+        simpleReverse(12)
+        
+    elif block[4] == GREENBLOCKID and block[0] < 380 and block[1]+block[3] > 345 and block[2] > 150:
+        print("Simple reverse b")
+        simpleReverse(-12)
+    
     
     
     if steeringAngleCopy == steeringAngle:
@@ -378,14 +402,18 @@ def avoidObstacle(block, rightWall, virtualPoint, line, block2, coloredAreaMid, 
     
     if rememberObstacle:
         if direction == CLOCKWISE:
-            if REDBLOCKID == block[4]:     
+            if REDBLOCKID == block[4] and ( (estimatedDistance < 40 and block[0] < 320) or (block[1] + block[3] > 300 and block[0] + block[2] < 200) ) and not(closeToWall):
                 handleRedCount()
-            elif GREENBLOCKID == block[4]:
+            elif GREENBLOCKID == block[4] and time() - roundAbout[1] > 2.5 and ( (estimatedDistance < 40 and block[0] > 380) or (block[1] + block[3] > 320 and block[0] > 440) ):
                 handleGreenCount()
         elif direction == ANTICLOCKWISE:
-            if REDBLOCKID == block[4]:
+            if REDBLOCKID == block[4] and ( (estimatedDistance < 40 and block[0] + block[2] > 240) or (block[1] + block[3] > 300 and block[0] + block[2] < 200)):
                 handleRedCount()
-            elif GREENBLOCKID == block[4]:
+            elif GREENBLOCKID == block[4] and time() - roundAbout[1] > 2.5 and ( (estimatedDistance < 40 and block[0] > 320) or (block[1] + block[3] > 320 and block[0] > 400) ) and not(closeToWall):
                 handleGreenCount()
+
+    if (REDBLOCKID == block[4] and direction == CLOCKWISE) or (GREENBLOCKID == block[4] and direction == ANTICLOCKWISE):
+        timeLastLine[0] = 0
     
+    # return True significa che si è lontani dal muro
     return not(closeToWall)
