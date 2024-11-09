@@ -1,0 +1,1 @@
+This folder contains electrical and mechanical schematic diagrams in JPG format
