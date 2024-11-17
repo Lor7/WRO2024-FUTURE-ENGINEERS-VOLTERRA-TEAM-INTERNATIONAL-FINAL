@@ -57,6 +57,7 @@ set_firstSideList_onFirstSide(obstaclesFirstSide, carOnTheFirstSide)  # Set init
 # Initialize additional flags and variables
 roundAboutBufferTimeExpired = False
 directionInverted = False
+stopChecking, stuckWhilePerformingUTurn = False, False
 
 def setDirection():
     """
@@ -162,6 +163,26 @@ def bufferRoundAboutTime():
     setRememberObstacle(False)  # Reset obstacle memory
     roundAboutBufferTimeExpired = True  # Indicate that buffer time has expired
     print("Set remember-obstacle FALSE")
+
+def checkIfStuckAgainstTheWall(stopTime):
+    """
+    Check if the vehicle is stuck against a wall based on IMU data.
+    """
+    return None
+    global stopChecking, stuckWhilePerformingUTurn, imu
+    print("checkIfStuckAgainstTheWall coroutine has started!")
+    startCoroutine = time()  # Record start time
+    sleep(0.7)  # Initial sleep before starting checks
+    imu.noAngularVelocitiesCount = 0  # Reset angular velocity count
+    
+    while not stopChecking and time() - startCoroutine < (stopTime + 0.6):
+        # Check if the vehicle is stuck based on IMU data
+        if imu.noAngularVelocitiesCount > 5:
+            print("Prototype stuck while doing U turn")
+            state.add(STUCK)
+            stuckWhilePerformingUTurn = True
+            break
+        sleep(0.02)  # Short sleep between checks
 
 def sideCounter():
     """
@@ -355,6 +376,7 @@ def loop():
     global colorThread, defineColorThread
     global extraPauseTimeColorSensorRoundabout, roundAboutBufferTimeExpired, directionInverted, flagSwitchDirection, screenShot
     global flagStartedWaitedSecondsForRoundAbout, flagMovementTowardLeft, flagWaitedSecondsForRoundAbout, stopChecking
+    global stuckWhilePerformingUTurn
 
     # Initialize threads for color sensor data reading and defining color
     colorThread = Thread(target=colorSensor.readDataContinuously)
@@ -365,10 +387,19 @@ def loop():
     estimatedDistance, thresholdDistance, performTimedMovement, roundAboutCalculationNotDone = -1, 0, True, True
     obstaclePreviousData, wallBeingViewedTime = [], time()
     
+    # Flag for showing frames (if applicable)
+    showFrameFlag = True
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--dontShowFrameFlag":
+            showFrameFlag = False
+            print("dontShowFrameFlag")
+    else:
+        print("No command arguments were specified")
+        
     # Lock and shared values for inter-thread communication
     lock = Lock()
     shared_values, shared_values_copy = [i for i in range(32)], []
-    imageProcessing = ImageProcessing(shared_values, lock, True, False, False)
+    imageProcessing = ImageProcessing(shared_values, lock, showFrameFlag, False, False)
     imageProcessing.run()
     
     # Start the color sensor thread
@@ -534,6 +565,15 @@ def loop():
 
                 # Uncomment the following line to discard the STUCK state if needed
                 # state.discard(STUCK)  # Remove the STUCK state from the set of active states
+
+            # Check if the LINE state is active
+            if LINE in state:
+                # If far from the lateral wall and enough time has passed since the last obstacle
+                if farFromLateralWall and (time() - lastTimeObstacleWasSeen[0] > 0.3):
+                    setSteeringAngle(predefinedSteeringValueBend * direction)  # Adjust steering angle based on direction
+                    sleep(0.45)  # Wait for 0.45 seconds
+                    setSteeringAngle(steeringAngleForAfterSteering)  # Set the steering angle for after steering
+                state.discard(LINE)  # Remove the LINE state from the set of active states
 
             # Check specific conditions for lap and updatedSide
             if lap == 2 and updatedSide == 0 and (flagSwitchDirection or screenShot):
@@ -820,7 +860,28 @@ def loop():
                     if (direction == ANTICLOCKWISE and not flagMovementTowardLeft) or (direction == CLOCKWISE and flagMovementTowardLeft):
                         print("brainSetReverseTime, roundabout close to the center")
                         brainSetReverseTime([time()])
-                        
+                    
+                    if stuckWhilePerformingUTurn:
+                        motor.stop()
+                        sleep(0.2)
+                        motor.backward(0.4)
+                        motor.stop()
+                        sleep(0.2)
+                        setSteeringAngle(0)
+                        sleep(0.2)
+                        motor.backward(0.4)
+                        motor.stop()
+                        sleep(0.2)
+                        if flagMovementTowardLeft:
+                            setSteeringAngle(-15)
+                        else:
+                            setSteeringAngle(15)
+                        motor.backward(0.6)
+                        motor.stop()
+                        setSteeringAngle(0)
+                        motor.stop()
+                        setSteeringAngle(2, importance=3)
+
                     # Final adjustments and reset
                     sleep(0.4)
                     state.discard(WIDE_CURVE)
