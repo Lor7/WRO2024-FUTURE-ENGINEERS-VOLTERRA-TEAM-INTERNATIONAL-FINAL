@@ -15,6 +15,7 @@ direction = 0
 softCorrection = 8.5
 state = None
 timeLastLine = [0]
+reverseTime = [0]
 timeLastLineConstant = 3.5
 
 # Disable print statements for debugging
@@ -31,6 +32,10 @@ def setDirection(_direction):
     global direction
     direction = _direction
 
+# Function to set the reverse time
+def setReverseTime(_reverseTime):
+    global reverseTime
+    reverseTime = _reverseTime
 
 # Function to make decisions based on various inputs
 def makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn, 
@@ -129,6 +134,20 @@ def makeDecision(coloredAreaLeftOut, coloredAreaLeftMid, coloredAreaLeftIn,
     elif (frontFlag or frontFlag2) and rightFlagMid and rightFlagOut and lowerRightFlag and not(leftFlagMid or leftFlagOut or lowerLeftFlag):
         print("Too close to the right wall")
         setSteeringAngle(13, importance = 1)
+    elif (frontFlag or frontFlag2) and leftFlagMid and leftFlagOut and rightFlagMid and rightFlagMid and direction != ANTICLOCKWISE:
+        if time() - reverseTime[0] > 1.5:
+            print(f"{Style.DIM}{Fore.RED}Steering CLOCKWISE because outer angle is close{Style.RESET_ALL}")
+            setSteeringAngle(-18, importance = 0)
+        else:
+            print(f"{Style.DIM}{Fore.RED}Steering ANTICLOCKWISE because center is too close after U_TURN{Style.RESET_ALL}")
+            setSteeringAngle(18, importance = 0)
+    elif (frontFlag or frontFlag2) and rightFlagMid and rightFlagOut and leftFlagMid and leftFlagMid and direction != CLOCKWISE:
+        if time() - reverseTime[0] > 1.5:
+            print(f"{Style.DIM}{Fore.RED}Steering ANTICLOCKWISE because outer angle is close{Style.RESET_ALL}")
+            setSteeringAngle(18, importance = 0)
+        else:
+            print(f"{Style.DIM}{Fore.RED}Steering CLOCKWISE because center is too close after U_TURN{Style.RESET_ALL}")
+            setSteeringAngle(-18, importance = 0)
     elif frontFlag and ( not(rightFlagIn) and not(rightFlagOut) and rightSlope == 0 and leftFlagIn):
         if time() - timeLastLine[0] < timeLastLineConstant and direction == ANTICLOCKWISE:
             print(f"{Style.DIM}{Fore.RED}Steering ANTICLOCKWISE, advice from the line {Style.RESET_ALL}")

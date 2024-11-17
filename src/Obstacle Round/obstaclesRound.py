@@ -293,6 +293,28 @@ def defineColor():
     side = updatedSide
     sideCounterThread.start()  # Start side counter thread
 
+def handleLed_waitForButton():
+    """
+    Handle LED blinking and button press events.
+    """
+    while True:
+        try:
+            from gpiozero import Button, LED
+            button = Button(26)  # Initialize button
+            led = LED(12)  # Initialize LED
+            del Button, LED  # Clean up imports
+            led.blink()  # Start blinking LED
+            print("Waiting for the button!")
+            if button.is_pressed:
+                button.wait_for_release()  # Wait for button release if already pressed
+            else:
+                button.wait_for_press()  # Wait for button press
+            sleep(2.5)  # Sleep for 2.5 seconds
+            led.off()  # Turn off LED
+            break
+        except Exception as e:
+            print(f"Error with button, {e}")  # Handle any button-related errors
+
 def handleObstacleInTheMiddleOfTheLane(shared_values):
     """
     Determine whether to ignore an obstacle in the middle of the lane based on sensor data.
@@ -410,6 +432,9 @@ def loop():
     print("Setup completed!")
     setSteeringAngle(2)  # Set an initial steering angle
     sleep(0.5)
+    
+    # Wait for a button press
+    handleLed_waitForButton()
     
     # Record starting time
     startingTime = time()
