@@ -77,11 +77,15 @@ The servo motor steers the front axle, providing efficient, high-torque performa
   </tr>
   <tr>
     <td><img src="other/media/connectors_image.jpg" alt="XT-60 connectors" /></td>
-    <td><b>XT-60 connectors</b><br>XT-60 wire connectors are used to easily connect and disconnect the battery. A voltage stabilizer adjusts the battery output to 5.0V for the Raspberry’s USB Type C connector.</td>
+    <td><b>XT-60 connectors</b><br>XT-60 connectors are strong, reliable connectors used to connect and disconnect batteries safely. They can handle high currents, up to 60 amps, without overheating. These connectors often work with a voltage stabilizer to provide a steady 5.0V output, making them great for powering devices like a Raspberry Pi through its USB Type-C port.</td>
+  </tr>
+  <tr>
+    <td><img src="other/media/voltage_regulator_image.jpg" alt="Voltage regulator and stabilizer" /></td>
+    <td><b>Voltage regulator and stabilizer</b><br>A voltage regulator or DC-DC step-down converter is used to reduce the voltage from a higher level to a stable, lower level, ensuring that sensitive electronics receive the correct power. This type of module efficiently converts excess voltage into a usable form. We employ this piece of hardware in order to provide consistent 5V current to power the Raspberry Pi and Arduino Nano.</td>
   </tr>
   <tr>
     <td><img src="other/media/level_converter.jpg" alt="Level Converter" /></td>
-    <td><b>Level Converter</b><br>The level converter facilitates communication between devices with different voltages, like Raspberry (3.3V) with Arduino Nano (5.0V) and distance sensor (5.0V).</td>
+    <td><b>Level Converter</b><br>The level converter facilitates communication between devices with different operating voltages, like Raspberry (3.3V) with Arduino Nano (5.0V) and distance sensor (5.0V).</td>
   </tr>
 </table>
 
@@ -92,7 +96,7 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 <table>
   <tr>
     <td><img src="other/media/colour_sensor_image.jpg" alt="Color sensor" /></td>
-    <td><b>Color Sensor TCS 34725</b><br>It can detect red, green, blue, and white light components, with an infrared blocking filter for accurate color measurements. It guides the vehicle's direction based on detecting the orange or blue line. It also counts laps. Powered directly at 3.3V from the Raspberry Pi.</td>
+    <td><b>Color Sensor TCS 34725</b><br>It can detect red, green, blue, and white light components, with an infrared blocking filter for accurate color measurements. It guides the vehicle's direction based on detecting the orange or blue line. Also, we use its data to keep track of the laps. Powered directly at 3.3V from the Raspberry Pi.</td>
   </tr>
   <tr>
     <td><img src="other/media/ultrasound_sensor_image.jpg" alt="Ultrasound sensor" /></td>
@@ -112,7 +116,7 @@ The servo motor steers the front axle, providing efficient, high-torque performa
   </tr>
   <tr>
     <td><img src="other/media/arduino_nano_image.jpg" alt="Arduino Nano" /></td>
-    <td><b>Arduino Nano</b><br>A compact, versatile 5V board from the Arduino family. Initially planned as an intermediary between the Raspberry Pi and various sensors, now receives Raspberry Pi command via UART communication in order to control the servo motor.</td>
+    <td><b>Arduino Nano</b><br>The Arduino Nano is a small and flexible 5V microcontroller board from the Arduino family, ideal for tasks like controlling PWM (Pulse Width Modulation) signals for motors. It has a 16 MHz ATmega328 chip, providing enough power for many projects. It was originally designed to connect the Raspberry Pi to sensors, but now it takes commands from the Raspberry Pi using UART to control servo motors smoothly and accurately.</td>
   </tr>
 </table>
 
