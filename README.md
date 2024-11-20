@@ -11,6 +11,9 @@ We were responsible for both the development and assembly of the vehicle. It fea
 
 For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensure accurate control of the wheel positioning, we implemented the **Ackermann steering system**. This system provides different turning angles for the inner and outer wheels when cornering. We accomplished this by incorporating a **mechanical differential** and gears to connect the motor to the rear wheels.
 
+Engineering also involves problem optimization. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
+
+
 ## Mobility Management
 
 In our project we have selected the following motors:
@@ -93,6 +96,21 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 
 ## Sense Management
 
+### Raspberry Pi 5
+The Raspberry Pi 5 is our Single Board Computer (SBC), offering a powerful upgrade with a quad-core Cortex-A76 processor running at 2.4 GHz, LPDDR4X RAM, and PCIe support for NVMe SSDs. It features enhanced camera handling with the Picamera2 library, advanced power management for stability, and exceptional multitasking capabilities. Ideal for AI, IoT, robotics, and multimedia applications, the Pi 5 delivers the performance and flexibility.
+We decided to <b>level up</b> our project by upgrading the SBC model a the newer one, indeed we swapped from Pi 4 to Pi 5. 
+This graph shows the <b>improvements we achieved</b> regarding the processing time of the image:
+
+[At this link](other/comparison_rpi4_md_rpi5.md) we wrote a in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5.
+
+Anyhow, upgrading the board came with some difficulties, here there's a list of the difficulties we met and how to solve the problems arised:
+1. No **pigpiod** Library Support
+2. Library incompatibility
+3. Crashes when Handling Multiple Peripherals
+
+[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)
+
+
 <table>
   <tr>
     <td><img src="other/media/colour_sensor_image.jpg" alt="Color sensor" /></td>
@@ -120,44 +138,17 @@ The servo motor steers the front axle, providing efficient, high-torque performa
   </tr>
 </table>
 
-## Theoretical Physics/Engineering/Mechanical Lesson
-### Understanding the Ackermann Steering System in Robotics
+### Mechanical lesson
+[At this link](other/mechanical_lesson.md) you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics.
 
-The Ackermann steering system is a key principle in vehicle dynamics, used in both robotics and automotive engineering to optimize wheel alignment during turns. It ensures that each wheel follows the correct turning radius, reducing tire wear and enhancing stability.
-
-#### Basics of Ackermann Steering
-
-The system's design involves adjusting the angles of the front wheels so that they follow different paths during a turn. The inner wheels turn more sharply than the outer wheels, ensuring all wheels' axes meet at a single turning point. This precise alignment is achieved using a set of steering arms and linkages.
-
-#### Application in Robotics
-
-Ackermann steering is widely used in robotic platforms that mimic car-like movement, called Ackermann robots. It enables these robots to navigate smoothly and handle tight turns, making it essential for applications like autonomous vehicles and delivery robots.
-
-#### Role of Differentials
-
-During a turn, the wheels on the outside need to rotate faster than those on the inside. A differential mechanism solves this by allowing each wheel to turn at different speeds while receiving power from the same source. This prevents skidding and ensures controlled motion through turns.
-
-#### Integration in Robotics
-
-In robotics, combining Ackermann steering with differentials improves precision and maneuverability. The steering controls wheel alignment, while the differential manages torque distribution, allowing for smooth, natural movement essential for advanced navigation tasks.
 
 
 # Software Design
 ## Programming Language, Libraries, Environment and Architecture
 We chose Python as the main programming language for this project because of its simplicity, flexibility, and extensive ecosystem of libraries. It makes tasks like hardware control, image processing, and machine learning straightforward to implement. With a strong community behind it, Python also offers a lot of ready-made solutions for common problems.
-#### Key Libraries:
-<table>
-<tr><td><b>gpiozero:</b></td><td>Simplifies controlling Raspberry Pi GPIO pins. Perfect for working with hardware like LEDs and sensors. 
-</td></tr>
-<tr><td><b>opencv:</b></td><td> A powerful tool for image and video processing. It's used here for analyzing images, detecting objects, and handling live video feeds.
-</td></tr>
-<tr><td><b>tensorflow:</b></td><td> Ideal for machine learning tasks. It helps with creating AI models to recognize patterns or objects in images. numpy: Makes working with numbers and large datasets fast and efficient. It's a foundation for libraries like TensorFlow and OpenCV.
-</td></tr>
-<tr><td><b>zmq:</b></td><td>Enables fast and efficient communication between different processes. We use it to transfer data between the camera and main processes.
-</td></tr>
-<tr><td><b>picamera:</b></td><td>A library tailored to control the Raspberry Pi camera module. The latest version, Picamera2, works well with modern hardware and offers better performance.
-</td></tr>
-</table>
+
+[At this link](other/library_used.md) you can find a table where we clarify what are the main libraries we have employed within the project.
+
 
 #### Process Design:
 The system employs two separate Python processes to optimize performance and maintain compatibility across libraries:
@@ -196,14 +187,14 @@ The vehicle's strategy for navigating the obstacle course across all challenges 
 <br>
 To maneuver the autonomous vehicle around obstacles on the path, we begin by identifying the nearest obstacle based on its height and then detect the wall on the right or left. We calculate the optimal trajectory between the obstacle and the wall, which becomes the target point for the vehicle's movement. If the obstacle is identified as a red pillar, the vehicle will bypass it on the right; if it is a green pillar, it will avoid it on the left. Usually the optimal trajectory overlaps with the trajectory adopted in order to move to the middle point in between the obstacle and the wall. Anyhow there are other specific cases:<br>
 - If the robot is off-center in the lane and risks hitting the wall, it searches for available open space and adjusts its position to move towards it.  
-- When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block
-<br><br>
+- When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.<br><br>
+
 As mentioned earlier, when obstacles are not detected, the prototype avoids wall collisions by positioning itself near the midpoint between the lanes. However, if the autonomous vehicle approaches too close to the wall directly ahead, it will make a sufficient steering adjustment to execute a ninety-degree turn, either clockwise or counterclockwise, to continue its path.
 
 Other relevant part of the movement algorithm: 
 
 - When the vehicle collides with the wall, as detected by analyzing data from the IMU sensor, it initiates a reverse movement to back up and realign itself with the field walls.
-- If the vehicle is on the incorrect side of the obstacle (such as being on the left when needing to dodge a red block, or on the right for a green block), it will reverse at an angle to position itself on the correct side for a proper dodge
+- If the vehicle is on the incorrect side of the obstacle (such as being on the left when needing to dodge a red block, or on the right for a green block), it will reverse at an angle to position itself on the correct side for a proper dodge.
 
 **Parking**
 
