@@ -71,6 +71,10 @@ To properly implement the DC 12V encoder gear motor and servo motor, a motor dri
 
 The servo motor steers the front axle, providing efficient, high-torque performance with precise speed control, ideal for dynamic responses. It uses permanent magnets with low rotor inertia, enhancing speed control and energy efficiency.
 
+### Mechanical lesson
+<b>[At this link](other/mechanical_lesson.md)</b> you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics.
+<br>
+
 ## Power Management
 
 <table>
@@ -92,7 +96,7 @@ The servo motor steers the front axle, providing efficient, high-torque performa
   </tr>
 </table>
 
-**Power Distribution** <br> Sensors and the servo motor receive 5.0V from the **Raspberry** (except the color sensor at 3.3V). The **EDGE TPU** gets 2W of power from the Raspberry's USB3.0 at 5V, with a peak current use of 900mA.
+**Power Distribution** <br> Sensors receive 5.0V from the **Raspberry** (except the color sensor at 3.3V). The **EDGE TPU** gets 2W of power from the Raspberry's USB3.0 at 5V, with a peak current use of 900mA. Arduino Nano receives power directly from the voltage stabilizer and provides 5.0V power to the servo motor.
 
 ## Sense Management
 
@@ -101,16 +105,19 @@ The Raspberry Pi 5 is our Single Board Computer (SBC), offering a powerful upgra
 We decided to <b>level up</b> our project by upgrading the SBC model a the newer one, indeed we swapped from Pi 4 to Pi 5. 
 This graph shows the <b>improvements we achieved</b> regarding the processing time of the image:
 
-[At this link](other/comparison_rpi4_md_rpi5.md) we wrote a in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5.
+<b>[At this link](other/comparison_rpi4_md_rpi5.md)</b> we wrote a in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5.
 
+<br>
 Anyhow, upgrading the board came with some difficulties, here there's a list of the difficulties we met and how to solve the problems arised:
 1. No **pigpiod** Library Support
 2. Library incompatibility
 3. Crashes when Handling Multiple Peripherals
 
-[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)
+<b>[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)</b>
 
+<br><br>
 
+### Sensor and Arduino Nano
 <table>
   <tr>
     <td><img src="other/media/colour_sensor_image.jpg" alt="Color sensor" /></td>
@@ -138,24 +145,21 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
   </tr>
 </table>
 
-### Mechanical lesson
-[At this link](other/mechanical_lesson.md) you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics.
-
-
 
 # Software Design
 ## Programming Language, Libraries, Environment and Architecture
 We chose Python as the main programming language for this project because of its simplicity, flexibility, and extensive ecosystem of libraries. It makes tasks like hardware control, image processing, and machine learning straightforward to implement. With a strong community behind it, Python also offers a lot of ready-made solutions for common problems.
 
-[At this link](other/library_used.md) you can find a table where we clarify what are the main libraries we have employed within the project.
+<b>[At this link](other/library_used.md)</b> you can find a table where we clarify what are the main libraries we have employed within the project.
 
 
 #### Process Design:
 The system employs two separate Python processes to optimize performance and maintain compatibility across libraries:
 <br>
-<b>Main Process:</b> Handles overall system functionality, including GPIO control, image processing, and machine learning tasks. This process uses Python 3.9 for compatibility with the broader set of libraries and the library handling GOOGLE CORAL EDGE TPU.
-<br>
-<b>Camera Process:</b> Dedicated to capturing and streaming frames from the Raspberry Pi camera. It uses Python 3.11 to leverage the latest features and performance optimizations of the Picamera library.
+<table>
+<tr><td><b>Main Process:</b></td><td>Handles overall system functionality, including GPIO control, image processing, and machine learning tasks. This process uses Python 3.9 for compatibility with the broader set of libraries and the library handling GOOGLE CORAL EDGE TPU.</td></tr>
+<tr><td><b>Camera Process:</b></td><td>Dedicated to capturing and streaming frames from the Raspberry Pi camera. It uses Python 3.11 to leverage the latest features and performance optimizations of the Picamera library.</td></tr>
+</table>
 
 #### Multi process architecture
 These two processes communicate through ZMQ IPC, where the camera process streams frames to the main process. This design ensures that the camera operations remain lightweight and isolated, avoiding conflicts or performance bottlenecks caused by incompatible libraries or resource-intensive tasks in the main process. This modular approach improves scalability and allows each process to be optimized independently.

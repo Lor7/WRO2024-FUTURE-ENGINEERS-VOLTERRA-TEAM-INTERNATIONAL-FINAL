@@ -7,7 +7,7 @@ The pigpiod library, which is typically used to control GPIO pins, is no longer 
 - Attempts to bypass this limitation by assigning higher priority to the Python process managing servo control (using nice or renice) resulted in smoother control but:
 <table>
 <tr><td><br>Inconsistent behavior:</br></td><td>Inconsistent behavior: Servo movements were jittery under high CPU loads.</td></tr>
-<tr><td><br>Hardware damage:</br></td>The servo motor eventually overheated and burned out due to irregular signal timings.<td></td></tr>
+<tr><td><br>Hardware damage:</br></td><td>The servo motor eventually overheated and burned out due to irregular signal timings.</td></tr>
 </table>
 
 ### Solution:
