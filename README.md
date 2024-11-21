@@ -1,6 +1,91 @@
-# WRO2024-FUTURE-ENGINEERS-VOLTERRA-TEAM-INTERNATIONAL-FINAL
+<div style="text-align: center;">
+    <div style="font-size: 4.5em; 
+                background: linear-gradient(to right, #36454F, #29b8f0); 
+                -webkit-background-clip: text; 
+                -webkit-text-fill-color: transparent; 
+                letter-spacing: 6px;">
+        Volterra Team
+    </div>
+    <div style="font-size: 1.5em; 
+                letter-spacing: 1px; 
+                color: #ff;">
+        WRO 2024 International Final: Future Engineers
+    </div>
+</div>
+
+<div align=center>
+
+<img src="./other/media/logo.png" alt="banner" height="400px">
+
+</div>
+
+# Contents
+
+<details>
+  <summary><b style="font-size: 1.5em;">Hardware Design</b></summary>
+  <ul style="font-size: 1.2em;">
+    <li><a href="#engineering-factor">Engineering Factor</a></li>
+    <li><a href="#mobility-management">Mobility Management</a></li>
+    <li><a href="#power-management">Power Management</a></li>
+    <li><a href="#sense-management">Sense Management</a></li>
+    <!-- <li><a href="#wiring-diagram">Wiring Diagram</a></li> -->
+    <!-- <li><a href="#mechanical-schemes">Mechanical Schemes</a></li> -->
+    <li><a href="#mechanical-lesson">Mechanical lesson</a></li>
+  </ul>
+</details>
+
+<details>
+  <summary><b style="font-size: 1.5em;">Software Design</b></summary>
+  <ul style="font-size: 1.2em;">
+    <li><a href="#programming-language-libraries-environment-and-architecture">Programming Language, Libraries, Environment, and Architecture</a></li>
+    <li><a href="#obstacle-detection">Obstacle detection</a></li>
+    <li><a href="#algorithm">Algorithm</a></li>
+    <!-- <li><a href="#electrical-parts-protocols-schemes">Electrical Parts Protocols Schemes</a></li> -->
+  </ul>
+</details>
+
+<details>
+  <summary><b style="font-size: 1.5em;">Media</b></summary>
+  <ul style="font-size: 1.2em;">
+    <li><a href="#team">Team</a></li>
+    <li><a href="#vehicle">Vehicle</a></li>
+    <li><a href="#video">Video</a></li>
+    <li><a href="#3d-models-and-graphical-representations">3D Models and Graphical Representations</a></li>
+  </ul>
+</details>
+
+<details>
+  <summary><b style="font-size: 1.5em;">Build & Setup</b></summary>
+  <ul style="font-size: 1.2em;">
+    <li><a href="#how-to-assemble-the-prototype">How to Assemble the Prototype</a></li>
+    <li><a href="#how-to-setup-the-software-on-the-raspberry-pi-5">How to Setup the Software</a></li>
+    <li><a href="#costs-of-the-components">Costs</a></li>
+  </ul>
+</details>
+
+<!--
+<details>
+  <summary><b style="font-size: 1.5em;">Engineering Journal</b></summary>
+  <ul style="font-size: 1.2em;">
+    <li><a href="#diary">Diary</a></li>
+    <li><a href="#what-we-learned">What We Learned</a></li>
+    <li><a href="#gantt-chart">Gantt Chart</a></li>
+  </ul>
+</details> -->
+
+<!-- <details>
+  <summary><b style="font-size: 1.5em;">Future Improvements</b></summary>
+  <ul style="font-size: 1.2em;">
+    <li><a href="#our-ideas">Our ideas</a></li>
+  </ul>
+</details> -->
+
+---
+
+<br>
 
 <br><br>
+
 # Engineering Factor
 
 We took charge of the entire prototype design, from the compact and efficient integration of hardware, electronics, and mechanics to its aesthetic appeal. Our goal was to create a captivating prototype by infusing it with a charming vintage style.
@@ -12,56 +97,61 @@ For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensur
 Engineering also involves problem optimization. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
 
 <br><br>
+
 # Hardware Design
 
 ## Mobility Management
 
 In our project we have selected the following motors:
 
-<table border="1" cellpadding="10">
-  <tr>
-    <th>Servomotor</th>
-    <th>Encoder Gearmotor</th>
-  </tr>
-  <tr>
-    <td>
-    <div align=center>
-      <img src="other/media/servomotor_image.jpg" alt="Servomotor" width="200">
-      </div>
-    </td>
-    <td>
-    <div align=center>
-      <img src="other/media/gearmotor_image.jpg" alt="Encoder Gearmotor" width="200">
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <ul>
-        <li><strong>Servo motor</strong></li>
-        <li>Weight: 12g</li>
-        <li>Dimensions: 23 x 11.5 x 24 mm approx</li>
-        <li>Stall torque: 1.6 kgf*cm at 4.8V</li>
-        <li>Operating speed: 0.12s/60° at 4.8V at no load</li>
-        <li>Stall torque: 2.0 kgf*cm at 6.0V</li>
-        <li>Operating speed: 0.10s/60° at 6V at no load</li>
-        <li>Rotational range: 180°</li>
-        <li>Pulse cycle: ca. 20ms</li>
-        <li>Pulse width: 500-2400 µs</li>
-      </ul>
-    </td>
-    <td>
-      <ul>
-        <li><strong>DC 12V Encoder Gearmotor</strong></li>
-        <li>Up to 200 RPM (Revolutions per minute)</li>
-        <li>Stall torque extrapolation: 21 kgf*cm</li>
-        <li>50:1 integrated gearbox</li>
-        <li>No load current: 0.2A at 12V</li>
-        <li>Stall current: 5.5A at 12V</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+<div style="text-align: center; margin: 0 auto; width: fit-content;">
+  <table border="1" cellpadding="10" style="margin: 0 auto;">
+    <tr>
+      <th>Servomotor</th>
+      <th>Encoder Gearmotor</th>
+    </tr>
+    <tr>
+      <td>
+        <div align="center">
+          <img src="other/media/servomotor_image.jpg" alt="Servomotor" width="200">
+        </div>
+      </td>
+      <td>
+        <div align="center">
+          <img src="other/media/gearmotor_image.jpg" alt="Encoder Gearmotor" width="200">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+          <li><strong>Servo motor</strong></li>
+          <li>Weight: 12g</li>
+          <li>Dimensions: 23 x 11.5 x 24 mm approx</li>
+          <li>Stall torque: 1.6 kgf*cm at 4.8V</li>
+          <li>Operating speed: 0.12s/60° at 4.8V at no load</li>
+          <li>Stall torque: 2.0 kgf*cm at 6.0V</li>
+          <li>Operating speed: 0.10s/60° at 6V at no load</li>
+          <li>Rotational range: 180°</li>
+          <li>Pulse cycle: ca. 20ms</li>
+          <li>Pulse width: 500-2400 µs</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><strong>DC 12V Encoder Gearmotor</strong></li>
+          <li>Up to 200 RPM (Revolutions per minute)</li>
+          <li>Stall torque extrapolation: 21 kgf*cm</li>
+          <li>50:1 integrated gearbox</li>
+          <li>No load current: 0.2A at 12V</li>
+          <li>Stall current: 5.5A at 12V</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br>
 
 To properly implement the DC 12V encoder gear motor and servo motor, a motor driver and mechanical differential were selected. The gear motor drives the mechanical differential, distributing movement to the rear wheels. It was chosen for its torque multiplication, crucial for precise control in small spaces, like a playing field. The motor's reduction ratios and integrated gearbox simplify development and offer strong power, high torque, and durability due to its enclosed design.
 
@@ -73,8 +163,16 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 
 <br><br>
 
-### Mechanical lesson
-<b>[At this link](other/mechanical_lesson.md)</b> you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics.
+## Mechanical lesson
+
+Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics
+
+<a href="other/mechanical_lesson.md" style="text-decoration: none;">
+  <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
+    <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=000000" alt="gear icon" style="width: 30px; height: 30px;">
+    <span>Mechanical Lesson</span>
+  </button>
+</a>
 
 <br><br><br>
 
@@ -106,25 +204,50 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 ## Sense Management
 
 ### Raspberry Pi 5
+
 The Raspberry Pi 5 is our Single Board Computer (SBC), offering a powerful upgrade with a quad-core Cortex-A76 processor running at 2.4 GHz, LPDDR4X RAM, and PCIe support for NVMe SSDs. It features enhanced camera handling with the Picamera2 library, advanced power management for stability, and exceptional multitasking capabilities. Ideal for AI, IoT, robotics, and multimedia applications, the Pi 5 delivers the performance and flexibility.
-We decided to <b>level up</b> our project by upgrading the SBC model a the newer one, indeed we swapped from Pi 4 to Pi 5. 
+We decided to <b>level up</b> our project by upgrading the SBC model a the newer one, indeed we swapped from Pi 4 to Pi 5.
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <p>Here we wrote an in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5</p>
+  <a href="other/mechanical_lesson.md" style="text-decoration: none;">
+    <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
+      <img src="https://img.icons8.com/?size=100&id=11685&format=png&color=000000" alt="gear icon" style="width: 20px; height: 20px;">
+      <span>Pi comparison</span>
+    </button>
+  </a>
+</div>
+
+<br>
+
 This graph shows the <b>improvements we achieved</b> regarding the processing time of the image:
 
-<b>[At this link](other/comparison_rpi4_md_rpi5.md)</b> we wrote a in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5.
+<img src = "other/raspberry_pi4_to_pi5_comparison_graph.png" alt = "pi4-and-pi5-performance-comparison-graph">
 
 <br>
 Anyhow, upgrading the board came with some difficulties, here there's a list of the difficulties we met and how to solve the problems arised:<br>
-<table><tr>
-<td>No <b>pigpiod</b> Library Support</td>
-<td>Camera libraries incompatibility</td>
-<td>Crashes when Handling Multiple Peripherals</td>
-</tr><table>
+<ul>
+  <li><b>No <i>pigpiod</i> Library Support</b></li>
+  <li><b>Camera libraries incompatibility</b></li>
+  <li><b>Crashes when Handling Multiple Peripherals</b></li>
+</ul>
 
-<b>[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)</b>
+<br>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <p>Here we link our extensive description of the problems and correlated solutions.</p>
+  <a href="other/problem_faced_rpi4_to_rpi5.md" style="text-decoration: none;">
+    <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
+      <img src="https://img.icons8.com/?size=100&id=11219&format=png&color=000000" alt="gear icon" style="width: 20px; height: 20px;">
+      <span>Problems</span>
+    </button>
+  </a>
+</div>
 
 <br><br>
 
 ### Sensors and Arduino Nano
+
 <table>
   <tr>
     <td><img src="other/media/colour_sensor_image.jpg" alt="Color sensor" /></td>
@@ -155,40 +278,69 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 <br><br>
 
 # Software Design
+
 ## Programming Language, Libraries, Environment and Architecture
+
 We chose Python as the main programming language for this project because of its simplicity, flexibility, and extensive ecosystem of libraries. It makes tasks like hardware control, image processing, and machine learning straightforward to implement. With a strong community behind it, Python also offers a lot of ready-made solutions for common problems.
 
-<b>[At this link](other/library_used.md)</b> you can find a table where we clarify what are the main libraries we have employed within the project.
+<br>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <p>Here you can find a table where we clarify what are the main libraries we have employed within the project.</p>
+  <a href="other/library_used.md" style="text-decoration: none;">
+    <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
+      <img src="https://img.icons8.com/?size=100&id=83172&format=png&color=000000" alt="gear icon" style="width: 20px; height: 20px;">
+      <span>Libraries</span>
+    </button>
+  </a>
+</div>
+
 <br>
 
 #### Process Design:
+
 The system employs two separate Python processes to optimize performance and maintain compatibility across libraries:
 <br>
+
 <table>
 <tr><td><b>Main Process:</b></td><td>Handles overall system functionality, including GPIO control, image processing, and machine learning tasks. This process uses Python 3.9 for compatibility with the broader set of libraries and the library handling GOOGLE CORAL EDGE TPU.</td></tr>
 <tr><td><b>Camera Process:</b></td><td>Dedicated to capturing and streaming frames from the Raspberry Pi camera. It uses Python 3.11 to leverage the latest features and performance optimizations of the Picamera library.</td></tr>
 </table>
-<br><br>
+<br>
 
 #### Multi process architecture
+
 These two processes communicate through ZMQ IPC, where the camera process streams frames to the main process. This design ensures that the camera operations remain lightweight and isolated, avoiding conflicts or performance bottlenecks caused by incompatible libraries or resource-intensive tasks in the main process. This modular approach improves scalability and allows each process to be optimized independently.
 <br>
 
 #### Why we use python virtual environment (venv)
+
 A Python virtual environment (venv) is a self-contained directory that includes its own Python interpreter and libraries. It allows you to create a clean workspace for your project, ensuring that dependencies are isolated and won't interfere with other projects. This is especially useful when working on multiple projects that require different Python versions or library setups, helping to keep everything compatible and conflict-free.
 <br>
 
 ## Obstacle detection
+
 **Object recognition**  
 Object recognition is at the core of our program, allowing us to detect and accurately pinpoint obstacles. We developed two ways of detecting the obstacles within the playfield: either by using a deep learning model or by applying color segmentation. The latest version of the control software employs the DL model.
-<br><br>
+<br>
 
-**Deep learning based object detection**  
-<b><h4>[At this link we thoroughly explain the implementation of a model, the process of training the model and how to put it into production.](other/deep_learning_model_explanation.md)</h4></b>
-<br><br>
+**Deep learning based object detection**
+
+Here we thoroughly explain the implementation of a model, the process of training the model and how to put it into production.
+
+<div style="display: flex; flex-direction: column; align-items: left;">
+  <a href="other/deep_learning_model_explanation.md" style="text-decoration: none;">
+    <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
+      <img src="https://img.icons8.com/?size=100&id=61864&format=png&color=000000" alt="gear icon" style="width: 30px; height: 30px;">
+      <span>Model</span>
+    </button>
+  </a>
+</div>
+
+<br>
 
 **HSV based object detection**  
-For color segmentation, we start by converting the image to HSV format. Next, we generate red and green masks, and then we extract object contours to accurately determine their positions. 
+For color segmentation, we start by converting the image to HSV format. Next, we generate red and green masks, and then we extract object contours to accurately determine their positions.
 <br>
 
 **Wall recognition**  
@@ -196,13 +348,15 @@ To locate the wall, we use a procedure similar to the one used in 'HSV-based obj
 <br><br>
 
 ## Algorithm
+
 Here is showed a flowchart that abstracts and represents the code's logic.
 <img src="other/control-software-flowchart.jpg" alt="control software flowchart" />
 <br>
 <br><br>
-The vehicle's strategy for navigating the obstacle course across all challenges has been broken down into a range of possible scenarios that may arise. 
+The vehicle's strategy for navigating the obstacle course across all challenges has been broken down into a range of possible scenarios that may arise.
 <br><br>
 To maneuver the autonomous vehicle around obstacles on the path, we begin by identifying the nearest obstacle based on its height and then detect the wall on the right or left. We calculate the optimal trajectory between the obstacle and the wall, which becomes the target point for the vehicle's movement. If the obstacle is identified as a red pillar, the vehicle will bypass it on the right; if it is a green pillar, it will avoid it on the left. Usually the optimal trajectory overlaps with the trajectory adopted in order to move to the middle point in between the obstacle and the wall. Anyhow there are other specific cases:<br>
+
 - If the robot is off-center in the lane and risks hitting the wall, it searches for available open space and adjusts its position to move towards it.  
 <br><br>
 <table>
@@ -214,11 +368,11 @@ To maneuver the autonomous vehicle around obstacles on the path, we begin by ide
 <br><br>
 As mentioned earlier, when obstacles are not detected, the prototype avoids wall collisions by positioning itself near the midpoint between the lanes. However, if the autonomous vehicle approaches too close to the wall directly ahead, it will make a sufficient steering adjustment to execute a ninety-degree turn, either clockwise or counterclockwise, to continue its path.
 
-Other relevant part of the movement algorithm: 
+Other relevant part of the movement algorithm:
 
 - When the vehicle collides with the wall, as detected by analyzing data from the IMU sensor, it initiates a reverse movement to back up and realign itself with the field walls.
 - If the vehicle is on the incorrect side of the obstacle (such as being on the left when needing to dodge a red block, or on the right for a green block), it will reverse at an angle to position itself on the correct side for a proper dodge.
-<br><br>
+  <br><br>
 
 **Parking**
 
@@ -226,9 +380,86 @@ The prototype's goal is to complete the parking maneuver by guiding the front of
 
 <br><br>
 
-Costs of the Components
-----------------------
-# Components Table
+# Setup and Build
+
+## How to setup the software on the Raspberry Pi 5
+
+We suggest the following steps for the software setup. This is our (personal) version of the official software setups and installations guides.
+
+1. Install and setup OS
+
+- Download the official SD imager on the Raspberry Pi 5 site
+- Flash the microSD with the latest version of the recommended 64-bit OS
+- Boot the OS:
+  - go to _sudo raspi-config_ -> within the next menu select interfaces and enable: I2C, SERIAL, CAMERA, GPIO.
+  - go to settings and set auto-login
+  - install the GOOGLE CORAL dependecies, please type into the terminal:
+    - _echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list_
+    - _curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -_
+    - _sudo apt-get update_
+    - To install the EDGE TPU runtime type:
+      - _sudo apt-get install libedgetpu1-std_
+    - Otherwise if you want to install the EDGE TPU runtime with maximum operating frequency type in:
+      - _sudo apt-get install libedgetpu1-max_
+  - Reboot the Pi
+
+2. Installing Python3.9 interpreter (Python3.11 is installed by default)
+
+- Open the terminal and type in:
+  - _sudo apt update_
+  - _sudo apt upgrade_
+  - _sudo apt install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev_
+  - _wget wget https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tgz_
+  - _tar -zxvf Python-3.9.1.tgz_
+  - _cd Python-3.9.1_
+  - _make -j4_
+  - _sudo make altinstall_
+  - Type _python3.9 –version_ to verify the installation process
+
+3. Install the required dependencies on Python3.11:
+
+- Open the terminal and type in:
+  - _pip install zmq numpy opencv-python picamera2_
+
+4. Create the Python3.9 virtual environment and install the necessary dependencies:
+
+- Open the terminal and type in:
+  - \*python3.9 -m venv **VENV-NAME\***
+- Now activate the venv, type:
+  - _source **VENV-NAME**/bin/activate_
+- Install the required dependencies, type into the terminal the following instruction:
+- _pip install zmq gpiozero numpy smbus colorama opencv-python tensorflow tflite-runtime python3-pycoral_
+
+5. We will use Cron job scheduler to start the program on boot:
+
+- Set the control programme to start at the boot of the SBC
+  - Within the terminal type _sudo crontab -e_
+  - At the very bottom of the file write:
+    - _@reboot source **VENV-NAME**/bin/activate_
+    - \*@reboot python **/PATH-TO-THE-MAIN-CONTROL-FILE/\***
+
+<br><br>
+
+## How to Assemble the Prototype
+
+For assembling the vehicle prototype, we suggest the following steps:
+
+- Gather the necessary tools, such as a multi-bit screwdriver and a wrench.
+- Construct the three platforms by cutting plywood sheets based on the diagram files you can find in the model folder.
+- Build the Ackermann steering mechanism using screws, LEGO or Meccano parts, and a servo motor; consult the [mechanical diagrams](schemes) for guidance.
+- Connect the gearmotor to the rear wheels using a LEGO mechanical differential, as shown in the [mechanical diagrams](schemes).
+- Secure the various components to their designated plywood platforms, either by gluing them or, preferably, using spacers to fasten them more securely and prevent any damage; refer to the [vehicle photos](v-photos).
+- Stack the platforms with spacers (or similar components) to keep them stable.
+- Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
+- Follow the [electrical schematic](schemes/electrical_scheme.jpg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
+- Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
+- Inspect all connections, secure any loose wires, and make sure all parts are firmly in place.
+- Consider using a voltmeter and ammeter to verify that wire connection are genuine.
+- Finally, run a test to confirm the vehicle's proper operation.
+
+<br><br>
+
+## Costs of the Components
 
 <details>
   <summary>Components</summary>
@@ -315,71 +546,3 @@ Costs of the Components
 </details>
 
 <br><br>
-
-# Setup and Build
-
-How to setup the software on the Raspberry Pi 5
------------------------------------------
-
-We suggest the following steps for the software setup. This is our (personal) version of the official software setups and installations guides.
-1. Install and setup OS
-- Download the official SD imager on the Raspberry Pi 5 site
-- Flash the microSD with the latest version of the recommended 64-bit OS 
-- Boot the OS:
-    - go to *sudo raspi-config* -> within the next menu select interfaces and enable: I2C, SERIAL, CAMERA, GPIO.
-    - go to settings and set auto-login
-    - install the GOOGLE CORAL dependecies, please type into the terminal:
-        - *echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list*
-        - *curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -*
-        - *sudo apt-get update*
-        - To install the EDGE TPU runtime type:
-            - *sudo apt-get install libedgetpu1-std*
-        - Otherwise if you want to install the EDGE TPU runtime with maximum operating frequency type in:
-            - *sudo apt-get install libedgetpu1-max*
-  - Reboot the Pi
-2. Installing Python3.9 interpreter (Python3.11 is installed by default)
-- Open the terminal and type in:
-  - *sudo apt update*
-  - *sudo apt upgrade*
-  - *sudo apt install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev*
-  - *wget wget https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tgz*
-  - *tar -zxvf Python-3.9.1.tgz*
-  - *cd Python-3.9.1*
-  - *make -j4*
-  - *sudo make altinstall*
-  - Type *python3.9 –version* to verify the installation process
-3. Install the required dependencies on Python3.11:
-- Open the terminal and type in:
-    - *pip install zmq numpy opencv-python picamera2*
-4. Create the Python3.9 virtual environment and install the necessary dependencies:
-- Open the terminal and type in:
-  - *python3.9 -m venv **VENV-NAME***
-- Now activate the venv, type:
-  - *source **VENV-NAME**/bin/activate*
-- Install the required dependencies, type into the terminal the following instruction:
- - *pip install zmq gpiozero numpy smbus colorama opencv-python tensorflow tflite-runtime python3-pycoral*
-5. We will use Cron job scheduler to start the program on boot:
-- Set the control programme to start at the boot of the SBC
-    - Within the terminal type *sudo crontab -e*
-    - At the very bottom of the file write:
-      - *@reboot source **VENV-NAME**/bin/activate*
-      - *@reboot python **/PATH-TO-THE-MAIN-CONTROL-FILE/***
-
-<br><br>
-
-How to Assemble the Prototype
------------------------------------------
-For assembling the vehicle prototype, we suggest the following steps:
-
-- Gather the necessary tools, such as a multi-bit screwdriver and a wrench.
-- Construct the three platforms by cutting plywood sheets based on the diagram files you can find in the model folder.
-- Build the Ackermann steering mechanism using screws, LEGO or Meccano parts, and a servo motor; consult the [mechanical diagrams](schemes) for guidance.
-- Connect the gearmotor to the rear wheels using a LEGO mechanical differential, as shown in the [mechanical diagrams](schemes).
-- Secure the various components to their designated plywood platforms, either by gluing them or, preferably, using spacers to fasten them more securely and prevent any damage; refer to the [vehicle photos](v-photos).
-- Stack the platforms with spacers (or similar components) to keep them stable.
-- Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
-- Follow the [electrical schematic](schemes/electrical_scheme.jpg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
-- Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
-- Inspect all connections, secure any loose wires, and make sure all parts are firmly in place.
-- Consider using a voltmeter and ammeter to verify that wire connection are genuine.
-- Finally, run a test to confirm the vehicle's proper operation.
