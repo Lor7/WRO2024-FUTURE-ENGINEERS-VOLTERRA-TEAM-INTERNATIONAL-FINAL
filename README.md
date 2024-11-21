@@ -1,16 +1,28 @@
-<div style="text-align: center;">
-    <div style="font-size: 4.5em; 
-                background: linear-gradient(to right, #36454F, #29b8f0); 
-                -webkit-background-clip: text; 
-                -webkit-text-fill-color: transparent; 
+<!-- <div style="text-align: center;">
+    <div style="font-size: 4.5em;
+                background: linear-gradient(to right, #36454F, #29b8f0);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
                 letter-spacing: 6px;">
         Volterra Team
     </div>
-    <div style="font-size: 1.5em; 
-                letter-spacing: 1px; 
+    <div style="font-size: 1.5em;
+                letter-spacing: 1px;
                 color: #ff;">
         WRO 2024 International Final: Future Engineers
     </div>
+</div> -->
+
+<div align="center">
+
+# **Volterra Team**
+
+</div>
+
+<div align="center">
+
+### **WRO 2024 International Final: Future Engineers**
+
 </div>
 
 <div align=center>
@@ -165,16 +177,16 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 
 ## Mechanical lesson
 
-Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics
+[Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics](other/mechanical_lesson.md)
 
-<a href="other/mechanical_lesson.md" style="text-decoration: none;">
+<!-- <a href="other/mechanical_lesson.md" style="text-decoration: none;">
   <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
     <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=000000" alt="gear icon" style="width: 30px; height: 30px;">
     <span>Mechanical Lesson</span>
   </button>
-</a>
+</a> -->
 
-<br><br><br>
+<br>
 
 ## Power Management
 
@@ -208,14 +220,16 @@ Here you can find a mechanical and physics explanation that we wrote about the A
 The Raspberry Pi 5 is our Single Board Computer (SBC), offering a powerful upgrade with a quad-core Cortex-A76 processor running at 2.4 GHz, LPDDR4X RAM, and PCIe support for NVMe SSDs. It features enhanced camera handling with the Picamera2 library, advanced power management for stability, and exceptional multitasking capabilities. Ideal for AI, IoT, robotics, and multimedia applications, the Pi 5 delivers the performance and flexibility.
 We decided to <b>level up</b> our project by upgrading the SBC model a the newer one, indeed we swapped from Pi 4 to Pi 5.
 
-<div style="display: flex; flex-direction: column; align-items: center;">
+[Here we wrote an in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5](other/comparison_rpi4_md_rpi5.md)
+
+<!-- <div style="display: flex; flex-direction: column; align-items: center;">
   <p>Here we wrote an in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5</p>
-  <a href="other/mechanical_lesson.md" style="text-decoration: none;">
+  <a href="other/comparison_rpi4_md_rpi5.md" style="text-decoration: none;">
     <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
       <img src="https://img.icons8.com/?size=100&id=11685&format=png&color=000000" alt="gear icon" style="width: 20px; height: 20px;">
       <span>Pi comparison</span>
     </button>
-  </a>
+  </a> -->
 </div>
 
 <br>
@@ -234,7 +248,9 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 
 <br>
 
-<div style="display: flex; flex-direction: column; align-items: center;">
+[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)
+
+<!-- <div style="display: flex; flex-direction: column; align-items: center;">
   <p>Here we link our extensive description of the problems and correlated solutions.</p>
   <a href="other/problem_faced_rpi4_to_rpi5.md" style="text-decoration: none;">
     <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
@@ -242,7 +258,7 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
       <span>Problems</span>
     </button>
   </a>
-</div>
+</div> -->
 
 <br><br>
 
@@ -285,7 +301,9 @@ We chose Python as the main programming language for this project because of its
 
 <br>
 
-<div style="display: flex; flex-direction: column; align-items: center;">
+[Here you can find a table where we clarify what are the main libraries we have employed within the project.](other/library_used.md)
+
+<!-- <div style="display: flex; flex-direction: column; align-items: center;">
   <p>Here you can find a table where we clarify what are the main libraries we have employed within the project.</p>
   <a href="other/library_used.md" style="text-decoration: none;">
     <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
@@ -293,7 +311,7 @@ We chose Python as the main programming language for this project because of its
       <span>Libraries</span>
     </button>
   </a>
-</div>
+</div> -->
 
 <br>
 
@@ -326,16 +344,18 @@ Object recognition is at the core of our program, allowing us to detect and accu
 
 **Deep learning based object detection**
 
-Here we thoroughly explain the implementation of a model, the process of training the model and how to put it into production.
+<!-- Here we thoroughly explain the implementation of a model, the process of training the model and how to put it into production. -->
 
-<div style="display: flex; flex-direction: column; align-items: left;">
+[Here we thoroughly explain the implementation of a model, the process of training the model and how to put it into production.](other/deep_learning_model_explanation.md)
+
+<!-- <div style="display: flex; flex-direction: column; align-items: left;">
   <a href="other/deep_learning_model_explanation.md" style="text-decoration: none;">
     <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
       <img src="https://img.icons8.com/?size=100&id=61864&format=png&color=000000" alt="gear icon" style="width: 30px; height: 30px;">
       <span>Model</span>
     </button>
   </a>
-</div>
+</div> -->
 
 <br>
 
