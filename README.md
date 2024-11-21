@@ -1,9 +1,7 @@
 # WRO2024-FUTURE-ENGINEERS-VOLTERRA-TEAM-INTERNATIONAL-FINAL
 
 
-# Hardware Design
-
-## Engineering Factor
+# Engineering Factor
 
 We took charge of the entire prototype design, from the compact and efficient integration of hardware, electronics, and mechanics to its aesthetic appeal. Our goal was to create a captivating prototype by infusing it with a charming vintage style.
 
@@ -13,6 +11,7 @@ For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensur
 
 Engineering also involves problem optimization. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
 
+# Hardware Design
 
 ## Mobility Management
 
@@ -73,7 +72,7 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 
 ### Mechanical lesson
 <b>[At this link](other/mechanical_lesson.md)</b> you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics.
-<br>
+<br><br><br>
 
 ## Power Management
 
@@ -108,11 +107,12 @@ This graph shows the <b>improvements we achieved</b> regarding the processing ti
 <b>[At this link](other/comparison_rpi4_md_rpi5.md)</b> we wrote a in-depth comparison table between Raspberry Pi 4 and Raspberry Pi 5.
 
 <br>
-Anyhow, upgrading the board came with some difficulties, here there's a list of the difficulties we met and how to solve the problems arised:
-1. No **pigpiod** Library Support
-2. Library incompatibility
-3. Crashes when Handling Multiple Peripherals
-
+Anyhow, upgrading the board came with some difficulties, here there's a list of the difficulties we met and how to solve the problems arised:<br>
+<table><tr>
+<td>No **pigpiod** Library Support</td>
+<td>Library incompatibility</td>
+<td>Crashes when Handling Multiple Peripherals</td>
+</tr><table>
 <b>[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)</b>
 
 <br><br>
@@ -191,8 +191,13 @@ The vehicle's strategy for navigating the obstacle course across all challenges 
 <br>
 To maneuver the autonomous vehicle around obstacles on the path, we begin by identifying the nearest obstacle based on its height and then detect the wall on the right or left. We calculate the optimal trajectory between the obstacle and the wall, which becomes the target point for the vehicle's movement. If the obstacle is identified as a red pillar, the vehicle will bypass it on the right; if it is a green pillar, it will avoid it on the left. Usually the optimal trajectory overlaps with the trajectory adopted in order to move to the middle point in between the obstacle and the wall. Anyhow there are other specific cases:<br>
 - If the robot is off-center in the lane and risks hitting the wall, it searches for available open space and adjusts its position to move towards it.  
-- When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.<br><br>
-
+<table>
+<tr><td><img src="other/trajectories/scenario4_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.<br><br>
+<td><tr></table>
+<tr><td><img src="other/trajectories/scenario3_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching an obstacle that is on the outer side of the following lane, the prototype will increase the radius of curvature in order to avoid hitting the obstacle when turning to align itself with the wall.<br><br>
+<tr>Other cases which also comprises of trajectory optimization (shorter and smoother path)</tr>
+<tr><td><img src="other/trajectories/scenario1_explained.jpg" alt = "vehicle trajectory"></td><td><img src="other/trajectories/scenario2_explained.jpg" alt = "vehicle trajectory"></td></tr>
+<td><tr></table>
 As mentioned earlier, when obstacles are not detected, the prototype avoids wall collisions by positioning itself near the midpoint between the lanes. However, if the autonomous vehicle approaches too close to the wall directly ahead, it will make a sufficient steering adjustment to execute a ninety-degree turn, either clockwise or counterclockwise, to continue its path.
 
 Other relevant part of the movement algorithm: 
@@ -203,3 +208,77 @@ Other relevant part of the movement algorithm:
 **Parking**
 
 The prototype's goal is to complete the parking maneuver by guiding the front of the vehicle between the two delineators. This movement stops once the prototype is successfully parked or if there isn't enough information to proceed. Since the prototype may not initially be parallel to the parking space, it will attempt to align itself by combining steering adjustments with reverse movements to achieve the correct orientation.
+
+
+Costs of the Components
+----------------------
+<b>[Here you can fin a table with the costs of the different components used within our project:](other/cost_table.md)</b>
+
+
+# Setup and Build
+
+How to setup the software on the Raspberry Pi 5
+-----------------------------------------
+
+We suggest the following steps for the software setup. This is our (personal) version of the official software setups and installations guides.
+1. Install and setup OS
+- Download the official SD imager on the Raspberry Pi 5 site
+- Flash the microSD with the latest version of the recommended 64-bit OS 
+- Boot the OS:
+    - go to *sudo raspi-config* -> within the next menu select interfaces and enable: I2C, SERIAL, CAMERA, GPIO.
+    - go to settings and set auto-login
+    - install the GOOGLE CORAL dependecies, please type into the terminal:
+        - *echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list*
+        - *curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -*
+        - *sudo apt-get update*
+        - To install the EDGE TPU runtime type:
+            - *sudo apt-get install libedgetpu1-std*
+        - Otherwise if you want to install the EDGE TPU runtime with maximum operating frequency type in:
+            - *sudo apt-get install libedgetpu1-max*
+  - Reboot the Pi
+2. Installing Python3.9 interpreter (Python3.11 is installed by default)
+- Open the terminal and type in:
+  - *sudo apt update*
+  - *sudo apt upgrade*
+  - *sudo apt install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev*
+  - *wget wget https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tgz*
+  - *tar -zxvf Python-3.9.1.tgz*
+  - *cd Python-3.9.1*
+  - *make -j4*
+  - *sudo make altinstall*
+  - Type *python3.9 –version* to verify the installation process
+3. Install the required dependencies on Python3.11:
+- Open the terminal and type in:
+    - *pip install zmq numpy opencv-python picamera2*
+4. Create the Python3.9 virtual environment and install the necessary dependencies:
+- Open the terminal and type in:
+  - *python3.9 -m venv **<VENV-NAME>***
+- Now activate the venv, type:
+  - *source **<VENV-NAME>**/bin/activate*
+- Install the required dependencies, type into the terminal the following instruction:
+ - *pip install zmq gpiozero numpy smbus colorama opencv-python tensorflow tflite-runtime python3-pycoral*
+5. We will use Cron job scheduler to start the program on boot:
+- Set the control programme to start at the boot of the SBC
+    - Within the terminal type *sudo crontab -e*
+    - At the very bottom of the file write:
+      - *@reboot source **<VENV-NAME>**/bin/activate*
+      - *@reboot python **/PATH-TO-THE-MAIN-CONTROL-FILE/***
+
+
+
+How to Assemble the Prototype
+-----------------------------------------
+For assembling the vehicle prototype, we suggest the following steps:
+
+- Gather the necessary tools, such as a multi-bit screwdriver and a wrench.
+- Construct the three platforms by cutting plywood sheets based on the diagram files you can find in the model folder.
+- Build the Ackermann steering mechanism using screws, LEGO or Meccano parts, and a servo motor; consult the [mechanical diagrams](schemes) for guidance.
+- Connect the gearmotor to the rear wheels using a LEGO mechanical differential, as shown in the [mechanical diagrams](schemes).
+- Secure the various components to their designated plywood platforms, either by gluing them or, preferably, using spacers to fasten them more securely and prevent any damage; refer to the [vehicle photos](v-photos).
+- Stack the platforms with spacers (or similar components) to keep them stable.
+- Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
+- Follow the [electrical schematic](schemes/electrical_scheme.jpg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
+- Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
+- Inspect all connections, secure any loose wires, and make sure all parts are firmly in place.
+- Consider using a voltmeter and ammeter to verify that wire connection are genuine.
+- Finally, run a test to confirm the vehicle's proper operation.
