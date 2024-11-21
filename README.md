@@ -113,6 +113,7 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 <td>Library incompatibility</td>
 <td>Crashes when Handling Multiple Peripherals</td>
 </tr><table>
+
 <b>[Here we link our extensive description of the problems and correlated solutions.](other/problem_faced_rpi4_to_rpi5.md)</b>
 
 <br><br>
@@ -192,12 +193,11 @@ The vehicle's strategy for navigating the obstacle course across all challenges 
 To maneuver the autonomous vehicle around obstacles on the path, we begin by identifying the nearest obstacle based on its height and then detect the wall on the right or left. We calculate the optimal trajectory between the obstacle and the wall, which becomes the target point for the vehicle's movement. If the obstacle is identified as a red pillar, the vehicle will bypass it on the right; if it is a green pillar, it will avoid it on the left. Usually the optimal trajectory overlaps with the trajectory adopted in order to move to the middle point in between the obstacle and the wall. Anyhow there are other specific cases:<br>
 - If the robot is off-center in the lane and risks hitting the wall, it searches for available open space and adjusts its position to move towards it.  
 <table>
-<tr><td><img src="other/trajectories/scenario4_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.<br><br>
-<td><tr></table>
-<tr><td><img src="other/trajectories/scenario3_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching an obstacle that is on the outer side of the following lane, the prototype will increase the radius of curvature in order to avoid hitting the obstacle when turning to align itself with the wall.<br><br>
-<tr>Other cases which also comprises of trajectory optimization (shorter and smoother path)</tr>
+<tr><td><img src="other/trajectories/scenario4_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.</td></tr>
+<tr><td><img src="other/trajectories/scenario3_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching an obstacle that is on the outer side of the following lane, the prototype will increase the radius of curvature in order to avoid hitting the obstacle when turning to align itself with the wall.</td></tr>
+<tr><th>Other cases which also comprises of trajectory optimization (shorter and smoother path)</th></tr>
 <tr><td><img src="other/trajectories/scenario1_explained.jpg" alt = "vehicle trajectory"></td><td><img src="other/trajectories/scenario2_explained.jpg" alt = "vehicle trajectory"></td></tr>
-<td><tr></table>
+</table>
 As mentioned earlier, when obstacles are not detected, the prototype avoids wall collisions by positioning itself near the midpoint between the lanes. However, if the autonomous vehicle approaches too close to the wall directly ahead, it will make a sufficient steering adjustment to execute a ninety-degree turn, either clockwise or counterclockwise, to continue its path.
 
 Other relevant part of the movement algorithm: 
