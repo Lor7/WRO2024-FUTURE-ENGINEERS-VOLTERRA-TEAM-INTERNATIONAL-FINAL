@@ -127,3 +127,29 @@ def reverse(steeringAngle, sleepTime1=0.8, sleepTime2=0.4):
     setSteeringAngle(steeringAngle)  # Set steering angle for forward movement
     motor.forward(0.18)  # Move forward
     sleep(sleepTime2 / 1.5)  # Pause
+
+def U_turn(left, seconds=2.5):
+    """
+    Perform a U-turn in the specified direction.
+    
+    :param left: Boolean indicating whether to turn left (True) or right (False).
+    :param seconds: Duration of the U-turn (default is 2.5 seconds).
+    """
+    print(f"U turn, seconds: {seconds}")
+    if left:
+        setSteeringAngle(20)  # Set steering angle for left U-turn
+        print(f"U turn LEFT")
+    else:
+        setSteeringAngle(-20)  # Set steering angle for right U-turn
+        print(f"U turn RIGHT")
+    
+    sleep(0.5)  # Pause to complete the turn setup
+    motor.forward(0.2)  # Move forward during the U-turn
+    sleep(seconds)  # Duration of the U-turn
+    
+    motor.stop()  # Stop the motor
+    setSteeringAngle(-2)  # Reset steering angle
+    motor.backward(0.2)  # Move backward to complete the maneuver
+    sleep(1)  # Pause
+    
+    motor.stop()  # Stop the motor

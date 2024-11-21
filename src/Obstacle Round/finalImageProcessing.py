@@ -3,6 +3,7 @@ from time import sleep, time, perf_counter
 import cv2
 from obstacleRecognitionConstants import *
 import numpy as np
+from park import handleParking
 
 import os
 import sys
@@ -88,6 +89,7 @@ class ImageProcessing():
         self.direction = 0  # Direction for image processing
         self.drawDebug = drawDebug  # Flag to draw debug information
         self.lap = 0  # Lap counter or other usage
+        self.timeAllSameColorPark = 0  # Timer for parking color detection
     
     def setDirection(self, direction):
         # Update direction-specific parameters
@@ -406,9 +408,15 @@ class ImageProcessing():
                             print(f"{object_name} LINE FILTERED")
                             continue
                         if object_name == "red":
-                            _id = REDBLOCKID
+                            if self.lap >= 3 and self.direction == ANTICLOCKWISE and not(time() - self.timeAllSameColorPark < 2.5 and obstacleHeight * focalLength / h < estimatedDistanceThreshold):
+                                _id = GREENBLOCKID
+                            else:
+                                _id = REDBLOCKID
                         elif object_name == "green":
-                            _id = GREENBLOCKID
+                            if self.lap >= 3 and self.direction == CLOCKWISE and not(time() - self.timeAllSameColorPark < 2.5 and obstacleHeight * focalLength / h < estimatedDistanceThreshold):
+                                _id = REDBLOCKID
+                            else:
+                                _id = GREENBLOCKID
                         elif object_name == "magenta":
                             _id = MAGENTAID
                         blocks.append([xmin, ymin, w, h, _id, int(scores[i] * 100)])
@@ -561,7 +569,9 @@ class ImageProcessing():
                             leftWalls = [(0, 0, 0, 0)]
                         else:
                             leftWalls.pop(0)
-                                
+                
+                #handleParking(magenta, frame)
+                
                 if len(blocks) > 1:
                     #avoidObstacle(blocks[0], walls[0], virtualPoint, line, blocks[1], coloredAreaMid, coloredAreaLower, coloredAreaLower2)    
                     self.lock.acquire()

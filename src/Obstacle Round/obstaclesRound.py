@@ -12,6 +12,7 @@ from finalImageProcessing import ImageProcessing  # Import image processing clas
 from brain import makeDecision, setDirection as brainSetDirection, setState as brainSetState, setReverseTime as brainSetReverseTime  # Import brain functions
 from obstacleAlgorithm import avoidObstacle, setDirection as obstacleSetDirection, setState as obstacleSetState, setRememberObstacle, turnObstacleList, set_firstSideList_onFirstSide  # Import obstacle avoidance functions
 from actuators import setSteeringAngle, reverse, setMinSteeringAngle, setDirection as actuatorsSetDirection, setState as actuatorsSetState, U_turn  # Import actuator functions
+from park import handleParking, setDirection as parkingSetDirection  # Import parking functions
 import sys
 
 # Optional priority setting for the process (commented out)
@@ -52,12 +53,15 @@ turnObstacleList(roundAbout)  # Update the obstacle list with roundabout values
 obstacleMemoryStuck = [-1, -1, -1, -1]  # Initialize obstacle memory
 obstaclesFirstSide = [0, 0]  # Initialize first side obstacles
 carOnTheFirstSide = [False]  # Initialize car position on the first side
+magentaSide = [-1]  # Initialize magenta side information
 set_firstSideList_onFirstSide(obstaclesFirstSide, carOnTheFirstSide)  # Set initial state for first side list
 
 # Initialize additional flags and variables
 roundAboutBufferTimeExpired = False
 directionInverted = False
 stopChecking, stuckWhilePerformingUTurn = False, False
+delayRoundaboutMagentaFirstSide = False
+flagDisambigousDelay = False
 
 def setDirection():
     """
@@ -68,6 +72,7 @@ def setDirection():
     brainSetDirection(direction)  # Set direction in the brain module
     imageProcessing.setDirection(direction)  # Set direction in the image processing module
     actuatorsSetDirection(direction)  # Set direction in the actuators module
+    parkingSetDirection(direction)  # Set direction in the parking module
 
 def waitSecondsForRoundAbout(seconds):
     """
@@ -220,6 +225,7 @@ def sideCounter():
                         updatedSide = 0
                         lap += 1
                         imageProcessing.lap = lap
+                        timeAllSameColorPark = time()
                     else:
                         updatedSide += 1
                     
@@ -343,6 +349,48 @@ def handleObstacleInTheMiddleOfTheLane(shared_values):
     except Exception as e:
         print(f"Error handle obstacle in the middle of the lane: {e}")
 
+def handleMagentaFirstSideRoundabout(shared_values):
+    """
+    Handle roundabout decisions based on the presence of magenta objects.
+    """
+    global isRequiredExtraTimeRoundAbout, delayRoundaboutMagentaFirstSide, flagDisambigousDelay
+    
+    if not isRequiredExtraTimeRoundAbout:
+        trueIndex, maxIndex, index, votes = 0, 13, 0, 0
+        votesDisambiguous = 0
+        while index < 9 and trueIndex < maxIndex:
+            if len(shared_values[30]) == 0:
+                votes -= 1
+                votesDisambiguous -= 1
+            else:
+                # Check if the object detected is within a certain range
+                shared_values_copy = deepcopy(shared_values)
+                if 10 * 633.3333333333334 / 2 / shared_values[30][0][3] < 30:
+                    votes += 1
+                else:
+                    votes -= 1
+                
+                # Determine if the object is in an ambiguous range
+                if 30 < 10 * 633.3333333333334 / 2 / shared_values[30][0][3] < 160:
+                    votesDisambiguous += 1
+                else:
+                    votesDisambiguous -= 1
+                
+                index += 1
+            sleep(0.1)
+            trueIndex += 1
+        
+        # Set flags based on the votes
+        delayRoundaboutMagentaFirstSide = votes > 0
+        flagDisambigousDelay = votesDisambiguous > 0
+        
+        print(f"Votes for delaying roundabout: {votes}, delay: {delayRoundaboutMagentaFirstSide}")
+        print(f"Votes for DISAMBIGUOUS roundabout: {votesDisambiguous}, correct: {flagDisambigousDelay}")
+    else:
+        delayRoundaboutMagentaFirstSide = False
+        flagDisambigousDelay = False
+        print("delayRoundaboutMagentaFirstSide and flagDisambigousDelay are False a priori")
+
 def handleExtraTimeForRoundAbout():
     """
     Determine if extra time is needed for the roundabout based on distance measurements.
@@ -398,13 +446,14 @@ def loop():
     global colorThread, defineColorThread
     global extraPauseTimeColorSensorRoundabout, roundAboutBufferTimeExpired, directionInverted, flagSwitchDirection, screenShot
     global flagStartedWaitedSecondsForRoundAbout, flagMovementTowardLeft, flagWaitedSecondsForRoundAbout, stopChecking
-    global stuckWhilePerformingUTurn
+    global stuckWhilePerformingUTurn, delayRoundaboutMagentaFirstSide, flagDisambigousDelay
 
     # Initialize threads for color sensor data reading and defining color
     colorThread = Thread(target=colorSensor.readDataContinuously)
     defineColorThread = Thread(target=defineColor)
     
     # Variables for managing parking and obstacle handling
+    flagTimeAddedParking = False
     farFromLateralWall, lastTimeObstacleWasSeen, flagBufferTimeToOvercome = True, (0, 0, 0), True
     estimatedDistance, thresholdDistance, performTimedMovement, roundAboutCalculationNotDone = -1, 0, True, True
     obstaclePreviousData, wallBeingViewedTime = [], time()
@@ -445,6 +494,7 @@ def loop():
     # Handle extra time for roundabout and obstacles
     handleExtraTimeForRoundAbout()
     handleObstacleInTheMiddleOfTheLane(shared_values)    
+    handleMagentaFirstSideRoundabout(shared_values)
     
     # Start the color defining thread
     defineColorThread.start()
@@ -455,6 +505,12 @@ def loop():
     
     # Initialize timing variables for parking and color detection
     chronograph = time()
+    startParking = False
+    startParkingCounter = 0
+    magentaSideCounter = [0, 0]
+    flagStopMemorizeMagentaPosition = False
+    magentaNotSameSideRed = True
+    imageProcessing.timeAllSameColorPark = time()
     while True:
         try:
             # Move the motor forward at a set value
@@ -466,10 +522,52 @@ def loop():
                 shared_values_copy = deepcopy(shared_values)  # Make a copy of the shared values
                 shared_values[31] = 0  # Reset the status in shared values
             lock.release()
-
+            
+            # Check if the magenta side detection condition is met
+            if len(shared_values_copy[30]) > 0 and shared_values_copy[30][0][3] > 35 and shared_values_copy[30][0][1] > 150 and not flagStopMemorizeMagentaPosition:
+                if magentaSideCounter[0] == updatedSide:
+                    magentaSideCounter[1] += 1
+                else:
+                    magentaSideCounter[0] = updatedSide
+                    magentaSideCounter[1] = 1
+                    
+                # If the magenta side is detected enough times, update the side and stop memorizing
+                if magentaSideCounter[1] >= 3:
+                    print(f"Magenta is positioned side number: {updatedSide}")
+                    magentaSide[0] = magentaSideCounter[0]
+                    flagStopMemorizeMagentaPosition = True
+            
+            # Check conditions to start parking
+            if not(startParking) and lap >= 3 and len(shared_values_copy[30]) != 0 and (
+                (direction == ANTICLOCKWISE and shared_values_copy[30][0][0] > 460 and shared_values_copy[30][0][2] > 50) or 
+                (direction == CLOCKWISE and shared_values_copy[30][0][0] < 70 and shared_values_copy[30][0][2] > 50)):
+                if startParkingCounter >= 1:
+                    startParking = True
+                    motorValue = 0.19  # Adjust motor value for parking
+                    print(f"Magenta was seen, start parking!")
+                else:
+                    # Optionally print or handle the case where the counter is incremented but not yet ready to start parking
+                    pass
+                startParkingCounter += 1
+            else:
+                startParkingCounter = 0
+            
+            # Handle parking if the robot has started parking
+            if startParking and len(shared_values_copy[30]) != 0 and not(shared_values_copy[31] == PILLAR_WAS_SEEN and (shared_values_copy[1] + shared_values_copy[3] < shared_values_copy[30][0][1] + shared_values_copy[30][0][3])):
+                handleParkingFlag = handleParking(shared_values_copy[30])
+                if handleParkingFlag is True:
+                    imageProcessing.stop()
+                    print("Finished parking!")
+                    motor.stop()
+                    setSteeringAngle(2)
+                    motor.stop()
+                    # Optionally stop IMU and color sensor if needed
+                    colorSensor.stop = True
+                    print(f"Time required for parking : {time() - startingTime}")
+                    break
             
             # Handle obstacle detection
-            if shared_values_copy[31] == PILLAR_WAS_SEEN:
+            elif shared_values_copy[31] == PILLAR_WAS_SEEN:
                 lastTimeObstacleWasSeen = (time(), shared_values_copy[4],
                                             shared_values_copy[0] if shared_values_copy[4] == GREENBLOCKID else shared_values_copy[0] + shared_values_copy[2],
                                             shared_values_copy[0], shared_values_copy[2], shared_values_copy[22] + shared_values_copy[24],
@@ -602,6 +700,9 @@ def loop():
 
             # Check specific conditions for lap and updatedSide
             if lap == 2 and updatedSide == 0 and (flagSwitchDirection or screenShot):
+                # If the magenta side and obstacles conditions match, update the magentaNotSameSideRed flag
+                if magentaSide[0] == 0 and obstaclesFirstSide[0] == REDBLOCKID:
+                    magentaNotSameSideRed = False
                     
                 #print(f"Round about: {roundAbout}")
                 # Check if a screenshot should be taken
@@ -753,7 +854,12 @@ def loop():
                             continue
                         elif flagWaitedSecondsForRoundAbout:
                             print("DO NOT performTimedMovement, coroutine conclusa")
+                            delayRoundaboutMagentaFirstSide = True
+                            flagDisambigousDelay = True
+                            delayRoundaboutMagentaFirstSide = False
                             pass
+                        elif (not magentaNotSameSideRed and not flagDisambigousDelay) or (delayRoundaboutMagentaFirstSide):
+                            continue
                         else:
                             y_h = lastTimeObstacleWasSeen[-2]
                             if len(obstaclePreviousData) <= 1:
