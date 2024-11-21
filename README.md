@@ -1,6 +1,6 @@
 # WRO2024-FUTURE-ENGINEERS-VOLTERRA-TEAM-INTERNATIONAL-FINAL
 
-
+<br><br>
 # Engineering Factor
 
 We took charge of the entire prototype design, from the compact and efficient integration of hardware, electronics, and mechanics to its aesthetic appeal. Our goal was to create a captivating prototype by infusing it with a charming vintage style.
@@ -11,6 +11,7 @@ For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensur
 
 Engineering also involves problem optimization. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
 
+<br><br>
 # Hardware Design
 
 ## Mobility Management
@@ -70,8 +71,11 @@ To properly implement the DC 12V encoder gear motor and servo motor, a motor dri
 
 The servo motor steers the front axle, providing efficient, high-torque performance with precise speed control, ideal for dynamic responses. It uses permanent magnets with low rotor inertia, enhancing speed control and energy efficiency.
 
+<br><br>
+
 ### Mechanical lesson
 <b>[At this link](other/mechanical_lesson.md)</b> you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics.
+
 <br><br><br>
 
 ## Power Management
@@ -97,6 +101,8 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 
 **Power Distribution** <br> Sensors receive 5.0V from the **Raspberry** (except the color sensor at 3.3V). The **EDGE TPU** gets 2W of power from the Raspberry's USB3.0 at 5V, with a peak current use of 900mA. Arduino Nano receives power directly from the voltage stabilizer and provides 5.0V power to the servo motor.
 
+<br><br>
+
 ## Sense Management
 
 ### Raspberry Pi 5
@@ -109,8 +115,8 @@ This graph shows the <b>improvements we achieved</b> regarding the processing ti
 <br>
 Anyhow, upgrading the board came with some difficulties, here there's a list of the difficulties we met and how to solve the problems arised:<br>
 <table><tr>
-<td>No **pigpiod** Library Support</td>
-<td>Library incompatibility</td>
+<td>No <b>pigpiod</b> Library Support</td>
+<td>Camera libraries incompatibility</td>
 <td>Crashes when Handling Multiple Peripherals</td>
 </tr><table>
 
@@ -118,7 +124,7 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 
 <br><br>
 
-### Sensor and Arduino Nano
+### Sensors and Arduino Nano
 <table>
   <tr>
     <td><img src="other/media/colour_sensor_image.jpg" alt="Color sensor" /></td>
@@ -146,13 +152,14 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
   </tr>
 </table>
 
+<br><br>
 
 # Software Design
 ## Programming Language, Libraries, Environment and Architecture
 We chose Python as the main programming language for this project because of its simplicity, flexibility, and extensive ecosystem of libraries. It makes tasks like hardware control, image processing, and machine learning straightforward to implement. With a strong community behind it, Python also offers a lot of ready-made solutions for common problems.
 
 <b>[At this link](other/library_used.md)</b> you can find a table where we clarify what are the main libraries we have employed within the project.
-
+<br>
 
 #### Process Design:
 The system employs two separate Python processes to optimize performance and maintain compatibility across libraries:
@@ -161,59 +168,69 @@ The system employs two separate Python processes to optimize performance and mai
 <tr><td><b>Main Process:</b></td><td>Handles overall system functionality, including GPIO control, image processing, and machine learning tasks. This process uses Python 3.9 for compatibility with the broader set of libraries and the library handling GOOGLE CORAL EDGE TPU.</td></tr>
 <tr><td><b>Camera Process:</b></td><td>Dedicated to capturing and streaming frames from the Raspberry Pi camera. It uses Python 3.11 to leverage the latest features and performance optimizations of the Picamera library.</td></tr>
 </table>
+<br><br>
 
 #### Multi process architecture
 These two processes communicate through ZMQ IPC, where the camera process streams frames to the main process. This design ensures that the camera operations remain lightweight and isolated, avoiding conflicts or performance bottlenecks caused by incompatible libraries or resource-intensive tasks in the main process. This modular approach improves scalability and allows each process to be optimized independently.
+<br>
 
 #### Why we use python virtual environment (venv)
 A Python virtual environment (venv) is a self-contained directory that includes its own Python interpreter and libraries. It allows you to create a clean workspace for your project, ensuring that dependencies are isolated and won't interfere with other projects. This is especially useful when working on multiple projects that require different Python versions or library setups, helping to keep everything compatible and conflict-free.
+<br>
 
 ## Obstacle detection
 **Object recognition**  
 Object recognition is at the core of our program, allowing us to detect and accurately pinpoint obstacles. We developed two ways of detecting the obstacles within the playfield: either by using a deep learning model or by applying color segmentation. The latest version of the control software employs the DL model.
+<br><br>
 
 **Deep learning based object detection**  
-At this link we thoroughly explain the implementation of a model, the process of training the model and how to put it into production.
+<b><h4>[At this link we thoroughly explain the implementation of a model, the process of training the model and how to put it into production.](other/deep_learning_model_explanation.md)</h4></b>
+<br><br>
 
 **HSV based object detection**  
 For color segmentation, we start by converting the image to HSV format. Next, we generate red and green masks, and then we extract object contours to accurately determine their positions. 
+<br>
 
 **Wall recognition**  
 To locate the wall, we use a procedure similar to the one used in 'HSV-based object detection' for obstacles. First, the image is converted to HSV format, and then a black mask is created. The main differences are in the specific region of the image we examine and the pixel range values we use. In some cases, instead of identifying precise wall coordinates, we scan sections of the image for pixels matching the wall's appearance. If the pixel count exceeds a certain threshold, we interpret it as a positive "sensor" indication of the position of the wall. To detect wall slopes, we apply the HoughLinesP function to the output of the Canny edge detection on a mask for black-like colors. For the full implementation, please refer to the source code.
-
+<br><br>
 
 ## Algorithm
 Here is showed a flowchart that abstracts and represents the code's logic.
 <img src="other/control-software-flowchart.jpg" alt="control software flowchart" />
-
-
+<br>
 <br><br>
 The vehicle's strategy for navigating the obstacle course across all challenges has been broken down into a range of possible scenarios that may arise. 
-<br>
+<br><br>
 To maneuver the autonomous vehicle around obstacles on the path, we begin by identifying the nearest obstacle based on its height and then detect the wall on the right or left. We calculate the optimal trajectory between the obstacle and the wall, which becomes the target point for the vehicle's movement. If the obstacle is identified as a red pillar, the vehicle will bypass it on the right; if it is a green pillar, it will avoid it on the left. Usually the optimal trajectory overlaps with the trajectory adopted in order to move to the middle point in between the obstacle and the wall. Anyhow there are other specific cases:<br>
 - If the robot is off-center in the lane and risks hitting the wall, it searches for available open space and adjusts its position to move towards it.  
+<br><br>
 <table>
 <tr><td><img src="other/trajectories/scenario4_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.</td></tr>
 <tr><td><img src="other/trajectories/scenario3_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching an obstacle that is on the outer side of the following lane, the prototype will increase the radius of curvature in order to avoid hitting the obstacle when turning to align itself with the wall.</td></tr>
 <tr><th>Other cases which also comprises of trajectory optimization (shorter and smoother path)</th></tr>
 <tr><td><img src="other/trajectories/scenario1_explained.jpg" alt = "vehicle trajectory"></td><td><img src="other/trajectories/scenario2_explained.jpg" alt = "vehicle trajectory"></td></tr>
 </table>
+<br><br>
 As mentioned earlier, when obstacles are not detected, the prototype avoids wall collisions by positioning itself near the midpoint between the lanes. However, if the autonomous vehicle approaches too close to the wall directly ahead, it will make a sufficient steering adjustment to execute a ninety-degree turn, either clockwise or counterclockwise, to continue its path.
 
 Other relevant part of the movement algorithm: 
 
 - When the vehicle collides with the wall, as detected by analyzing data from the IMU sensor, it initiates a reverse movement to back up and realign itself with the field walls.
 - If the vehicle is on the incorrect side of the obstacle (such as being on the left when needing to dodge a red block, or on the right for a green block), it will reverse at an angle to position itself on the correct side for a proper dodge.
+<br><br>
 
 **Parking**
 
 The prototype's goal is to complete the parking maneuver by guiding the front of the vehicle between the two delineators. This movement stops once the prototype is successfully parked or if there isn't enough information to proceed. Since the prototype may not initially be parallel to the parking space, it will attempt to align itself by combining steering adjustments with reverse movements to achieve the correct orientation.
 
+<br><br>
 
 Costs of the Components
 ----------------------
 <b>[Here you can fin a table with the costs of the different components used within our project:](other/cost_table.md)</b>
 
+<br><br>
 
 # Setup and Build
 
@@ -252,19 +269,19 @@ We suggest the following steps for the software setup. This is our (personal) ve
     - *pip install zmq numpy opencv-python picamera2*
 4. Create the Python3.9 virtual environment and install the necessary dependencies:
 - Open the terminal and type in:
-  - *python3.9 -m venv **<VENV-NAME>***
+  - *python3.9 -m venv **VENV-NAME***
 - Now activate the venv, type:
-  - *source **<VENV-NAME>**/bin/activate*
+  - *source **VENV-NAME**/bin/activate*
 - Install the required dependencies, type into the terminal the following instruction:
  - *pip install zmq gpiozero numpy smbus colorama opencv-python tensorflow tflite-runtime python3-pycoral*
 5. We will use Cron job scheduler to start the program on boot:
 - Set the control programme to start at the boot of the SBC
     - Within the terminal type *sudo crontab -e*
     - At the very bottom of the file write:
-      - *@reboot source **<VENV-NAME>**/bin/activate*
+      - *@reboot source **VENV-NAME**/bin/activate*
       - *@reboot python **/PATH-TO-THE-MAIN-CONTROL-FILE/***
 
-
+<br><br>
 
 How to Assemble the Prototype
 -----------------------------------------
