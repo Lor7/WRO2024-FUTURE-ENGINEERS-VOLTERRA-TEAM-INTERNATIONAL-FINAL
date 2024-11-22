@@ -41,7 +41,7 @@
     <li><a href="#power-management">Power Management</a></li>
     <li><a href="#sense-management">Sense Management</a></li>
     <li><a href="#wiring-diagram">Wiring Diagram</a></li>
-    <!-- <li><a href="#mechanical-schemes">Mechanical Schemes</a></li> -->
+    <li><a href="#mechanical-scheme">Mechanical Scheme</a></li>
     <li><a href="#mechanical-lesson">Mechanical lesson</a></li>
   </ul>
 </details>
@@ -300,6 +300,10 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 > To create the electrical schematic, we utilized "Fritzing," a free and open-source software designed for circuit design and prototyping. Most of the required components were readily available within Fritzing's extensive library, making it straightforward to place and connect them. For components not available in the library, we manually created them using vector drawing tools, ensuring precise placement of pins on the correct grid. This meticulous approach was essential to maintain the accuracy and functionality of the schematic.
 
 <br>
+
+## Mechanical Scheme
+
+> ![mechanical scheme](./schemes/mechanical_scheme.jpg)
 
 # Software Design
 
