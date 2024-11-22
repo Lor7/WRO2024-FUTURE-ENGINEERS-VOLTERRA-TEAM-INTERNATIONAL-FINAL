@@ -40,7 +40,7 @@
     <li><a href="#mobility-management">Mobility Management</a></li>
     <li><a href="#power-management">Power Management</a></li>
     <li><a href="#sense-management">Sense Management</a></li>
-    <!-- <li><a href="#wiring-diagram">Wiring Diagram</a></li> -->
+    <li><a href="#wiring-diagram">Wiring Diagram</a></li>
     <!-- <li><a href="#mechanical-schemes">Mechanical Schemes</a></li> -->
     <li><a href="#mechanical-lesson">Mechanical lesson</a></li>
   </ul>
@@ -75,7 +75,6 @@
   </ul>
 </details>
 
-<!--
 <details>
   <summary><b style="font-size: 1.5em;">Engineering Journal</b></summary>
   <ul style="font-size: 1.2em;">
@@ -83,7 +82,7 @@
     <li><a href="#what-we-learned">What We Learned</a></li>
     <li><a href="#gantt-chart">Gantt Chart</a></li>
   </ul>
-</details> -->
+</details>
 
 <!-- <details>
   <summary><b style="font-size: 1.5em;">Future Improvements</b></summary>
@@ -293,6 +292,15 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 
 <br><br>
 
+## Wiring Diagram
+
+> ![wiring scheme](./other/media/scheme.png)
+
+> [!NOTE]
+> To create the electrical schematic, we utilized "Fritzing," a free and open-source software designed for circuit design and prototyping. Most of the required components were readily available within Fritzing's extensive library, making it straightforward to place and connect them. For components not available in the library, we manually created them using vector drawing tools, ensuring precise placement of pins on the correct grid. This meticulous approach was essential to maintain the accuracy and functionality of the schematic.
+
+<br>
+
 # Software Design
 
 ## Programming Language, Libraries, Environment and Architecture
@@ -369,7 +377,6 @@ To locate the wall, we use a procedure similar to the one used in 'HSV-based obj
 
 ## Algorithm
 
-Here is showed a flowchart that abstracts and represents the code's logic.
 <img src="other/control-software-flowchart.jpg" alt="control software flowchart" />
 <br>
 <br><br>
@@ -566,3 +573,148 @@ For assembling the vehicle prototype, we suggest the following steps:
 </details>
 
 <br><br>
+
+# Engineering Journal
+
+## Diary
+
+---
+
+#### **Day 1: Preparation and Planning**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>We gathered all necessary tools, including:</p>
+    <ul>
+      <li>Multi-bit screwdriver</li>
+      <li>Wrench</li>
+      <li>Spacers, screws, and LEGO/Meccano components</li>
+    </ul>
+    <p>Plywood sheets were sourced, and the diagrams from the model folder were reviewed to understand the required dimensions for the platforms. A dedicated workspace was organized to streamline the assembly process.</p>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage2.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+#### **Day 2: Platform Construction**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>Using the plywood sheets and diagrams, we:</p>
+    <ul>
+      <li>Cut three platforms to size.</li>
+      <li>Sanded edges to remove roughness.</li>
+      <li>Labeled each platform for clarity during later assembly steps.</li>
+    </ul>
+    <p>Precision measurements ensured that the platforms would fit seamlessly with the other components.</p>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage1.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+#### **Day 3: Steering Mechanism and Rear Wheel Setup**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>Tasks completed:</p>
+    <ul>
+      <li>Built the Ackermann steering mechanism with LEGO parts, screws, and a servo motor, referencing the mechanical diagrams.</li>
+      <li>Connected the gear motor to the rear wheels using a LEGO mechanical differential.</li>
+    </ul>
+    <p>Both setups were tested for smooth movement to ensure they function as designed.</p>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage14.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+#### **Day 4: Component Mounting**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>We secured the primary components to their designated platforms:</p>
+    <ul>
+      <li>Ackermann steering mechanism and gear motor were mounted securely.</li>
+      <li>The LiPo 3S battery and tension regulator were installed on the middle platform, leaving space for wiring.</li>
+      <li>Spacers were used to stabilize all components and prevent vibrations.</li>
+    </ul>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage6.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+#### **Day 5: Electrical Connections**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>Electrical work included:</p>
+    <ul>
+      <li>Following the electrical schematic to connect the Raspberry Pi, sensors, and motors to the power source.</li>
+      <li>Attaching XT60 connectors to the LiPo battery.</li>
+      <li>Adjusting the buck-down potentiometer to stabilize the voltage at 5.0V.</li>
+      <li>Verifying voltage levels with a voltmeter for safety and consistency.</li>
+    </ul>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage11.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+#### **Day 6: Platform Assembly and Inspection**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>Steps taken:</p>
+    <ul>
+      <li>Stacked the three platforms with spacers for structural stability.</li>
+      <li>Conducted a detailed inspection of all connections to confirm security.</li>
+      <li>Organized and tied loose wires to avoid interference with moving parts.</li>
+      <li>Confirmed stable current flow using an ammeter.</li>
+    </ul>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage13.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+#### **Day 7: Testing and Debugging**
+
+<div style="display: flex; gap: 20px;">
+  <div style="flex: 1;">
+    <p>A full system test was conducted:</p>
+    <ul>
+      <li>Evaluated steering, gear motor, and sensors for proper functionality.</li>
+      <li>Fine-tuned the servo motor’s alignment.</li>
+      <li>Fixed minor wiring issues for enhanced reliability.</li>
+    </ul>
+    <p>By the end of the day, the prototype was operational and ready for further trials.</p>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="other/backstage_photos/backstage13.jpg" alt="control software flowchart" height="200" />
+  </div>
+</div>
+
+---
+
+**Next Steps:** Continue testing in dynamic environments and collect performance data.
+
+## Gantt Chart
+
+<div align=center>
+<img src="./other/media/Gantt.png" alt="banner" width="800px">
+</div>
