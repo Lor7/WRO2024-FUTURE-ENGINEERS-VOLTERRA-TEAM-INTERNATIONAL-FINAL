@@ -8,7 +8,7 @@ The Ackermann steering system is a key principle in vehicle dynamics, used in bo
 The system's design involves adjusting the angles of the front wheels so that they follow different paths during a turn. The inner wheels turn more sharply than the outer wheels, ensuring all wheels' axes meet at a single turning point. This precise alignment is achieved using a set of steering arms and linkages.
 The core idea behind Ackermann steering geometry is that the two front wheels must always point to a common instantaneous center of rotation (ICR) when turning. This center lies on the extension of the rear axle, meaning that each wheel must steer at slightly different angles.
 <br>
-![alt](Ackermann_turning.svg)
+![alt](./media/Ackermann_turning.svg)
 <br>
 This is how we can calculate the angles
 <br>
@@ -25,7 +25,7 @@ Where
 
 Let's see an animation that will make everything more clear:
 <br>
-![alt](Ackerman_Steering_Linkage-ezgif.com-rotated.gif)
+![alt](./media/Ackerman_Steering_Linkage.gif)
 
 
 
