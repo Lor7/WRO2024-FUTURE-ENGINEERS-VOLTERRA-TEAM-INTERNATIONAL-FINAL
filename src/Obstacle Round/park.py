@@ -16,6 +16,10 @@ HALF_FRAME_HEIGHT = FRAME_HEIGHT // 2
 direction = ANTICLOCKWISE
 motorValue = 0.23
 
+# Flags to track parking state
+gateAlreadyOpened = False
+flagAlreadyHere = False
+
 def setDirection(_direction):
     """Set the direction of the robot."""
     global direction
@@ -32,6 +36,7 @@ def handleParking(magentas, frame=None):
     Returns:
         bool: True if the robot should stop, False otherwise.
     """
+    global gateAlreadyOpened, flagAlreadyHere
     deltaX, deltaY = 0, 0
     virtualPoint = HALF_FRAME_WIDTH
 
@@ -65,10 +70,46 @@ def handleParking(magentas, frame=None):
 
     # Handle parking based on the direction
     if direction == CLOCKWISE:
-        pass
+        if m2[0] - m1[0] > 80:
+            gateAlreadyOpened = True
+            print("Gate opened")
+        if m2[0] - m1[0] > 150:
+            virtualPoint = (m1[0] + (m2[0] + m1[2]) / 2)
+            deltaX = HALF_FRAME_WIDTH - virtualPoint
+            print(f"Parking virtual point: {virtualPoint}")
+        elif gateAlreadyOpened and m1 == m2 and m1[2] > 100 and m2[3] > 150 and not flagAlreadyHere:
+            pass
+        else:
+            if estimatedDistanceM1 < 45 or not (m1[0] + m1[2] > 240 and m1[1] + m1[3] > 240):
+                print("Parking outer point")
+                virtualPoint = m2[0] + m2[2] * 1.3
+            else:
+                print("Parking outer point + width * 2")
+                virtualPoint = m2[0] + m2[2] * 2
+                
+            deltaX = HALF_FRAME_WIDTH - virtualPoint
+        deltaY = FRAME_HEIGHT - m2[1] - m2[3]
         
     elif direction == ANTICLOCKWISE:
-        pass
+        if m1[0] - m2[0] > 80:
+            print("Gate opened")
+            gateAlreadyOpened = True
+        if m1[0] - m2[0] > 150:
+            virtualPoint = (m2[0] + ((m1[0] - m2[0]) + m2[2]) / 2)
+            deltaX = HALF_FRAME_WIDTH - virtualPoint
+            print(f"Parking virtual point: {virtualPoint}")
+        elif gateAlreadyOpened and m1 == m2 and m1[2] > 100 and m2[3] > 150 and not flagAlreadyHere:
+            pass
+        else:
+            if estimatedDistanceM1 < 45 or not (m1[0] < 400 and m1[1] + m1[3] > 240):
+                print("Parking outer point")
+                virtualPoint = m2[0] - m2[2] * 0.3
+            else:
+                print("Parking outer point + width * 1")
+                virtualPoint = m2[0] - m2[2] * 1
+            
+            deltaX = HALF_FRAME_WIDTH - virtualPoint
+        deltaY = FRAME_HEIGHT - m2[1] - m2[3]
 
     # Draw the virtual point on the frame if available
     if frame is not None:
