@@ -25,11 +25,13 @@
 
 </div>
 
-<div align=center>
+<div align=center style="background-color: black; display: inline-block; padding: 10px;">
 
 <img src="./other/media/logo.png" alt="banner" height="400px">
 
 </div>
+
+<i>#This is the official repository of the Team Volterra for the international final of the WRO2024 season.</i><br>
 
 # Contents
 
@@ -93,8 +95,6 @@
 
 ---
 
-<br>
-
 <br><br>
 
 # Engineering Factor
@@ -107,7 +107,7 @@ For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensur
 
 Engineering also involves <b>problems optimization</b>. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
 
-<br><br>
+<br>
 
 # Hardware Design
 
@@ -175,17 +175,17 @@ The servo motor steers the front axle, providing efficient, high-torque performa
 A **gearmotor** is an electric motor integrated with a gearbox, designed to deliver high torque at low speeds. Compared to a standard motor, it provides enhanced control, efficiency, and precision, particularly ideal for applications like our prototype, where smooth operation at low speeds is critical. <br>
 A **servo motor** is a rotary actuator that precisely controls angular position, speed, and torque, typically using a feedback mechanism. Servos are ideal for applications requiring precise motion control, such as our prototype's steering.<br>
 
-[!NOTE]
+> [!NOTE]
 > We chose the ES08MA servo over more common options like the SG90 because it offers greater robustness and higher torque, making it capable of handling more demanding tasks. Additionally, its metal gears provide increased durability and reliability under load, essential for ensuring consistent performance in our prototype's operations.
 
-<br><br>
+<br>
 
 ## Mechanical lesson
 
 [Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics](other/mechanical_lesson.md)
 
 > [!WARNING]  
-> <table><tr><td>Maintenance is essential to ensure the proper functioning of the vehicle. As illustrated in the image, the axes experience wear and tear due to continuous rotation, gradually degrading over time and turning into fine debris. This process can eventually lead to mechanical failures and impaired performance if not addressed promptly.</td><td><img src="other/media/axis_wear_and_tear.jpg" alt="Battery" /></td></tr></table>
+> <table><tr><td>Maintenance is essential to ensure the proper functioning of the vehicle. As illustrated in the image, the axes experience wear and tear due to continuous rotation, gradually degrading over time and turning into fine debris. This process can eventually lead to mechanical failures and impaired performance if not addressed promptly. Hereby we warmly suggest you periodically substitute the mechanical components.</td><td><img src="other/media/axis_wear_and_tear.jpg" alt="Battery" /></td></tr></table>
 
 
 
@@ -221,7 +221,7 @@ A **servo motor** is a rotary actuator that precisely controls angular position,
 
 **Power Distribution** <br> Sensors receive 5.0V from the **Raspberry** (except the color sensor at 3.3V). The **EDGE TPU** gets 2W of power from the Raspberry's USB3.0 at 5V, with a peak current use of 900mA. Arduino Nano receives power directly from the voltage stabilizer and provides 5.0V power to the servo motor.
 
-<br><br>
+<br>
 
 ## Sense Management
 
@@ -315,6 +315,8 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 ## Mechanical Scheme
 
 > ![mechanical scheme](./schemes/mechanical_scheme.jpg)
+
+<br>
 
 # Software Design
 
@@ -436,7 +438,7 @@ The prototype's goal is to complete the parking maneuver by guiding the front of
 </tr>
 </table>
 
-<br><br>
+<br>
 
 # Setup and Build
 
@@ -496,7 +498,7 @@ We suggest the following steps for the software setup. This is our (personal) ve
     - _@reboot source **VENV-NAME**/bin/activate_
     - \*@reboot python **/PATH-TO-THE-MAIN-CONTROL-FILE/\***
 
-<br><br>
+<br>
 
 ## How to Assemble the Prototype
 
@@ -603,7 +605,7 @@ For assembling the vehicle prototype, we suggest the following steps:
 
 </details>
 
-<br><br>
+<br>
 
 # Engineering Journal
 
