@@ -105,7 +105,7 @@ We were responsible for both the development and assembly of the vehicle. It fea
 
 For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensure accurate control of the wheel positioning, we implemented the **Ackermann steering system**. This system provides different turning angles for the inner and outer wheels when cornering. We accomplished this by incorporating a **mechanical differential** and gears to connect the motor to the rear wheels.
 
-Engineering also involves problem optimization. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
+Engineering also involves <b>problems optimization</b>. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
 
 <br><br>
 
@@ -172,11 +172,22 @@ To properly implement the DC 12V encoder gear motor and servo motor, a motor dri
 
 The servo motor steers the front axle, providing efficient, high-torque performance with precise speed control, ideal for dynamic responses. It uses permanent magnets with low rotor inertia, enhancing speed control and energy efficiency.
 
+A **gearmotor** is an electric motor integrated with a gearbox, designed to deliver high torque at low speeds. Compared to a standard motor, it provides enhanced control, efficiency, and precision, particularly ideal for applications like our prototype, where smooth operation at low speeds is critical. <br>
+A **servo motor** is a rotary actuator that precisely controls angular position, speed, and torque, typically using a feedback mechanism. Servos are ideal for applications requiring precise motion control, such as our prototype's steering.<br>
+
+[!NOTE]
+> We chose the ES08MA servo over more common options like the SG90 because it offers greater robustness and higher torque, making it capable of handling more demanding tasks. Additionally, its metal gears provide increased durability and reliability under load, essential for ensuring consistent performance in our prototype's operations.
+
 <br><br>
 
 ## Mechanical lesson
 
 [Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics](other/mechanical_lesson.md)
+
+> [!WARNING]  
+> <table><tr><td>Maintenance is essential to ensure the proper functioning of the vehicle. As illustrated in the image, the axes experience wear and tear due to continuous rotation, gradually degrading over time and turning into fine debris. This process can eventually lead to mechanical failures and impaired performance if not addressed promptly.</td><td><img src="other/media/axis_wear_and_tear.jpg" alt="Battery" /></td></tr></table>
+
+
 
 <!-- <a href="other/mechanical_lesson.md" style="text-decoration: none;">
   <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
@@ -391,14 +402,22 @@ To maneuver the autonomous vehicle around obstacles on the path, we begin by ide
 - If the robot is off-center in the lane and risks hitting the wall, it searches for available open space and adjusts its position to move towards it.  
 <br><br>
 <table>
-<tr><td><img src="other/trajectories/scenario4_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.</td></tr>
-<tr><td><img src="other/trajectories/scenario3_explained.jpg" alt = "vehicle trajectory"></td><td>When approaching an obstacle that is on the outer side of the following lane, the prototype will increase the radius of curvature in order to avoid hitting the obstacle when turning to align itself with the wall.</td></tr>
+<tr><td><img src="other/trajectories/scenario4_explained.jpg" alt = "obstacle vehicle trajectory 1"></td><td>When approaching a block from the inner part of the track, just after a corner, continuing to aim for the midpoint between the obstacle and the wall would cause the robot to veer into the wall. To prevent this, the vehicle shifts outward within the lane, creating enough space to safely bypass the block.</td></tr>
+<tr><td><img src="other/trajectories/scenario3_explained.jpg" alt = "obstacle vehicle trajectory 2"></td><td>When approaching an obstacle that is on the outer side of the following lane, the prototype will increase the radius of curvature in order to avoid hitting the obstacle when turning to align itself with the wall.</td></tr>
 <tr><th>Other cases which also comprises of trajectory optimization (shorter and smoother path)</th></tr>
-<tr><td><img src="other/trajectories/scenario1_explained.jpg" alt = "vehicle trajectory"></td><td><img src="other/trajectories/scenario2_explained.jpg" alt = "vehicle trajectory"></td></tr>
+<tr><td><img src="other/trajectories/scenario1_explained.jpg" alt = "obstacle vehicle trajectory 3"></td><td><img src="other/trajectories/scenario2_explained.jpg" alt = "obstacle vehicle trajectory 4"></td></tr>
 </table>
 <br><br>
 As mentioned earlier, when obstacles are not detected, the prototype avoids wall collisions by positioning itself near the midpoint between the lanes. However, if the autonomous vehicle approaches too close to the wall directly ahead, it will make a sufficient steering adjustment to execute a ninety-degree turn, either clockwise or counterclockwise, to continue its path.
+<table>
+<tr><th>Here are shown two vehicle's trajectories when there are no obstacles with due captions:</th></tr>
+<tr>
+<td><img src="other/trajectories/wall_scenario_1.jpg" alt = "wall vehicle trajectory 1"></td>
+<td><img src="other/trajectories/wall_scenario_2.jpg" alt = "wall vehicle trajectory 2"></td>
+</tr>
+</table>
 
+<br>
 Other relevant part of the movement algorithm:
 
 - When the vehicle collides with the wall, as detected by analyzing data from the IMU sensor, it initiates a reverse movement to back up and realign itself with the field walls.
@@ -408,6 +427,14 @@ Other relevant part of the movement algorithm:
 **Parking**
 
 The prototype's goal is to complete the parking maneuver by guiding the front of the vehicle between the two delineators. This movement stops once the prototype is successfully parked or if there isn't enough information to proceed. Since the prototype may not initially be parallel to the parking space, it will attempt to align itself by combining steering adjustments with reverse movements to achieve the correct orientation.
+<table>
+<tr><th>Here are shown some parking trajectories with due captions:</th></tr>
+<tr>
+<td><img src="other/trajectories/parking_scenario_1.jpg" alt = "parking vehicle trajectory 1"></td>
+<td><img src="other/trajectories/parking_scenario_2.jpg" alt = "parking vehicle trajectory 2"></td>
+<td><img src="other/trajectories/parking_scenario_3.jpg" alt = "parking vehicle trajectory 3"></td>
+</tr>
+</table>
 
 <br><br>
 
