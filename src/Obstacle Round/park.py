@@ -78,7 +78,21 @@ def handleParking(magentas, frame=None):
             deltaX = HALF_FRAME_WIDTH - virtualPoint
             print(f"Parking virtual point: {virtualPoint}")
         elif gateAlreadyOpened and m1 == m2 and m1[2] > 100 and m2[3] > 150 and not flagAlreadyHere:
-            pass
+            print("Reverse gate is closed")
+            flagAlreadyHere = True
+            motor.stop()
+            setSteeringAngle(2)
+            sleep(0.4)
+            motor.backward(motorValue)
+            sleep(0.7)
+            motor.stop()
+            setSteeringAngle(-12)
+            motor.backward(motorValue)
+            sleep(0.9)
+            motor.stop()
+            setSteeringAngle(2)
+            sleep(0.3)
+            return None
         else:
             if estimatedDistanceM1 < 45 or not (m1[0] + m1[2] > 240 and m1[1] + m1[3] > 240):
                 print("Parking outer point")
@@ -99,7 +113,21 @@ def handleParking(magentas, frame=None):
             deltaX = HALF_FRAME_WIDTH - virtualPoint
             print(f"Parking virtual point: {virtualPoint}")
         elif gateAlreadyOpened and m1 == m2 and m1[2] > 100 and m2[3] > 150 and not flagAlreadyHere:
-            pass
+            print("Reverse gate is closed")
+            flagAlreadyHere = True
+            motor.stop()
+            setSteeringAngle(2)
+            sleep(0.4)
+            motor.backward(motorValue)
+            sleep(0.7)
+            motor.stop()
+            setSteeringAngle(12)
+            motor.backward(motorValue)
+            sleep(0.9)
+            motor.stop()
+            setSteeringAngle(2)
+            sleep(0.3)
+            return None
         else:
             if estimatedDistanceM1 < 45 or not (m1[0] < 400 and m1[1] + m1[3] > 240):
                 print("Parking outer point")

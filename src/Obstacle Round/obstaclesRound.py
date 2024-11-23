@@ -30,6 +30,7 @@ except:
 """
 
 # Constants for the parking and obstacle avoidance behavior
+totalParkingTime = 6.7  # Time allocated for parking
 pauseTimeColorSensor = 6  # Time before starting (August) was 7.5
 flagSwitchDirection = True  # Flag to control direction switching
 isRequiredExtraTimeRoundAbout = False  # Flag for extra time required at roundabouts
@@ -443,7 +444,7 @@ def loop():
     # Global variables used in the function
     global lap, side, updatedSide, state, timeLastLine, STUCK, obstacleMemoryStuck
     global direction, STOP, imageProcessing, imageProcessing_process
-    global colorThread, defineColorThread
+    global colorThread, defineColorThread, totalParkingTime
     global extraPauseTimeColorSensorRoundabout, roundAboutBufferTimeExpired, directionInverted, flagSwitchDirection, screenShot
     global flagStartedWaitedSecondsForRoundAbout, flagMovementTowardLeft, flagWaitedSecondsForRoundAbout, stopChecking
     global stuckWhilePerformingUTurn, delayRoundaboutMagentaFirstSide, flagDisambigousDelay
@@ -505,6 +506,7 @@ def loop():
     
     # Initialize timing variables for parking and color detection
     chronograph = time()
+    startParkingTime = -1
     startParking = False
     startParkingCounter = 0
     magentaSideCounter = [0, 0]
@@ -611,6 +613,11 @@ def loop():
                 # If the prototype is detected as stuck
                 print("Prototype stuck!")
                 state.add(STUCK)  # Add the STUCK state to the set of active states
+
+                # If parking started and time has not been added to totalParkingTime yet
+                if startParkingTime != -1 and not(flagTimeAddedParking):
+                    totalParkingTime += 4  # Increment total parking time by 4 seconds
+                    flagTimeAddedParking = True  # Mark that time has been added
 
                 # Check if the obstacle that caused the robot to be stuck is a red block
                 # and if the time since the obstacle was detected is less than 3.5 seconds
@@ -1022,6 +1029,31 @@ def loop():
                     print("Finished roundAbout")
                     roundAbout[2] = time()
 
+            # Parking logic for the fourth lap
+            if lap == 4:
+                if startParkingTime == -1:
+                    print("I should start parking!")
+                    startParkingTime = time()
+
+                    # Adjust parking time based on direction and obstacles
+                    if direction == ANTICLOCKWISE and (((obstaclesFirstSide[1] == GREENBLOCKID or obstaclesFirstSide[1] == 0) and directionInverted) or (
+                        (obstaclesFirstSide[0] == GREENBLOCKID or obstaclesFirstSide[0] == 0) and not directionInverted)):
+                        print("Parking time reduction #1")
+                        totalParkingTime -= 1
+                    elif direction == CLOCKWISE and (((obstaclesFirstSide[1] == REDBLOCKID or obstaclesFirstSide[1] == 0) and directionInverted) or (
+                        (obstaclesFirstSide[0] == REDBLOCKID or obstaclesFirstSide[0] == 0) and not directionInverted)):
+                        totalParkingTime -= 1
+                        print("Parking time reduction #2")
+                elif time() - startParkingTime > totalParkingTime:
+                    # End parking if total parking time has elapsed
+                    imageProcessing.stop()
+                    print("Finished parking!")
+                    motor.stop()
+                    setSteeringAngle(2)
+                    motor.stop()
+                    colorSensor.stop = True
+                    print(f"Time required for completing 4 laps: {time() - startingTime}")
+                    break
 
             # Main cycle sleep
             sleep(sleepTimeForMainCycle)
@@ -1051,3 +1083,4 @@ if __name__ == '__main__':
             exit()
         except Exception as e:
             print("Initial try-catch", e)
+
