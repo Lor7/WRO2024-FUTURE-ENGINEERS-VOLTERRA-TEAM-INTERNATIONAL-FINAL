@@ -25,13 +25,13 @@
 
 </div>
 
-<div align=center style="background-color: black; display: inline-block; padding: 10px;">
+<div align="center" style="background-color: black; display: inline-block; padding: 10px;">
 
 <img src="./other/media/logo.png" alt="banner" height="400px">
 
 </div>
 
-<i>#This is the official repository of the Team Volterra for the international final of the WRO2024 season.</i><br>
+<div align="center"><i>#This is the official repository of the Team Volterra for the international final of the WRO2024 season.</i></div><br>
 
 # Contents
 
@@ -446,7 +446,7 @@ The prototype's goal is to complete the parking maneuver by guiding the front of
 
 We suggest the following steps for the software setup. This is our (personal) version of the official software setups and installations guides.
 
-1. Install and setup OS
+1. **Install and setup OS**
 
 - Download the official SD imager on the Raspberry Pi 5 site
 - Flash the microSD with the latest version of the recommended 64-bit OS
@@ -463,7 +463,7 @@ We suggest the following steps for the software setup. This is our (personal) ve
       - _sudo apt-get install libedgetpu1-max_
   - Reboot the Pi
 
-2. Installing Python3.9 interpreter (Python3.11 is installed by default)
+2. **Installing Python3.9 interpreter (Python3.11 is installed by default)**
 
 - Open the terminal and type in:
   - _sudo apt update_
@@ -476,12 +476,12 @@ We suggest the following steps for the software setup. This is our (personal) ve
   - _sudo make altinstall_
   - Type _python3.9 –version_ to verify the installation process
 
-3. Install the required dependencies on Python3.11:
+3. **Install the required dependencies on Python3.11:**
 
 - Open the terminal and type in:
   - _pip install zmq numpy opencv-python picamera2_
 
-4. Create the Python3.9 virtual environment and install the necessary dependencies:
+4. **Create the Python3.9 virtual environment and install the necessary dependencies:**
 
 - Open the terminal and type in:
   - \*python3.9 -m venv **VENV-NAME\***
@@ -490,7 +490,7 @@ We suggest the following steps for the software setup. This is our (personal) ve
 - Install the required dependencies, type into the terminal the following instruction:
 - _pip install zmq gpiozero numpy smbus colorama opencv-python tensorflow tflite-runtime python3-pycoral_
 
-5. We will use Cron job scheduler to start the program on boot:
+5. **We will use Cron job scheduler to start the program on boot:**
 
 - Set the control programme to start at the boot of the SBC
   - Within the terminal type _sudo crontab -e_
@@ -513,8 +513,9 @@ For assembling the vehicle prototype, we suggest the following steps:
 - Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
 - Follow the [electrical schematic](schemes/electrical_scheme.jpg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
 - Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
-- Inspect all connections, secure any loose wires, and make sure all parts are firmly in place.
-- Consider using a voltmeter and ammeter to verify that wire connection are genuine.
+> [!CAUTION]
+> Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.
+> Inspect all connections, secure any loose wires, and make sure all parts are firmly in place. Consider using a voltmeter and ammeter to verify that wire connection are genuine.
 - Finally, run a test to confirm the vehicle's proper operation.
 
 <br><br>
