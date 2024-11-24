@@ -4,7 +4,9 @@
 </td></tr>
 <tr><td><b>opencv:</b></td><td> A powerful tool for image and video processing. It's used here for analyzing images, detecting objects, and handling live video feeds.
 </td></tr>
-<tr><td><b>tensorflow:</b></td><td> Ideal for machine learning tasks. It helps with creating AI models to recognize patterns or objects in images. numpy: Makes working with numbers and large datasets fast and efficient. It's a foundation for libraries like TensorFlow and OpenCV.
+<tr><td><b>tensorflow:</b></td><td> Ideal for machine learning tasks. It helps with creating AI models to recognize patterns or objects in images. 
+</td></tr>
+<tr><td><b>numpy:</b></td><td> Makes working with numbers and large datasets fast and efficient. It's a foundation for libraries like TensorFlow and OpenCV.
 </td></tr>
 <tr><td><b>zmq:</b></td><td>Enables fast and efficient communication between different processes. We use it to transfer data between the camera and main processes.
 </td></tr>
