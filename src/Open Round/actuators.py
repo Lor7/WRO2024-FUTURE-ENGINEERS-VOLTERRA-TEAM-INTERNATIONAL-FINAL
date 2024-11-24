@@ -1,6 +1,19 @@
 from openVariables import *  # Import necessary variables/constants from the openVariables module
 from time import time  # Import the time function for any timing operations
+import serial
 
+# Serial Communication Setup
+SERIAL_PORT = "/dev/ttyAMA1"  # Replace with your serial port
+BAUD_RATE = 115200
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
+
+def sendSerialAngle(angle):
+    """Send the steering angle to the servo via serial."""
+    with ser:
+        ser.write(f"{(angle) + 50 + SERVOOFFSET}".encode('utf-8'))  # Send the angle as a newline-terminated string
+        #print(f"Sent angle to serial: {angle}")
+        
+        
 def setSteeringAngle(angle, importance=0):
     '''
     Adjusts the steering angle of the servo motor.
@@ -24,18 +37,18 @@ def setSteeringAngle(angle, importance=0):
     # Apply angle adjustments based on the importance level
     if importance > -1:  # If normal or higher importance
         if -20 <= angle <= 20:  # Ensure the angle is within the safe range
-            servo.angle = angle + SERVOOFFSET  # Adjust the servo with a predefined offset
+            sendSerialAngle(angle)  # Adjust the servo with a predefined offset
         elif angle < -20:  # Cap angle at -20 (too much left)
-            servo.angle = -20 + SERVOOFFSET
+            sendSerialAngle(-20)
         else:  # Cap angle at +20 (too much right)
-            servo.angle = 20 + SERVOOFFSET
+            sendSerialAngle(20)
     else:  # If importance is negative, apply stricter limits
         if -15 <= angle <= 15:  # Stricter angle limits for lower importance
-            servo.angle = angle + SERVOOFFSET  # Set angle with offset within reduced range
+            sendSerialAngle(angle)  # Set angle with offset within reduced range
         elif angle < -15:  # Limit left angle
-            servo.angle = -15 + SERVOOFFSET
+            sendSerialAngle(-15)
         else:  # Limit right angle
-            servo.angle = 15 + SERVOOFFSET
+            sendSerialAngle(15)
 
     # If angle is beyond ±14 degrees, initiate forward movement
     if angle < -14 or angle > 14:

@@ -403,7 +403,7 @@ def handleExtraTimeForRoundAbout():
         # Initialize distance sensor
         distanceSensor = DistanceSensor(echo=10, trigger=9, queue_len=1,
                                         max_distance=2.5, partial=False,
-                                        threshold_distance=0.1, pin_factory=Device.pin_factory)
+                                        threshold_distance=0.1, pin_factory=None)
         
         trueIndex, index, flagExtraTimeNeeded = 0, 0, 0
         while index < 9 and trueIndex < 50:

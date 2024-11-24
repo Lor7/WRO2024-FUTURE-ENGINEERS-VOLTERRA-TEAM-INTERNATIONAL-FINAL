@@ -1,7 +1,15 @@
 from openVariables import *
 from differentStates import *
 from time import time
+import serial
 
+
+# Serial Communication Setup
+SERIAL_PORT = "/dev/ttyAMA1"  # Replace with your serial port
+BAUD_RATE = 115200
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
+
+SERVOOFFSET = +50
 # Initialize global variables for steering angles and state
 minAngle, maxAngle = -22, 20
 state = None
@@ -43,6 +51,14 @@ def setMinSteeringAngle(direction):
         minAngle = -20
         maxAngle = 20
 
+
+def sendSerialAngle(angle):
+    """Send the steering angle to the servo via serial."""
+    with ser:
+        ser.write(f"{(angle) + 50 + SERVOOFFSET}".encode('utf-8'))  # Send the angle as a newline-terminated string
+        #print(f"Sent angle to serial: {angle}")
+        
+        
 def setSteeringAngle(angle, importance=0):
     """
     Set the steering angle while applying constraints and adjustments.
@@ -62,11 +78,11 @@ def setSteeringAngle(angle, importance=0):
     
     # Constrain angle within the min and max angle limits
     if minAngle <= angle <= maxAngle:
-        servo.angle = angle + SERVOOFFSET
+        sendSerialAngle(angle)
     elif angle < minAngle:
-        servo.angle = minAngle + SERVOOFFSET
+        sendSerialAngle(minAngle)
     else:
-        servo.angle = maxAngle + SERVOOFFSET
+        sendSerialAngle(minAngle)
 
     # Special condition for anticlockwise direction
     if direction == ANTICLOCKWISE and (angle < -12 or angle > 12) and time() - timeLastLine < 3.5:

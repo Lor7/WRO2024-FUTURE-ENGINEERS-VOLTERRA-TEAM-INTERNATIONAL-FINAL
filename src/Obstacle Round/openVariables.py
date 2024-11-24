@@ -2,8 +2,6 @@ from numpy import array, uint8, pi
 from colorama import Fore, Style
 from colorSensor import ColorSensor
 from gpiozero import Motor, AngularServo
-from gpiozero import Device
-from gpiozero.pins.pigpio import PiGPIOFactory
 from threading import Thread
 from time import sleep
 
@@ -24,13 +22,12 @@ color_sensor_thread.start()
 color_sensor_thread.join()
 
 STEERINGANGLEMID = 0
-SERVOOFFSET = -20
+SERVOOFFSET = +50
 
-motor = Motor(forward=24, backward=23, enable=18, pwm=True, pin_factory=Device.pin_factory)
-servo = AngularServo(pin=17, initial_angle=0, min_angle=-90, max_angle=90, 
+motor = Motor(forward=24, backward=23, enable=18, pwm=True, pin_factory=None)
+servo = AngularServo(pin=17, initial_angle=0, min_angle=-90, max_angle=90,
                      min_pulse_width=0.0006, max_pulse_width=0.0024,
-                     pin_factory=Device.pin_factory)
-servo.angle = -40
+                     pin_factory=None)
 
 # Global Variables
 lap, side, updatedSide = 0, 0, 0

@@ -35,7 +35,7 @@
 
 # Contents
 
-<details>
+
   <summary><b style="font-size: 1.5em;">Hardware Design</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#engineering-factor">Engineering Factor</a></li>
@@ -46,9 +46,9 @@
     <li><a href="#mechanical-scheme">Mechanical Scheme</a></li>
     <li><a href="#mechanical-lesson">Mechanical lesson</a></li>
   </ul>
-</details>
 
-<details>
+
+
   <summary><b style="font-size: 1.5em;">Software Design</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#programming-language-libraries-environment-and-architecture">Programming Language, Libraries, Environment, and Architecture</a></li>
@@ -56,9 +56,9 @@
     <li><a href="#algorithm">Algorithm</a></li>
     <!-- <li><a href="#electrical-parts-protocols-schemes">Electrical Parts Protocols Schemes</a></li> -->
   </ul>
-</details>
 
-<details>
+
+
   <summary><b style="font-size: 1.5em;">Media</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#team">Team</a></li>
@@ -66,25 +66,25 @@
     <li><a href="#video">Video</a></li>
     <li><a href="#3d-models-and-graphical-representations">3D Models and Graphical Representations</a></li>
   </ul>
-</details>
 
-<details>
+
+
   <summary><b style="font-size: 1.5em;">Build & Setup</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#how-to-assemble-the-prototype">How to Assemble the Prototype</a></li>
     <li><a href="#how-to-setup-the-software-on-the-raspberry-pi-5">How to Setup the Software</a></li>
     <li><a href="#costs-of-the-components">Costs</a></li>
   </ul>
-</details>
 
-<details>
+
+
   <summary><b style="font-size: 1.5em;">Engineering Journal</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#diary">Diary</a></li>
     <li><a href="#what-we-learned">What We Learned</a></li>
     <li><a href="#gantt-chart">Gantt Chart</a></li>
   </ul>
-</details>
+
 
 <!-- <details>
   <summary><b style="font-size: 1.5em;">Future Improvements</b></summary>
@@ -522,89 +522,63 @@ For assembling the vehicle prototype, we suggest the following steps:
 
 ## Costs of the Components
 
-<details>
   <summary>Components</summary>
 
-  <table>
+<table>
+  <thead>
     <tr>
-      <th>Component</th>
-      <th>Cost</th>
+      <th>Category</th>
+      <th>Components</th>
+      <th>Total Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Power Supply</td>
+      <td>
+        Battery LiPo 3S (€30.00), Tension Stabilizer (€8.00), Cable Connector XT 60 (€2.99)
+      </td>
+      <td>€40.99</td>
     </tr>
     <tr>
-      <td>Battery LiPo 3S</td>
-      <td>€30.00</td>
+      <td>Motors and Drivers</td>
+      <td>
+        Gearmotor (€35.89), Motor driver (ln298n) (€5.99), Servomotor (€7.06), Mechanical differential (€5.49)
+      </td>
+      <td>€54.43</td>
     </tr>
     <tr>
-      <td>Tension Stabilizer</td>
-      <td>€8.00</td>
+      <td>Sensors</td>
+      <td>
+        Color Sensor (TCS 34725) (€9.00), Ultrasonic Sensor (HC SR04) (€3.99), IMU (WT901C) (€39.89)
+      </td>
+      <td>€52.88</td>
     </tr>
     <tr>
-      <td>Motor driver (ln298n)</td>
-      <td>€5.99</td>
+      <td>Electronics</td>
+      <td>
+        Raspberry Pi 5 Model B, 8GB RAM (€89.99), Google Coral EDGE TPU (€98.75), Arduino Nano (€11.99), 
+        Level Converter 5V to 3.3V (€2.29)
+      </td>
+      <td>€203.02</td>
     </tr>
     <tr>
-      <td>Gearmotor</td>
-      <td>€35.89</td>
-    </tr>
-    <tr>
-      <td>Servomotor</td>
-      <td>€7.06</td>
-    </tr>
-    <tr>
-      <td>Color Sensor (TCS 34725)</td>
-      <td>€9.00</td>
-    </tr>
-    <tr>
-      <td>Ultrasonic Sensor (HC SR04)</td>
-      <td>€3.99</td>
-    </tr>
-    <tr>
-      <td>IMU (WT901C)</td>
-      <td>€39.89</td>
+      <td>Mechanical Parts</td>
+      <td>
+        Tyres, axes, linkages (€15.00), Plywood (€3.50), Jumper wires (€5.00)
+      </td>
+      <td>€23.50</td>
     </tr>
     <tr>
       <td>Camera</td>
+      <td>
+        Camera (€35.99)
+      </td>
       <td>€35.99</td>
     </tr>
-    <tr>
-      <td>Raspberry Pi 5 Model B, 8GB RAM</td>
-      <td>€89.99</td>
-    </tr>
-    <tr>
-      <td>Google Coral EDGE TPU</td>
-      <td>€98.75</td>
-    </tr>
-    <tr>
-      <td>Arduino Nano</td>
-      <td>€11.99</td>
-    </tr>
-    <tr>
-      <td>Cable Connector XT 60</td>
-      <td>€2.99</td>
-    </tr>
-    <tr>
-      <td>Level Converter 5V to 3.3V</td>
-      <td>€2.29</td>
-    </tr>
-    <tr>
-      <td>Mechanical differential</td>
-      <td>€5.49</td>
-    </tr>
-    <tr>
-      <td>Jumper wires</td>
-      <td>€5.00</td>
-    </tr>
-    <tr>
-      <td>Tyres, axes, linkages</td>
-      <td>€15.00</td>
-    </tr>
-    <tr>
-      <td>Plywood</td>
-      <td>€3.50</td>
-    </tr>
-  </table>
+  </tbody>
+</table>
 
-</details>
 
 <br>
 

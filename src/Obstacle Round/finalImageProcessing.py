@@ -5,6 +5,8 @@ from obstacleRecognitionConstants import *
 import numpy as np
 from park import handleParking
 
+import zmq
+import subprocess
 import os
 import sys
 import glob
@@ -90,6 +92,8 @@ class ImageProcessing():
         self.drawDebug = drawDebug  # Flag to draw debug information
         self.lap = 0  # Lap counter or other usage
         self.timeAllSameColorPark = 0  # Timer for parking color detection
+        command = '''python3.11 "/home/pi/Desktop/cameraFeed.py"'''
+        self.camera_feed_process = subprocess.Popen(command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     
     def setDirection(self, direction):
         # Update direction-specific parameters
@@ -369,18 +373,33 @@ class ImageProcessing():
         magenta = []
         colors = {GREENBLOCKID : tuple((0, 220, 105)), REDBLOCKID : tuple((25, 78, 255)), MAGENTAID : tuple((255, 0, 255))}
         estimatedDistanceThreshold = 60
+        
+        context = zmq.Context()
+        socket = context.socket(zmq.SUB)
+        socket.setsockopt(zmq.RCVHWM, 1)
+        socket.connect("ipc:///tmp/frame")
+        socket.setsockopt_string(zmq.SUBSCRIBE, '')
+        points = array([[125, 960], [170, 915], [330, 780], [1020, 760], [1245, 825], [1280, 960]]) // 2
+        points2 = array([[0, 0], [0, 190], [0, 335], [160, 280], [320, 245], [650, 190], [750, 190], [950, 225], [1100, 245], [1280, 290], [1280, 0]]) // 2
+
+        
+        
         while not(self.INTERRUPT):
             try:
                 start = perf_counter()
-                while not(self.NEWFRAME):
-                    sleep(0.0001)
                 #print(f"Waited for {(perf_counter() - start)*1000}ms")
-                self.NEWFRAME = False
                 #start = perf_counter()
                 leftWalls, rightWalls = [], []
                 
+                try:
+                    frame_data = socket.recv(zmq.NOBLOCK)  # Non-blocking receive
+                except zmq.Again:
+                    continue  # Skip to the next iteration if no new frame is available
+                buffer = pickle.loads(frame_data)  # Unpickle the data
+                frame = cv2.imdecode(buffer, cv2.IMREAD_COLOR)  # Decode JPEG image
+                frame = cv2.fillPoly(cv2.flip(frame, -1), pts=[points, points2], color=(255, 255, 255))
                 #frame = cv2.resize(self.image.copy(), (640, 480), interpolation = cv2.INTER_NEAREST)
-                frame = self.image.copy()
+                #frame = self.image.copy()
                 
                 image_resized = cv2.resize(frame, (width, height))
                 image_resized = cv2.cvtColor(image_resized, cv2.COLOR_BGR2RGB)
@@ -740,7 +759,7 @@ class ImageProcessing():
         try:
             # Set the interrupt flag to stop the frame processing loop
             self.INTERRUPT = True
-            
+            self.camera_feed_process.terminate()
             # Calculate and log the average processing time
             average = sum(self.processingTimeList) / len(self.processingTimeList)
             with open("processingTimeAverage.txt", "a") as f:

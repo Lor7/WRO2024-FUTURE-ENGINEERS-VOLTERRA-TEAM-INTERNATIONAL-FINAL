@@ -3,6 +3,9 @@ from threading import Thread
 from time import sleep, time
 import cv2
 from wallRecognitionConstants import *
+import subprocess
+import sys
+import zmq
 #from brain import makeDecision
 
 class ImageProcessing():
@@ -23,6 +26,9 @@ class ImageProcessing():
         self.processingTimeList = []
         self.direction = 0
         self.drawDebug = drawDebug
+        command = '''python3.11 "/home/pi/Desktop/cameraFeed.py"'''
+        self.camera_feed_process = subprocess.Popen(command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        
     def setDirection(self, direction):
         global wlcC, cccL, cccL2, cccL3, lwL, cccR, cccR2, cccR3, lwR, CLOCKWISE, ANTICLOCKWISE
         self.direction = direction
@@ -133,15 +139,27 @@ class ImageProcessing():
                 cv2.fillPoly(frame[ccc[2]:FRAME_HEIGHT, ccc[0]:FRAME_WIDTH] , pts = [i], color = (255, 255, 255))
             return coloredArea
         
+        
+        context = zmq.Context()
+        socket = context.socket(zmq.SUB)
+        socket.setsockopt(zmq.RCVHWM, 1)
+        socket.connect("ipc:///tmp/frame")
+        socket.setsockopt_string(zmq.SUBSCRIBE, '')
+        
         while not(self.INTERRUPT):
-            while not(self.NEWFRAME):
-                sleep(0.0001)
-            self.NEWFRAME = False
             start = perf_counter()
             walls = []
-
+            
+            try:
+                frame_data = socket.recv(zmq.NOBLOCK)  # Non-blocking receive
+            except zmq.Again:
+                continue  # Skip to the next iteration if no new frame is available
+            buffer = pickle.loads(frame_data)  # Unpickle the data
+            frame = cv2.imdecode(buffer, cv2.IMREAD_COLOR)  # Decode JPEG image
+            frame = cv2.flip(frame, -1)
+            
             #frame = cv2.resize(self.image.copy(), (640, 480), interpolation = cv2.INTER_NEAREST)
-            frame = self.image.copy()
+            #frame = self.image.copy()
             hsv = cv2.cvtColor(frame.copy(), cv2.COLOR_BGR2HSV)        
         
             frame = cv2.rectangle(frame, (cccL[0], cccL[2]), (cccL[0] + cccL[1], cccL[2] + cccL[3]), (30, 210, 80), 3)
@@ -256,6 +274,7 @@ class ImageProcessing():
     def stop(self):
         try:
             self.INTERRUPT = True
+            self.camera_feed_process.terminate()
             average = sum(self.processingTimeList)/len(self.processingTimeList)
             with open("processingTimeAverage.txt", "a") as f:
                 f.write(f"\n{average}")
