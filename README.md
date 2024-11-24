@@ -185,7 +185,7 @@ A **servo motor** is a rotary actuator that precisely controls angular position,
 [Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics](other/mechanical_lesson.md)
 
 > [!WARNING]  
-> <table><tr><td>Maintenance is essential to ensure the proper functioning of the vehicle. As illustrated in the image, the axes experience wear and tear due to continuous rotation, gradually degrading over time and turning into fine debris. This process can eventually lead to mechanical failures and impaired performance if not addressed promptly. Hereby we warmly suggest you periodically substitute the mechanical components.</td><td><img src="other/media/axis_wear_and_tear.jpg" alt="Battery" /></td></tr></table>
+> <table><tr><td>Maintenance is essential to ensure the proper functioning of the vehicle. As illustrated in the image, the axes experience wear and tear due to continuous rotation, gradually degrading over time and turning into fine debris. This process can eventually lead to mechanical failures and impaired performance if not addressed promptly. We strongly recommend periodically replacing the mechanical components to maintain optimal performance. Alternatively, to address the issue more permanently, consider upgrading to metal axes.</td><td><img src="other/media/axis_wear_and_tear.jpg" alt="Battery" /></td></tr></table>
 
 
 
@@ -269,8 +269,27 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
     </button>
   </a>
 </div> -->
+<br>
 
+> [!IMPORTANT]
+> <table> <tr><td>To ensure the Raspberry Pi 5 operates at its best performance without encountering bottlenecks due to overheating, it is essential to apply a heat dissipator and a fan. These components help maintain optimal operating temperatures by efficiently dissipating heat generated during intensive tasks. Without proper cooling, the Raspberry Pi 5 may throttle its performance to prevent damage from high temperatures, which could lead to slower processing speeds and system instability. By installing these cooling solutions, you ensure that the Pi remains within safe thermal limits, allowing it to perform demanding tasks such as AI processing or image handling without performance degradation.</td><td><img src="other/media/heat_dissipator_and_fan.jpeg" alt="Color sensor" /></td></tr></table>
+
+<br>
+
+> [!TIP]
+> As a further enhancement, we recommend adopting a Single Board Computer (SBC) with an <b>dedicated GPU</b> to fully and seamlessly leverage its hardware capabilities. This would largely improve performances!
+
+<br>
+
+
+### Google Coral USB Accelerator, Edge TPU
+The Edge TPU is an Application-Specific Integrated Circuit (ASIC) designed by Google to execute machine learning models directly on edge devices with exceptional speed and efficiency. Unlike general-purpose processors, the Edge TPU is specifically optimized for TensorFlow Lite models, making it highly effective for AI tasks such as object detection, image classification, and data inference, while maintaining low power consumption. Its ASIC design allows it to perform billions of operations per second with minimal latency, enabling real-time AI processing directly on the device. In our project, the Edge TPU is vital for achieving reliable and high-speed decision-making, as it offloads demanding computations from the Raspberry Pi's CPU, freeing resources for other critical tasks. This integration not only accelerates performance but also supports advanced AI functionalities, such as obstacle detection, ensuring optimal efficiency and responsiveness in edge computing scenarios.
+
+
+> [!IMPORTANT]
+> With the Raspberry Pi 5, the official AI accelerator HAT can be utilized via the PCIe connector. This addition provides significantly more computing power for AI-related tasks, such as object detection or real-time data processing, and is well-supported within the Raspberry Pi ecosystem, ensuring compatibility and ease of integration.
 <br><br>
+
 
 ### Sensors and Arduino Nano
 
@@ -301,6 +320,11 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
   </tr>
 </table>
 
+<br>
+
+> [!TIP]
+> Integrating a LiDAR system into the project could be a substantial future improvement. LiDAR (Light Detection and Ranging) offers precise distance measurements and high-resolution mapping of the environment, making it invaluable for tasks such as obstacle detection, navigation, and mapping. In our case, LiDAR could enhance the prototype's ability to detect objects with greater accuracy, improve path planning, and enable more advanced autonomous functionalities, ensuring safer and more efficient operation.
+
 <br><br>
 
 ## Wiring Diagram
@@ -312,9 +336,19 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 
 <br>
 
+> [!TIP]
+> As a future improvement, we propose the development of a custom PCB (Printed Circuit Board) to manage the wiring, which would represent a significant advancement for the project. This enhancement would streamline the overall design, reduce clutter, improve reliability by minimizing loose connections, and simplify maintenance and troubleshooting.
+
+<br>
+
 ## Mechanical Scheme
 
 > ![mechanical scheme](./schemes/mechanical_scheme.jpg)
+
+<br>
+
+> [!TIP]
+> We recommend enhancing the mechanical components by using metal pieces or 3D-printed carbon fiber parts. These materials offer superior durability, higher strength-to-weight ratios, and increased resistance to wear and tear compared to standard plastic components. Adopting such materials would improve the prototype's robustness, extend its lifespan, and ensure better performance under demanding conditions.
 
 <br>
 
