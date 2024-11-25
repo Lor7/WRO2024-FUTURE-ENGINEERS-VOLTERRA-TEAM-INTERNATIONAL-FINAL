@@ -34,8 +34,16 @@
 <div align="center"><i>#This is the official repository of the Team Volterra for the international final of the WRO2024 season.</i></div><br>
 
 # Contents
+  ### Folders
+  * [t-photos](t-photos) contains the photos of the team
+  * [v-photos](v-photos) contains 12 photos of the vehicle, 6 without captions (from every side) and 6 photos with captions (from every side, from the top to the bottom)
+  * [video](video) contains the file *video.md* which has a link for a demo video
+  * [schemes](schemes) This folder contains electrical and mechanical schematic diagrams
+  * [src](src) contains the source of the control software
+  * [models](models) contains the 3D model of the vehicle and an orthogonal projection
+  * [other](other) This folder contains images and pictures used within the README.md (media, backstage, trajectories), contains the numerous file we wrote to go in-depth about different topics (they are linked within the readme) and some abstracted schematics.
 
-
+  ### Index
   <summary><b style="font-size: 1.5em;">Hardware Design</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#engineering-factor">Engineering Factor</a></li>
@@ -105,7 +113,7 @@ We were responsible for both the development and assembly of the vehicle. It fea
 
 For the wheel system, we primarily used **Meccano** and **Lego** parts. To ensure accurate control of the wheel positioning, we implemented the **Ackermann steering system**. This system provides different turning angles for the inner and outer wheels when cornering. We accomplished this by incorporating a **mechanical differential** and gears to connect the motor to the rear wheels.
 
-Engineering also involves <b>problems optimization</b>. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other.
+Engineering also involves <b>problems optimization</b>. We focused on optimizing space by strategically positioning hardware to make the design more space-efficient. Additionally, we ensured that the system is easy to dismantle for maintenance or upgrades. On the software side, we prioritized creating a highly scalable program, structured into modules that interact with each other. Furthermore the <b>algorithm is designed to be fail-proof</b>, capable of handling potential sensor failures. In the event of a malfunction or missing data from a sensor, the algorithm employs redundancy and compensatory logic to mitigate the impact, ensuring the system continues to operate reliably and maintains optimal performance.
 
 <br>
 
@@ -219,7 +227,7 @@ A **servo motor** is a rotary actuator that precisely controls angular position,
   </tr>
 </table>
 
-**Power Distribution** <br> Sensors receive 5.0V from the **Raspberry** (except the color sensor at 3.3V). The **EDGE TPU** gets 2W of power from the Raspberry's USB3.0 at 5V, with a peak current use of 900mA. Arduino Nano receives power directly from the voltage stabilizer and provides 5.0V power to the servo motor.
+**Power Distribution** <br> Sensors receive 5.0V from the **Raspberry** (except the color sensor at 3.3V). The **EDGE TPU** gets 2W of power from the Raspberry's USB3.0 at 5V, with a peak current use of 900mA. Arduino Nano receives power directly from the voltage stabilizer and provides 5.0V power to the servo motor. The gearmotor is powered directly by the motor driver, which in turn draws power from the battery.
 
 <br>
 
