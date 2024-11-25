@@ -44,7 +44,11 @@ We utilized the free version of **Google Colab** to train our model. This approa
 
 ### Colab Setup
 
-- **Notebook**: The notebook used for training is available and can be accessed [here](#).
+- **Notebook**: Using the button below you can open the Colab Notebook that contains detaledly commented code to train the model, quantize it and convert it to Edge TPU format.
+  <br>
+  <a target="_blank" href="https://colab.research.google.com/drive/1G7E7a22B1jRH6S3vOXVaUheImZ7Ea_B8?usp=drive_link">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="padding-top:10px; width: 200px"/>
+  </a>
 - **Environment**: The Colab environment provided access to a GPU, which significantly sped up the training process.
 - **Model Training**: The model was trained using TensorFlow and required several hours of computation due to the size of the dataset and the complexity of the model.
 

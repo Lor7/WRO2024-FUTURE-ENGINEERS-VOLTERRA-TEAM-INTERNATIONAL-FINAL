@@ -540,12 +540,12 @@ For assembling the vehicle prototype, we suggest the following steps:
 
 - Gather the necessary tools, such as a multi-bit screwdriver and a wrench.
 - Construct the three platforms by cutting plywood sheets based on the diagram files you can find in the model folder.
-- Build the Ackermann steering mechanism using screws, LEGO or Meccano parts, and a servo motor; consult the [mechanical diagrams](schemes) for guidance.
-- Connect the gearmotor to the rear wheels using a LEGO mechanical differential, as shown in the [mechanical diagrams](schemes).
+- Build the Ackermann steering mechanism using screws, LEGO or Meccano parts, and a servo motor; consult the [mechanical diagrams](schemes/mechanical_scheme.jpg) for guidance.
+- Connect the gearmotor to the rear wheels using a LEGO mechanical differential, as shown in the [mechanical diagrams](schemes/mechanical_scheme.jpg).
 - Secure the various components to their designated plywood platforms, either by gluing them or, preferably, using spacers to fasten them more securely and prevent any damage; refer to the [vehicle photos](v-photos).
 - Stack the platforms with spacers (or similar components) to keep them stable.
 - Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
-- Follow the [electrical schematic](schemes/electrical_scheme.jpg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
+- Follow the [electrical schematic](schemes/electrical_scheme.jpeg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
 - Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
   > [!CAUTION]
   > Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.
