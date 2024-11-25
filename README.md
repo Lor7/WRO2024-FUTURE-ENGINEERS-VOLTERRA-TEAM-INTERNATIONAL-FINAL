@@ -34,16 +34,19 @@
 <div align="center"><i>#This is the official repository of the Team Volterra for the international final of the WRO2024 season.</i></div><br>
 
 # Contents
-  ### Folders
-  * [t-photos](t-photos) contains the photos of the team
-  * [v-photos](v-photos) contains 12 photos of the vehicle, 6 without captions (from every side) and 6 photos with captions (from every side, from the top to the bottom)
-  * [video](video) contains the file *video.md* which has a link for a demo video
-  * [schemes](schemes) This folder contains electrical and mechanical schematic diagrams
-  * [src](src) contains the source of the control software
-  * [models](models) contains the 3D model of the vehicle and an orthogonal projection
-  * [other](other) This folder contains images and pictures used within the README.md (media, backstage, trajectories), contains the numerous file we wrote to go in-depth about different topics (they are linked within the readme) and some abstracted schematics.
 
-  ### Index
+### Folders
+
+- [t-photos](t-photos) contains the photos of the team
+- [v-photos](v-photos) contains 12 photos of the vehicle, 6 without captions (from every side) and 6 photos with captions (from every side, from the top to the bottom)
+- [video](video) contains the file _video.md_ which has a link for a demo video
+- [schemes](schemes) This folder contains electrical and mechanical schematic diagrams
+- [src](src) contains the source of the control software
+- [models](models) contains the 3D model of the vehicle and an orthogonal projection
+- [other](other) This folder contains images and pictures used within the README.md (media, backstage, trajectories), contains the numerous file we wrote to go in-depth about different topics (they are linked within the readme) and some abstracted schematics.
+
+### Index
+
   <summary><b style="font-size: 1.5em;">Hardware Design</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#engineering-factor">Engineering Factor</a></li>
@@ -55,27 +58,20 @@
     <li><a href="#mechanical-lesson">Mechanical lesson</a></li>
   </ul>
 
-
-
   <summary><b style="font-size: 1.5em;">Software Design</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#programming-language-libraries-environment-and-architecture">Programming Language, Libraries, Environment, and Architecture</a></li>
     <li><a href="#obstacle-detection">Obstacle detection</a></li>
     <li><a href="#algorithm">Algorithm</a></li>
-    <!-- <li><a href="#electrical-parts-protocols-schemes">Electrical Parts Protocols Schemes</a></li> -->
   </ul>
-
-
 
   <summary><b style="font-size: 1.5em;">Media</b></summary>
   <ul style="font-size: 1.2em;">
-    <li><a href="#team">Team</a></li>
-    <li><a href="#vehicle">Vehicle</a></li>
-    <li><a href="#video">Video</a></li>
+    <li><a href="/t-photos/">Team</a></li>
+    <li><a href="/v-photos">Vehicle</a></li>
+    <li><a href="/video/">Video</a></li>
     <li><a href="#3d-models-and-graphical-representations">3D Models and Graphical Representations</a></li>
   </ul>
-
-
 
   <summary><b style="font-size: 1.5em;">Build & Setup</b></summary>
   <ul style="font-size: 1.2em;">
@@ -84,15 +80,12 @@
     <li><a href="#costs-of-the-components">Costs</a></li>
   </ul>
 
-
-
   <summary><b style="font-size: 1.5em;">Engineering Journal</b></summary>
   <ul style="font-size: 1.2em;">
     <li><a href="#diary">Diary</a></li>
     <li><a href="#what-we-learned">What We Learned</a></li>
     <li><a href="#gantt-chart">Gantt Chart</a></li>
   </ul>
-
 
 <!-- <details>
   <summary><b style="font-size: 1.5em;">Future Improvements</b></summary>
@@ -192,10 +185,9 @@ A **servo motor** is a rotary actuator that precisely controls angular position,
 
 [Here you can find a mechanical and physics explanation that we wrote about the Ackermann Steering System and the role of the mechanical differential. We have also explained their role into robotics](other/mechanical_lesson.md)
 
-> [!WARNING]  
+> [!WARNING]
+>
 > <table><tr><td>Maintenance is essential to ensure the proper functioning of the vehicle. As illustrated in the image, the axes experience wear and tear due to continuous rotation, gradually degrading over time and turning into fine debris. This process can eventually lead to mechanical failures and impaired performance if not addressed promptly. We strongly recommend periodically replacing the mechanical components to maintain optimal performance. Alternatively, to address the issue more permanently, consider upgrading to metal axes.</td><td><img src="other/media/axis_wear_and_tear.jpg" alt="Battery" /></td></tr></table>
-
-
 
 <!-- <a href="other/mechanical_lesson.md" style="text-decoration: none;">
   <button style="background-color: #4daafc; color: black; border: none; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 15px;">
@@ -280,6 +272,7 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 <br>
 
 > [!IMPORTANT]
+>
 > <table> <tr><td>To ensure the Raspberry Pi 5 operates at its best performance without encountering bottlenecks due to overheating, it is essential to apply a heat dissipator and a fan. These components help maintain optimal operating temperatures by efficiently dissipating heat generated during intensive tasks. Without proper cooling, the Raspberry Pi 5 may throttle its performance to prevent damage from high temperatures, which could lead to slower processing speeds and system instability. By installing these cooling solutions, you ensure that the Pi remains within safe thermal limits, allowing it to perform demanding tasks such as AI processing or image handling without performance degradation.</td><td><img src="other/media/heat_dissipator_and_fan.jpeg" alt="Color sensor" /></td></tr></table>
 
 <br>
@@ -289,15 +282,13 @@ Anyhow, upgrading the board came with some difficulties, here there's a list of 
 
 <br>
 
-
 ### Google Coral USB Accelerator, Edge TPU
-The Edge TPU is an Application-Specific Integrated Circuit (ASIC) designed by Google to execute machine learning models directly on edge devices with exceptional speed and efficiency. Unlike general-purpose processors, the Edge TPU is specifically optimized for TensorFlow Lite models, making it highly effective for AI tasks such as object detection, image classification, and data inference, while maintaining low power consumption. Its ASIC design allows it to perform billions of operations per second with minimal latency, enabling real-time AI processing directly on the device. In our project, the Edge TPU is vital for achieving reliable and high-speed decision-making, as it offloads demanding computations from the Raspberry Pi's CPU, freeing resources for other critical tasks. This integration not only accelerates performance but also supports advanced AI functionalities, such as obstacle detection, ensuring optimal efficiency and responsiveness in edge computing scenarios.
 
+The Edge TPU is an Application-Specific Integrated Circuit (ASIC) designed by Google to execute machine learning models directly on edge devices with exceptional speed and efficiency. Unlike general-purpose processors, the Edge TPU is specifically optimized for TensorFlow Lite models, making it highly effective for AI tasks such as object detection, image classification, and data inference, while maintaining low power consumption. Its ASIC design allows it to perform billions of operations per second with minimal latency, enabling real-time AI processing directly on the device. In our project, the Edge TPU is vital for achieving reliable and high-speed decision-making, as it offloads demanding computations from the Raspberry Pi's CPU, freeing resources for other critical tasks. This integration not only accelerates performance but also supports advanced AI functionalities, such as obstacle detection, ensuring optimal efficiency and responsiveness in edge computing scenarios.
 
 > [!IMPORTANT]
 > With the Raspberry Pi 5, the official AI accelerator HAT can be utilized via the PCIe connector. This addition provides significantly more computing power for AI-related tasks, such as object detection or real-time data processing, and is well-supported within the Raspberry Pi ecosystem, ensuring compatibility and ease of integration.
-<br><br>
-
+> <br><br>
 
 ### Sensors and Arduino Nano
 
@@ -337,7 +328,7 @@ The Edge TPU is an Application-Specific Integrated Circuit (ASIC) designed by Go
 
 ## Wiring Diagram
 
-> ![wiring scheme](./other/media/scheme.jpeg)
+> ![electrical scheme](./schemes/electrical_scheme.jpeg)
 
 > [!NOTE]
 > To create the electrical schematic, we utilized "Fritzing," a free and open-source software designed for circuit design and prototyping. Most of the required components were readily available within Fritzing's extensive library, making it straightforward to place and connect them. For components not available in the library, we manually created them using vector drawing tools, ensuring precise placement of pins on the correct grid. This meticulous approach was essential to maintain the accuracy and functionality of the schematic.
@@ -471,6 +462,7 @@ Other relevant part of the movement algorithm:
 **Parking**
 
 The prototype's goal is to complete the parking maneuver by guiding the front of the vehicle between the two delineators. This movement stops once the prototype is successfully parked or if there isn't enough information to proceed. Since the prototype may not initially be parallel to the parking space, it will attempt to align itself by combining steering adjustments with reverse movements to achieve the correct orientation.
+
 <table>
 <tr><th>Here are shown some parking trajectories with due captions:</th></tr>
 <tr>
@@ -555,9 +547,9 @@ For assembling the vehicle prototype, we suggest the following steps:
 - Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
 - Follow the [electrical schematic](schemes/electrical_scheme.jpg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
 - Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
-> [!CAUTION]
-> Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.
-> Inspect all connections, secure any loose wires, and make sure all parts are firmly in place. Consider using a voltmeter and ammeter to verify that wire connection are genuine.
+  > [!CAUTION]
+  > Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.
+  > Inspect all connections, secure any loose wires, and make sure all parts are firmly in place. Consider using a voltmeter and ammeter to verify that wire connection are genuine.
 - Finally, run a test to confirm the vehicle's proper operation.
 
 <br><br>
@@ -578,49 +570,82 @@ For assembling the vehicle prototype, we suggest the following steps:
     <tr>
       <td>Power Supply</td>
       <td>
-        Battery LiPo 3S (€30.00), Tension Stabilizer (€8.00), Cable Connector XT 60 (€2.99)
+       <!-- Battery LiPo 3S (€30.00), Tension Stabilizer (€8.00), Cable Connector XT 60 (€2.99) -->
+      <ul>
+      <li>Battery LiPo 3S (€30.00)</li>
+      <li>Tension Stabilizer (€8.00)</li>
+      <li>Cable Connector XT 60 (€2.99)</li>
+      </ul>
       </td>
       <td>€40.99</td>
     </tr>
     <tr>
       <td>Motors and Drivers</td>
       <td>
-        Gearmotor (€35.89), Motor driver (ln298n) (€5.99), Servomotor (€7.06), Mechanical differential (€5.49)
+        <!-- Gearmotor (€35.89), Motor driver (ln298n) (€5.99), Servomotor (€7.06), Mechanical differential (€5.49) -->
+      <ul>
+        <li>Gearmotor (€35.89)</li>
+        <li>Motor driver (ln298n) (€5.99)</li>
+        <li>Servomotor (€7.06)</li>
+        <li>Mechanical differential (€5.49)</li>
+      </ul>
       </td>
       <td>€54.43</td>
     </tr>
     <tr>
       <td>Sensors</td>
       <td>
-        Color Sensor (TCS 34725) (€9.00), Ultrasonic Sensor (HC SR04) (€3.99), IMU (WT901C) (€39.89)
+        <!-- Color Sensor (TCS 34725) (€9.00), Ultrasonic Sensor (HC SR04) (€3.99), IMU (WT901C) (€39.89) -->
+        <ul>
+          <li>Color Sensor (TCS 34725) (€9.00)</li>
+          <li>Ultrasonic Sensor (HC SR04) (€3.99)</li>
+          <li>IMU (WT901C) (€39.89)</li>
+        </ul>
       </td>
       <td>€52.88</td>
     </tr>
     <tr>
       <td>Electronics</td>
       <td>
-        Raspberry Pi 5 Model B, 8GB RAM (€89.99), Google Coral EDGE TPU (€98.75), Arduino Nano (€11.99), 
-        Level Converter 5V to 3.3V (€2.29)
+      <!-- Raspberry Pi 5 Model B, 8GB RAM (€89.99), Google Coral EDGE TPU (€98.75), Arduino Nano (€11.99), 
+        Level Converter 5V to 3.3V (€2.29) -->
+        <ul>
+          <li>Raspberry Pi 5 Model B, 8GB RAM (€89.99)</li>
+          <li>Google Coral EDGE TPU (€98.75)</li>
+          <li>Arduino Nano (€11.99)</li>
+          <li>Level Converter 5V to 3.3V (€2.29)</li>
+        </ul>
       </td>
       <td>€203.02</td>
     </tr>
     <tr>
       <td>Mechanical Parts</td>
       <td>
-        Tyres, axes, linkages (€15.00), Plywood (€3.50), Jumper wires (€5.00)
+        <!-- Tyres, axes, linkages (€15.00), Plywood (€3.50), Jumper wires (€5.00) -->
+        <ul>
+          <li>Tyres, axes, linkages (€15.00)</li>
+          <li>Plywood (€3.50)</li>
+          <li>Jumper wires (€5.00)</li>
+        </ul>
       </td>
       <td>€23.50</td>
     </tr>
     <tr>
       <td>Camera</td>
       <td>
-        Camera (€35.99)
+        <!-- Camera (€35.99) -->
+        <ul>
+          <li>Jumper wires (€5.00)</li>
+        </ul>
       </td>
       <td>€35.99</td>
     </tr>
+    <tr>
+      <td colspan="2" style="text-align: center">Cost of the build (as of 2024)</td>
+      <td>€410.91</td>
+    </tr>
   </tbody>
 </table>
-
 
 <br>
 
