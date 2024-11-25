@@ -329,6 +329,7 @@ The Edge TPU is an Application-Specific Integrated Circuit (ASIC) designed by Go
 ## Wiring Diagram
 
 > ![electrical scheme](./schemes/electrical_scheme.jpeg)
+> ![visual wiring scheme](./schemes/visual_wiring_scheme.jpg)
 
 > [!NOTE]
 > To create the electrical schematic, we utilized "Fritzing," a free and open-source software designed for circuit design and prototyping. Most of the required components were readily available within Fritzing's extensive library, making it straightforward to place and connect them. For components not available in the library, we manually created them using vector drawing tools, ensuring precise placement of pins on the correct grid. This meticulous approach was essential to maintain the accuracy and functionality of the schematic.
