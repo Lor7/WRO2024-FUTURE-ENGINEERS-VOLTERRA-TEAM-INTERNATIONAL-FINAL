@@ -38,11 +38,10 @@
 ### Folders
 
 - [t-photos](t-photos) contains the photos of the team
-- [v-photos](v-photos) contains 12 photos of the vehicle, 6 without captions (from every side) and 6 photos with captions (from every side, from the top to the bottom)
+- [v-photos](v-photos) contains 14 photos of the vehicle, 7 without captions (from every side) and 7 photos with captions (from every side, from the top to the bottom and one photo which highlights the inner part of the vehicle)
 - [video](video) contains the file _video.md_ which has a link for a demo video
-- [schemes](schemes) This folder contains electrical and mechanical schematic diagrams
+- [schemes](schemes) This folder contains electrical, visual-wiring and mechanical schematic diagrams
 - [src](src) contains the source of the control software
-- [models](models) contains the 3D model of the vehicle and an orthogonal projection
 - [other](other) This folder contains images and pictures used within the README.md (media, backstage, trajectories), contains the numerous file we wrote to go in-depth about different topics (they are linked within the readme) and some abstracted schematics.
 
 ### Index
@@ -67,16 +66,16 @@
 
   <summary><b style="font-size: 1.5em;">Media</b></summary>
   <ul style="font-size: 1.2em;">
-    <li><a href="/t-photos/">Team</a></li>
-    <li><a href="/v-photos">Vehicle</a></li>
-    <li><a href="/video/">Video</a></li>
-    <li><a href="#3d-models-and-graphical-representations">3D Models and Graphical Representations</a></li>
-  </ul>
+    <li><a href="#t-photos">Team photos</a></li>
+    <li><a href="#v-photos">Vehicle photos</a></li>
+    <li><a href="#video">Video</a></li>
+    <!--<li><a href="#3d-models-and-graphical-representations">3D Models and Graphical Representations</a></li>-->
+
 
   <summary><b style="font-size: 1.5em;">Build & Setup</b></summary>
   <ul style="font-size: 1.2em;">
-    <li><a href="#how-to-assemble-the-prototype">How to Assemble the Prototype</a></li>
     <li><a href="#how-to-setup-the-software-on-the-raspberry-pi-5">How to Setup the Software</a></li>
+    <li><a href="#how-to-assemble-the-prototype">How to Assemble the Prototype</a></li>
     <li><a href="#costs-of-the-components">Costs</a></li>
   </ul>
 
@@ -475,6 +474,33 @@ The prototype's goal is to complete the parking maneuver by guiding the front of
 
 <br>
 
+# Media
+## t-photos
+<table><tr><th>Team photo</th><th>Team funny photo</th><th>Team and coach photo</th></tr>
+<tr><td><img src="t-photos/team_photo.jpg"></td><td><img src="t-photos/team_funny_photo.jpg"></td><td><img src="t-photos/team&coach_photo.jpg"></td></tr>
+</table>
+
+These photos can be found withing the folder <i>[t-photos](/t-photos/)</i>
+
+
+## v-photos
+
+Here you can see only a selection of the vehicle photos, you can find them all <i>[here](/v-photos/)</i>.
+
+<table><tr><th>Top view</th><th>Front view</th><th>Back view</th></tr>
+<tr><td><img src="v-photos/top_view_caption.png"></td><td><img src="v-photos/front_view_caption.png"></td><td><img src="v-photos/back_view_caption.png"></td></tr>
+<tr><th>Bottom view</th><th>Left view</th><th>Right view</th></tr>
+<tr><td><img src="v-photos/bottom_view_caption.png"></td><td><img src="v-photos/left_view_caption.png"></td><td><img src="v-photos/right_view_caption.png"></td></tr>
+</table>
+
+These photos can be found withing the folder <i>[v-photos](/v-photos/)</i>
+
+## video
+The demonstration video can be found at the link embedded in the youtube badge: <a href = "https://youtu.be/mlGan-_RJ7k"><img src="other/media/youtube_badge.png"></a><br>
+The link can be found at file [video.md](video/video.md)
+
+<br>
+
 # Setup and Build
 
 ## How to setup the software on the Raspberry Pi 5
@@ -548,8 +574,9 @@ For assembling the vehicle prototype, we suggest the following steps:
 - Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
 - Follow the [electrical schematic](schemes/electrical_scheme.jpeg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
 - Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
+
   > [!CAUTION]
-  > Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.
+  > Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.<br>
   > Inspect all connections, secure any loose wires, and make sure all parts are firmly in place. Consider using a voltmeter and ammeter to verify that wire connection are genuine.
 - Finally, run a test to confirm the vehicle's proper operation.
 
