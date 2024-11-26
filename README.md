@@ -70,7 +70,7 @@
     <li><a href="#v-photos">Vehicle photos</a></li>
     <li><a href="#video">Video</a></li>
     <!--<li><a href="#3d-models-and-graphical-representations">3D Models and Graphical Representations</a></li>-->
-
+</ul>
 
   <summary><b style="font-size: 1.5em;">Build & Setup</b></summary>
   <ul style="font-size: 1.2em;">
@@ -477,7 +477,7 @@ The prototype's goal is to complete the parking maneuver by guiding the front of
 # Media
 ## t-photos
 <table><tr><th>Team photo</th><th>Team funny photo</th><th>Team and coach photo</th></tr>
-<tr><td><img src="t-photos/team_photo.jpg"></td><td><img src="t-photos/team_funny_photo.jpg"></td><td><img src="t-photos/team&coach_photo.jpg"></td></tr>
+<tr><td><img src="t-photos/team_photo.jpg" width="400"></td><td><img src="t-photos/team_funny_photo.jpg" width="400"></td><td><img src="t-photos/team&coach_photo.jpg" width="400"></td></tr>
 </table>
 
 These photos can be found withing the folder <i>[t-photos](/t-photos/)</i>
