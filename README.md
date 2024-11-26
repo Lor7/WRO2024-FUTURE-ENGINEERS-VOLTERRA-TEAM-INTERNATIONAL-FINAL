@@ -574,11 +574,11 @@ For assembling the vehicle prototype, we suggest the following steps:
 - Link the LiPo 3S battery to the tension regulator and stabilizer, ensuring the proper connection with XT 60 connectors. Rotate the potentiometer on the buck-down to set the voltage of the output current to a steady 5.0V.
 - Follow the [electrical schematic](schemes/electrical_scheme.jpeg) to properly connect the wires. Ensure that all sensors are connected to both the Raspberry Pi and the power source correctly.
 - Connect the 12V encoder gear motor and the servo motor, ensuring that the connections are stable and receiving the correct power.
-
-  > [!CAUTION]
-  > Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged.<br>
-  > Inspect all connections, secure any loose wires, and make sure all parts are firmly in place. Consider using a voltmeter and ammeter to verify that wire connection are genuine.
 - Finally, run a test to confirm the vehicle's proper operation.
+
+> [!CAUTION]
+> Before connecting the servo to the mechanical system make sure it's calibrated and you know its offset angle; otherwise you could end up forcing a movement out of the range of the joints and mechanics, resulting in both the structure and the hardware being damaged. <br>
+> Inspect all connections, secure any loose wires, and make sure all parts are firmly in place. Consider using a voltmeter and ammeter to verify that wire connection are genuine.
 
 <br><br>
 
