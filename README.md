@@ -327,8 +327,7 @@ The Edge TPU is an Application-Specific Integrated Circuit (ASIC) designed by Go
 
 ## Wiring Diagram
 
-> ![electrical scheme](./schemes/electrical_scheme.jpeg)
-> ![visual wiring scheme](./schemes/visual_wiring_scheme.jpg)
+> ![electrical scheme](./schemes/electrical_scheme.jpeg) > ![visual wiring scheme](./schemes/visual_wiring_scheme.jpg)
 
 > [!NOTE]
 > To create the electrical schematic, we utilized "Fritzing," a free and open-source software designed for circuit design and prototyping. Most of the required components were readily available within Fritzing's extensive library, making it straightforward to place and connect them. For components not available in the library, we manually created them using vector drawing tools, ensuring precise placement of pins on the correct grid. This meticulous approach was essential to maintain the accuracy and functionality of the schematic.
@@ -475,13 +474,14 @@ The prototype's goal is to complete the parking maneuver by guiding the front of
 <br>
 
 # Media
+
 ## t-photos
+
 <table><tr><th>Team photo</th><th>Team funny photo</th><th>Team and coach photo</th></tr>
 <tr><td><img src="t-photos/team_photo.jpg" width="400"></td><td><img src="t-photos/team_funny_photo.jpg" width="400"></td><td><img src="t-photos/team&coach_photo.jpg" width="400"></td></tr>
 </table>
 
 These photos can be found withing the folder <i>[t-photos](/t-photos/)</i>
-
 
 ## v-photos
 
@@ -496,6 +496,7 @@ Here you can see only a selection of the vehicle photos, you can find them all <
 These photos can be found withing the folder <i>[v-photos](/v-photos/)</i>
 
 ## video
+
 The demonstration video can be found at the link embedded in the youtube badge: <a href = "https://youtu.be/mlGan-_RJ7k"><img src="other/media/youtube_badge.png"></a><br>
 The link can be found at file [video.md](video/video.md)
 
@@ -583,8 +584,6 @@ For assembling the vehicle prototype, we suggest the following steps:
 <br><br>
 
 ## Costs of the Components
-
-  <summary>Components</summary>
 
 <table>
   <thead>
